@@ -1,0 +1,250 @@
+package com.vodafone.frt.adapters;
+
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.activities.MGRAttendanceActivity;
+import com.vodafone.frt.activities.MGRTaskAssignActivity;
+import com.vodafone.frt.fragments.RejectedLeaveStatusFragment;
+import com.vodafone.frt.models.MGRResponseAttendanceModel;
+import com.vodafone.frt.models.MGRResponseRouteIssueDetailsModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/20/2018.
+ */
+
+public class MGRAttendanceAdapter extends BaseAdapter {
+
+
+   DataTransferInterface dtInterface;
+    SparseBooleanArray mCheckStates;
+    private final Context context;
+    private SelectionViewAttendanceListener listener;
+    private List<MGRResponseAttendanceModel> dataSet;
+    public ArrayList<Integer> leaveId_list = new ArrayList<>();
+
+    public MGRAttendanceAdapter(Context context, DataTransferInterface dtInterface){
+        this.context=context;
+        this.dtInterface = dtInterface;
+        //mCheckStates = new SparseBooleanArray(models.size());
+    }
+
+
+    public void setSelectionListener(SelectionViewAttendanceListener listener) {
+        this.listener = listener;
+    }
+
+    public void setDataSet(List<MGRResponseAttendanceModel> dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public int getCount() {
+        return dataSet.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    @Override
+    public int getViewTypeCount() {
+        return getCount();
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final ViewHolder holder;
+        MGRResponseAttendanceModel atendance = dataSet.get(position);
+        if (convertView== null){
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.item_mgr_attendance_list, parent, false);
+            holder.attendance_date = convertView.findViewById(R.id.attendance_date);
+            holder.userNameTextView = convertView.findViewById(R.id.userNameTextView);
+            holder.fromDateTextView = convertView.findViewById(R.id.fromDateTextView);
+            holder.toDateTextView = convertView.findViewById(R.id.toDateTextView);
+            holder.leaveReasonTextView = convertView.findViewById(R.id.leaveReasonTextView);
+            //holder.managerRemarksTextView = convertView.findViewById(R.id.managerRemarksTextView);
+           // holder.approveOnTextView = convertView.findViewById(R.id.approveOnTextView);
+         holder.leaveStatusTextView = convertView.findViewById(R.id.leaveStatusTextView);
+            holder.img_rejectLeave = convertView.findViewById(R.id.img_rejectLeave);
+            holder.checkBoxTask = convertView.findViewById(R.id.checkBoxTask);
+           // holder.img_acceptLeave = convertView.findViewById(R.id.img_acceptLeave);
+
+
+
+
+          /*  holder.img_acceptLeave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int leaveId  = dataSet.get(position).getLeave_id();
+
+                    //if (issue_id_list.size() >0) {
+                    DialogFragment newFragment = AcceptLeaveStatusFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("LEAVE_ID", leaveId);
+                    newFragment.setArguments(bundle);
+                    newFragment.show(((Activity) context).getFragmentManager(), "dialog");
+                }
+            });*/
+
+            holder.img_rejectLeave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //int getPosition = (Integer) v.getTag();
+                    //if (getPosition)
+                   // if (dataSet.size()>0){
+
+                    leaveId_list.clear();
+                   int leaveId  = dataSet.get(position).getLeave_id();
+
+                    //if (issue_id_list.size() >0) {
+                    DialogFragment newFragment = RejectedLeaveStatusFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                   bundle.putInt("LEAVE_ID", leaveId);
+                    newFragment.setArguments(bundle);
+                    newFragment.show(((Activity) context).getFragmentManager(), "dialog");
+
+
+                }
+            });
+
+
+            holder.checkBoxTask.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int getPosition = (Integer) buttonView.getTag();
+                    int issueIDCheckbox  = dataSet.get(position).getLeave_id();
+                    dataSet.get(getPosition).setSelected(buttonView.isChecked());
+                        MGRResponseAttendanceModel p = dataSet.get(position);
+                        p.setSelected(holder.checkBoxTask.isChecked());
+                        if (holder.checkBoxTask.isChecked()){
+                            //modelList.get(position).setSelected(true);
+                            if (context instanceof MGRAttendanceActivity){
+                                if (!leaveId_list.contains(dataSet.get(position).getLeave_id())) {
+                                    leaveId_list.add(dataSet.get(position).getLeave_id());
+                                    ((MGRAttendanceAdapter.DataTransferInterface) context).setValues(leaveId_list);
+                                    Log.d(this.getClass().getName(), "ADD_LIST" + leaveId_list);
+                                    holder.checkBoxTask.setChecked(dataSet.get(position).isSelected());
+                                }
+                            }
+                        }
+                        else {
+                            leaveId_list.remove(leaveId_list.indexOf(issueIDCheckbox));
+                            ((MGRAttendanceAdapter.DataTransferInterface) context).setValues(leaveId_list);
+                            Log.d(this.getClass().getName(),"REMOVE_LIST" + leaveId_list);
+                            holder.checkBoxTask.setChecked(dataSet.get(position).isSelected());
+                        }
+                }
+            });
+
+            convertView.setTag(holder);
+            //convertView.setTag(R.id.issueTextView,holder.issueTextView);
+            convertView.setTag(R.id.checkBoxTask, holder.checkBoxTask);
+            convertView.setTag(holder);
+
+        }else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        if (atendance.getUser_name() != null && !atendance.getUser_name().equals("null")){
+            holder.userNameTextView.setText(atendance.getUser_name());
+        }
+
+        if (atendance.getCreated_on() != null && !atendance.getCreated_on().equals("null")){
+            holder.attendance_date.setText(atendance.getCreated_on());
+        }
+       /* if (atendance.getManager_remark() != null && !atendance.getManager_remark().equals("null")){
+            holder.managerRemarksTextView.setText(atendance.getManager_remark());
+        }*/
+        if (atendance.getFrom_date() != null && !atendance.getFrom_date().equals("null")){
+            holder.fromDateTextView.setText(atendance.getFrom_date());
+        }
+        if (atendance.getTo_date() != null && !atendance.getTo_date().equals("null")){
+            holder.toDateTextView.setText(atendance.getTo_date());
+        }
+        if (atendance.getLeave_reason() != null && !atendance.getLeave_reason().equals("null")){
+            holder.leaveReasonTextView.setText(atendance.getLeave_reason());
+        }
+        if (atendance.getLeave_status() != null && !atendance.getLeave_status().equals("null")){
+            holder.leaveStatusTextView.setText(atendance.getLeave_status());
+        }
+
+        holder.checkBoxTask.setTag(position);
+        holder.userNameTextView.setText(atendance.getUser_name());
+        holder.checkBoxTask.setChecked(dataSet.get(position).isSelected());
+        holder.img_rejectLeave.setTag(position);
+
+        //if (atendance.g)
+        return convertView;
+    }
+
+
+
+
+
+    public boolean isChecked(int position) {
+        return mCheckStates.get(position, false);
+    }
+
+    public void setChecked(int position, boolean isChecked) {
+        mCheckStates.put(position, isChecked);
+
+    }
+
+    public void toggle(int position) {
+        setChecked(position, !isChecked(position));
+
+    }
+
+
+    private class ViewHolder {
+        TextView attendance_date, userNameTextView, fromDateTextView, toDateTextView,leaveReasonTextView,leaveStatusTextView;
+               // managerRemarksTextView,approveOnTextView;
+        ImageView img_rejectLeave,img_acceptLeave;
+        CheckBox checkBoxTask;
+    }
+
+    public interface SelectionViewAttendanceListener {
+        void onClickItem(int position);
+    }
+
+
+
+    public interface DataTransferInterface {
+        void setValues(ArrayList<Integer> leaveId_list);
+       // void setLeaveId(int issueId);
+    }
+
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="20 Jan 2017"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="5dp"
+        style="@style/tv_chat_date"
+        android:visibility="gone"/>
+    <LinearLayout
+        android:id="@+id/ll_chat_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/chat_bubble_blue"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hi I am interested to buy this unit."
+            style="@style/tv_chat_msg"
+            android:padding="10dp"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="12:08 PM"
+            android:paddingBottom="10dp"
+            style="@style/tv_chat_time"
+            android:paddingRight="15dp"/>
+    </LinearLayout>
+
+</LinearLayout>

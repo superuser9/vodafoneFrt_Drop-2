@@ -1,0 +1,254 @@
+package com.vodafone.frt.fragments;
+
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.models.CommonSaveLeaveDetailModel;
+import com.vodafone.frt.models.RequestAssignRejectIssueDetailModel;
+import com.vodafone.frt.models.RequestGetSubOrdinateDetailsModel;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.AESEncriptDecript;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/29/2018.
+ */
+
+public class TaskAssignIssueFragment extends DialogFragment  implements  FRTAsyncCommon.FetchDataCallBack {
+
+    private FRTUtility frtUtility;
+
+    private ProgressDialog progressDialog;
+    private TaskAssignIssueFragment applyLeaveDialogFragment = this;
+    private FRTWEBAPI frtwebapi;
+    private FRTSharePrefUtil frtSharePrefUtil;
+    List<Integer> integerList;
+    private Spinner simpleSpinner;
+    private Button cancelBtn;
+    private EditText editTextSearch;
+    private ListView listViewSearch;
+    private ArrayAdapter<String> listAdapter;
+    String [] listViewAdapterContent = {"Ajayfrt", "ashu", "Building", "Food", "Sports", "Dress", "Ring"};
+    private ArrayList<Integer> issueIdList;
+
+    public static TaskAssignIssueFragment newInstance(){
+        return new TaskAssignIssueFragment();
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtwebapi = new FRTWEBAPI();
+        integerList = new ArrayList<>();
+        //checkInDialogFragment= this;
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(getActivity());
+
+
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            issueIdList = bundle.getIntegerArrayList("ISSUE_ARRAY_LIST");
+
+            Log.d(this.getClass().getName(),"ISSUE_ID_LIST" + issueIdList);
+
+        }
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        View dialogView = inflater.inflate(R.layout.task_assign_issue_dialog_fragment,container,false);
+
+        // simpleSpinner = (Spinner)dialogView.findViewById(R.id.simpleSpinner);
+        editTextSearch =(EditText)dialogView.findViewById(R.id.editTextSearch);
+        listViewSearch =(ListView)dialogView.findViewById(R.id.listViewSearch);
+        listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, listViewAdapterContent);
+
+        listViewSearch.setAdapter(listAdapter);
+
+        listViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+// make Toast when click
+                Toast.makeText(getActivity(), "Position " + position, Toast.LENGTH_LONG).show();
+            }
+        });
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listViewSearch.setVisibility(View.VISIBLE);
+                TaskAssignIssueFragment.this.listAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null){
+                    getSubordinateDetails();
+                }
+               // listViewSearch.setVisibility(View.GONE);
+            }
+        });
+
+        editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                  getSubordinateDetails();
+                }
+                return false;
+            }
+        });
+
+         cancelBtn = (Button)dialogView.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        return dialogView;
+    }
+
+
+
+    private void 	getSubordinateDetails() {
+        progressDialog = new ProgressDialog(getActivity());
+        FRTAsyncCommon<RequestGetSubOrdinateDetailsModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(getSubordinateDetailModel());
+        frtAsyncCommon.setContext(getActivity());
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.GET_SUBORDINATE_DETAILS), "GetSubordinateDetails");
+        frtAsyncCommon.setFetchDataCallBack(applyLeaveDialogFragment);
+        progressDialog.setMessage(getString(R.string.pleaseWait));
+        progressDialog.show();
+    }
+
+    private RequestGetSubOrdinateDetailsModel getSubordinateDetailModel() {
+        RequestGetSubOrdinateDetailsModel rGSDM = new RequestGetSubOrdinateDetailsModel();
+
+        try {
+            rGSDM.setUserId(Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                    Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT))));
+            rGSDM.setRoleName(editTextSearch.getText().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return rGSDM;
+    }
+
+
+    private void toSaveLeaveDetail() {
+        progressDialog = new ProgressDialog(getActivity());
+        FRTAsyncCommon<RequestAssignRejectIssueDetailModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setAssignRejectDetailModel());
+        frtAsyncCommon.setContext(getActivity());
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.ASSIGN_REJECT_ROUTE_ISSUE), "UpdateRouteIssueDetail");
+        frtAsyncCommon.setFetchDataCallBack(applyLeaveDialogFragment);
+        progressDialog.setMessage(getString(R.string.pleaseWait));
+        progressDialog.show();
+    }
+
+    private RequestAssignRejectIssueDetailModel setAssignRejectDetailModel() {
+        RequestAssignRejectIssueDetailModel requestAssignRejectIssueDetailModel = new RequestAssignRejectIssueDetailModel();
+        try {
+        requestAssignRejectIssueDetailModel.setUserId(Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT))));
+        requestAssignRejectIssueDetailModel.setAssignDate("");
+        requestAssignRejectIssueDetailModel.setFrtUserId(1);
+        requestAssignRejectIssueDetailModel.setIssuesId((ArrayList<Integer>) integerList);
+        requestAssignRejectIssueDetailModel.setRemark("");
+        requestAssignRejectIssueDetailModel.setStatus("Assigned");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(this.getClass().getName(),"EXCEPTION==" + e.getMessage());
+        }
+        return requestAssignRejectIssueDetailModel;
+    }
+
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null){
+            JSONObject jsonObject = null;
+            try {
+                progressDialog.dismiss();
+                dismiss();
+                jsonObject = new JSONObject(response);
+                if (jsonObject.optString("status").equals("OK")){
+                    Toast.makeText(getActivity(), getString(R.string.update_successfully), Toast.LENGTH_SHORT).show();
+                    Log.d(this.getClass().getName(),"RESPONSE_SUCCESS" + response);
+                }
+                else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+
+                    frtUtility.goToLogin(getString(R.string.req_denied));
+                } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                    frtUtility.goToLogin(getString(R.string.session_exp));
+                }
+                else if (jsonObject.optString("status").equalsIgnoreCase("UNKNOWN_ERROR")){
+                    // frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), findViewById(R.id.header));
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                }
+                else if (jsonObject.optString("status").equalsIgnoreCase("ERROR")){
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                // frtUtility.setSnackBar(jsonObject.optString("error_message"), findViewById(R.id.header));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("TAG","EXCEPTION===" + e.getMessage());
+            }
+        }
+        else {
+            Toast.makeText(getActivity(), getString(R.string.servernotResponding), Toast.LENGTH_SHORT).show();
+            //frtUtility.setSnackBar(getString(R.string.servernotResponding), findViewById(R.id.header));
+        }
+    }
+}

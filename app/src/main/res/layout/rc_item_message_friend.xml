@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:background="@drawable/ic_bubble1_">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/textFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="1dp"
+            android:padding="10dp"
+            android:text="hii"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/friendtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_friend"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:text="20:08:15"
+        android:textSize="11sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_user"
+        android:layout_width="wrap_content"
+        android:background="@drawable/mychatitemview"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/textuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="1dp"
+        android:padding="5dp"
+        android:layout_gravity="bottom|center"
+        android:text="hello"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#fff" />
+    </LinearLayout>
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/userTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/ll_user"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
+        android:padding="5dp"
+        android:text="20:08:15"
+        android:visibility="gone"
+        android:textSize="11sp" />
+</RelativeLayout>

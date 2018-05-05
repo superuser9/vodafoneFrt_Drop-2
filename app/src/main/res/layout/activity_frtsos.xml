@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_frtsos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vodafone.frt.activities.FRTSOSActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ivback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:src="@mipmap/ic_back"
+                tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded" />
+
+            <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ivback"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="@string/back"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                tools:ignore="ObsoleteLayoutParam,RtlHardcoded" />
+        </LinearLayout>
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/sos"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <!--<RelativeLayout
+        android:id="@+id/header"
+        android:layout_below="@id/header1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curved_background"
+        android:orientation="horizontal">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/sos"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_cancel" />
+    </RelativeLayout>-->
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_centerInParent="true"
+        android:divider="@color/darkgrey"
+        android:dividerHeight="1dp" />
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/norecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/nosos"
+        android:textColor="@color/darkgrey"
+        android:visibility="gone" />
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/loaderttext"
+        android:textColor="@android:color/black" />
+</RelativeLayout>

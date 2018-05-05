@@ -1,0 +1,395 @@
+package com.vodafone.frt.fragments;
+
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.activities.FRTMyCheckInActivity;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTSaveSelfCheckInModel;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Created by Ajay Tiwari on 2/21/2018.
+ */
+
+public class CheckInDialogFragment extends DialogFragment implements  FRTAsyncCommon.FetchDataCallBack {
+    private static final int REFRESH_ACTIVITY = 1;
+    private FRTTextviewTrebuchetMS enddate;
+    private FRTTextviewTrebuchetMS staartdate;
+    private FRTTextviewTrebuchetMS starttime;
+    private FRTTextviewTrebuchetMS endtime;
+    private int mHour;
+    private int mMinute;
+    private int mYear, mMonth, mDay;
+    private EditText et_routeName;
+    private EditText et_remarks;
+    private Button submitBtn;
+    private FRTWEBAPI frtwebapi;
+    private FRTSharePrefUtil frtSharePrefUtil;
+
+    private FRTUtility frtUtility;
+    private final CheckInDialogFragment checkInDialogFragment= this;
+    private double longitude;
+    private double latitude;
+    private Date startinTime;
+    private Date endoutTime;
+    private ProgressDialog progressDialog;
+
+    public static CheckInDialogFragment newInstance() {
+        return new CheckInDialogFragment();
+
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtwebapi = new FRTWEBAPI();
+        //checkInDialogFragment= this;
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(getActivity());
+
+        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+         longitude = location.getLongitude();
+         latitude = location.getLatitude();
+
+        Log.d(this.getClass().getName(),"LONGITUDEINCHECK" + longitude);
+        Log.d(this.getClass().getName(),"LATITUTE_CHECK" + latitude);
+
+
+        //rtUtility.setContext(frtAttendenceActivity);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        View dialogView = inflater.inflate(R.layout.dialogbox_checkin, container,false);
+        et_routeName = (EditText) dialogView
+                .findViewById(R.id.et_routeName);
+        submitBtn =(Button)dialogView.findViewById(R.id.submitBtn);
+        et_remarks =(EditText)dialogView.findViewById(R.id.et_remarks);
+        staartdate = (FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.staartdate);
+        staartdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String fromdate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        try {
+                            staartdate.setText((fromdate));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                //datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                datePickerDialog.show();
+            }
+        });
+        enddate =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.enddate);
+        enddate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String enddates = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        try {
+                            enddate.setText((enddates));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                // datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                datePickerDialog.show();
+            }
+        });
+
+        starttime =(FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.starttime);
+        starttime.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                starttime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        endtime =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.endtime);
+        endtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                endtime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+
+        Button cancelBtn = (Button)dialogView.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+/*
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        Date inTime = sdf.parse();
+        Date outTime = sdf.parse(strEndTime);*/
+
+
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  EditDialogListener activity = (EditDialogListener) getActivity();
+                activity.updateResult(et_routeName.getText().toString(),staartdate.getText().toString(),enddate.getText().toString()
+                        ,starttime.getText().toString(),endtime.getText().toString(),et_remarks.getText().toString());
+
+                dismiss();*/
+
+              String startDate = staartdate.getText().toString();
+              String endDate = enddate.getText().toString();
+              String statTime = starttime.getText().toString();
+              String endTimeNew = endtime.getText().toString();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+                try {
+                     startinTime = sdf.parse(statTime);
+                     endoutTime = sdf.parse(endTimeNew);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+               // int dateDelta = startinTime.compareTo(endoutTime);
+
+
+                // calling checkin services in dialog box
+                if (et_routeName.getText().toString().length() <= 0) {
+                    et_routeName.setError("Route Name can't be blank");
+
+                }
+                else if (startDate.length()<=0) {
+                   // staartdate.setError("Please enter Start Date");
+                    Toast.makeText(getActivity(), "Please Enter Start Date", Toast.LENGTH_SHORT).show();
+                } else if (endDate.length()<=0) {
+                  // staartdate.setError("Please enter End Date");
+                    Toast.makeText(getActivity(), "Please Enter End Date", Toast.LENGTH_SHORT).show();
+                } else if (statTime.length()<=0) {
+                   //staartdate.setError("Please enter Start Time");
+                    Toast.makeText(getActivity(), "Please Enter Start Time", Toast.LENGTH_SHORT).show();
+                } else if (endTimeNew.length()<=0) {
+                    //staartdate.setError("Please enter End Time");
+                    Toast.makeText(getActivity(), "Please Enter End Time", Toast.LENGTH_SHORT).show();
+                }else if (et_remarks.getText().toString().length() <= 0) {
+                    et_remarks.setError("Please enter remarks");
+                }
+                else if (frtUtility.isTimeDifference(startinTime ,endoutTime)){
+                    Toast.makeText(getActivity(), "end time should not be less then start time", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    saveSelfCheckInRoute();
+                }
+            }
+        });
+
+        return dialogView;
+    }
+
+
+
+
+
+
+    private void saveSelfCheckInRoute(){
+
+       try {
+         //  if (frtUtility.isTimeDifference(startinTime, endoutTime)) {
+           progressDialog = new ProgressDialog(getActivity());
+
+               if (et_routeName.getText().toString() != "" && et_remarks.getText().toString() != "" && starttime.getText().toString() != ""
+                       && endtime.getText().toString() != "") {
+
+                   FRTAsyncCommon<FRTSaveSelfCheckInModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+                   frtAsyncCommon.setFrtModel(setUpSaveCheckInModel());
+                   frtAsyncCommon.setContext(getActivity());
+                   frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.SAVE_SELF_CHECKIN_ROUTE), "saveSelfCheckIn");
+                   frtAsyncCommon.setFetchDataCallBack(checkInDialogFragment);
+                   progressDialog.setMessage("Please wait Loading...");
+
+
+               }
+          // }
+           else {
+               Toast.makeText(getActivity(), "End Date should be change", Toast.LENGTH_SHORT).show();
+           }
+
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+    }
+
+    private FRTSaveSelfCheckInModel setUpSaveCheckInModel() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+        FRTSaveSelfCheckInModel frtSaveSelfCheckInModel = new FRTSaveSelfCheckInModel();
+        if (!TextUtils.isEmpty(frtSharePrefUtil.getString(getString(R.string.userId))));
+        frtSaveSelfCheckInModel.setUserId(Integer.parseInt(frtSharePrefUtil.getString(getString(R.string.userkey))));
+        frtSaveSelfCheckInModel.setManagerId(Integer.parseInt(frtSharePrefUtil.getString(getString(R.string.managerkey))));
+        frtSaveSelfCheckInModel.setRouteName(et_routeName.getText().toString());
+        frtSaveSelfCheckInModel.setLatitude(String.valueOf(latitude));
+        frtSaveSelfCheckInModel.setLongitude(String.valueOf(longitude));
+        frtSaveSelfCheckInModel.setRemarks(et_remarks.getText().toString());
+        frtSaveSelfCheckInModel.setMobileTime(currentDateandTime);
+        frtSaveSelfCheckInModel.setPlannedStartTime(starttime.getText().toString());
+        frtSaveSelfCheckInModel.setPlannedEndTime(endtime.getText().toString());
+
+        return frtSaveSelfCheckInModel;
+    }
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        try {
+            progressDialog.dismiss();
+            Log.d("RESPONSE", "RESPONSE===" + response);
+            if (response.equalsIgnoreCase(null)) {
+                // frtUtility.setSnackBar("Did not get any response from server", );
+                Toast.makeText(getActivity(), "Null response from server", Toast.LENGTH_SHORT).show();
+            } else {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.optJSONArray("results");
+                if (jsonObject.optString(getString(R.string.status_key)).equals("OK")) {
+
+                    Toast.makeText(getActivity(), "Record inserted", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), FRTMyCheckInActivity.class);
+                    intent.putExtra("processRefresh", 2);
+                    getActivity().startActivityForResult(intent,REFRESH_ACTIVITY);
+                    dismiss();
+
+                }
+            }
+            }catch(JSONException e){
+                e.printStackTrace();
+                Log.d("DialogTAG", "EXCEPTION=====" + e.getMessage());
+            }
+
+    }
+
+
+
+ /*   private Button.OnClickListener customDialog_UpdateOnClickListener
+            = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View arg0) {
+            // TODO Auto-generated method stub
+            customDialog_TextView.setText(customDialog_EditText.getText().toString());
+        }
+    };
+
+    private Button.OnClickListener customDialog_DismissOnClickListener
+            = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View arg0) {
+            // TODO Auto-generated method stub
+            EditDialogListener activity = (EditDialogListener) getActivity();
+            activity.updateResult(customDialog_EditText.getText().toString());
+
+            dismiss();
+        }
+    }*/;
+
+    public interface EditDialogListener {
+        void updateResult(String route, String startDate, String endDate, String startTime, String endTime, String remarks);
+    }
+}

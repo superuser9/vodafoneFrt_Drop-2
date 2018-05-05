@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "33970959839",
+    "firebase_url": "https://smartpatroller-1519127849435.firebaseio.com",
+    "project_id": "smartpatroller-1519127849435",
+    "storage_bucket": "smartpatroller-1519127849435.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33970959839:android:49cb8e6ee921c7a3",
+        "android_client_info": {
+          "package_name": "com.vodafone.frt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33970959839-gmgh0n3fj2f6747sjl2s3kuk2j7rgsd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANgsg0sHNlVZmhsMNbBJ4acx43aVhg1IM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

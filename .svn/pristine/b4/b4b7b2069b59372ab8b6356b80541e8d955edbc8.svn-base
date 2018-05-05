@@ -1,0 +1,17 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 14/12/17
+ */
+
+public class PTRRequestUserDetailModel {
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+}

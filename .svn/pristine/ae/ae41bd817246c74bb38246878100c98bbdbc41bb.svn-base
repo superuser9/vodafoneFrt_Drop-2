@@ -1,0 +1,152 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 14/12/17
+ */
+
+public class PTRRequestSaveRouteLocationmodel {
+    private int seqId;
+    private String latitude, longitude, networkProvider, userId, routeAssignmentId,
+            isInsideBuffer, deviationFromPlanned, distFromLastLoc, drivingSpeed, batteryPercentage, mobileTime, jsontoupload, status;
+    private String locationSpeed;
+
+
+    public double getLatitudeDouble() {
+        return Double.parseDouble(getLatitude());
+    }
+
+    public String getLatitude() {
+        return (latitude == null) ? "0" : latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return (longitude == null) ? "0" : longitude;
+    }
+
+    public double getLongitudeDouble() {
+        return Double.parseDouble(getLongitude());
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getNetworkProvider() {
+        return networkProvider;
+    }
+
+    public void setNetworkProvider(String networkProvider) {
+        this.networkProvider = networkProvider;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getRouteAssignmentId() {
+        return routeAssignmentId;
+    }
+
+    public void setRouteAssignmentId(String routeAssignmentId) {
+        this.routeAssignmentId = routeAssignmentId;
+    }
+
+    public String getIsInsideBuffer() {
+        return isInsideBuffer;
+    }
+
+    public void setIsInsideBuffer(String isInsideBuffer) {
+        this.isInsideBuffer = isInsideBuffer;
+    }
+
+    public String getDeviationFromPlanned() {
+        return deviationFromPlanned;
+    }
+
+    public void setDeviationFromPlanned(String deviationFromPlanned) {
+        this.deviationFromPlanned = deviationFromPlanned;
+    }
+
+    public String getDistFromLastLoc() {
+        return distFromLastLoc;
+    }
+
+    public void setDistFromLastLoc(String distFromLastLoc) {
+        this.distFromLastLoc = distFromLastLoc;
+    }
+
+    public String getDrivingSpeed() {
+        return drivingSpeed;
+    }
+
+    public void setDrivingSpeed(String drivingSpeed) {
+        this.drivingSpeed = drivingSpeed;
+    }
+
+    public String getBatteryPercentage() {
+        return batteryPercentage;
+    }
+
+    public void setBatteryPercentage(String batteryPercentage) {
+        this.batteryPercentage = batteryPercentage;
+    }
+
+    public String getMobileTime() {
+        return mobileTime;
+    }
+
+    public void setMobileTime(String mobileTime) {
+        this.mobileTime = mobileTime;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        PTRRequestSaveRouteLocationmodel obj1 = (PTRRequestSaveRouteLocationmodel) obj;
+        return obj1.getLongitude().equals(this.getLongitude()) && obj1.getLongitude().equals(this.getLongitude());
+    }
+
+    @Override
+    public String toString() {
+        return "lat:" + getLatitude() + ":lon:" + getLongitude() + ":distance:" + getDistFromLastLoc() + ":speed:" + getDrivingSpeed() + ":Time" + getMobileTime();
+    }
+
+    public String getJsontoupload() {
+        return jsontoupload;
+    }
+
+    public void setJsontoupload(String jsontoupload) {
+        this.jsontoupload = jsontoupload;
+    }
+
+    public int getSeqId() {
+        return seqId;
+    }
+
+    public void setSeqId(int seqId) {
+        this.seqId = seqId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLocationSpeed() {
+        return locationSpeed;
+    }
+
+    public void setLocationSpeed(String locationSpeed) {
+        this.locationSpeed = locationSpeed;
+    }
+}

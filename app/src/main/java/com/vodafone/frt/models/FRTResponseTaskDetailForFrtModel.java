@@ -1,0 +1,212 @@
+package com.vodafone.frt.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+/**
+ * Created by Ajay Tiwari on 3/16/2018.
+ */
+
+public class FRTResponseTaskDetailForFrtModel implements Parcelable ,Comparable<FRTResponseTaskDetailForFrtModel>{
+    private int task_tracking_id;
+    private int issue_id;
+    private int user_id;
+    private double latitude;
+    private double longitude;
+    private int checkin_radius;
+
+
+    private String issue_type;
+    private String assigned_date;
+    private String patroller_remark;
+    private String manager_remark;
+    private String checkin_time;
+    private String checkout_time;
+
+
+    public int getCheckin_radius() {
+        return checkin_radius;
+    }
+
+    public void setCheckin_radius(int checkin_radius) {
+        this.checkin_radius = checkin_radius;
+    }
+
+    public int getTask_tracking_id() {
+        return task_tracking_id;
+    }
+
+    public void setTask_tracking_id(int task_tracking_id) {
+        this.task_tracking_id = task_tracking_id;
+    }
+
+    public int getIssue_id() {
+        return issue_id;
+    }
+
+    public void setIssue_id(int issue_id) {
+        this.issue_id = issue_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getIssue_type() {
+        return issue_type;
+    }
+
+    public void setIssue_type(String issue_type) {
+        this.issue_type = issue_type;
+    }
+
+    public String getAssigned_date() {
+        return assigned_date;
+    }
+
+    public void setAssigned_date(String assigned_date) {
+        this.assigned_date = assigned_date;
+    }
+
+    public String getPatroller_remark() {
+        return patroller_remark;
+    }
+
+    public void setPatroller_remark(String patroller_remark) {
+        this.patroller_remark = patroller_remark;
+    }
+
+    public String getManager_remark() {
+        return manager_remark;
+    }
+
+    public void setManager_remark(String manager_remark) {
+        this.manager_remark = manager_remark;
+    }
+
+    public String getCheckin_time() {
+        return checkin_time;
+    }
+
+    public void setCheckin_time(String checkin_time) {
+        this.checkin_time = checkin_time;
+    }
+
+    public String getCheckout_time() {
+        return checkout_time;
+    }
+
+    public void setCheckout_time(String checkout_time) {
+        this.checkout_time = checkout_time;
+    }
+
+    public String getCheckin_remarks() {
+        return checkin_remarks;
+    }
+
+    public void setCheckin_remarks(String checkin_remarks) {
+        this.checkin_remarks = checkin_remarks;
+    }
+
+    public String getCheckout_remarks() {
+        return checkout_remarks;
+    }
+
+    public void setCheckout_remarks(String checkout_remarks) {
+        this.checkout_remarks = checkout_remarks;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String checkin_remarks;
+    private String checkout_remarks;
+    private String status;
+
+    public FRTResponseTaskDetailForFrtModel(){}
+
+    protected FRTResponseTaskDetailForFrtModel(Parcel in) {
+        task_tracking_id = in.readInt();
+        issue_id = in.readInt();
+        user_id = in.readInt();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        checkin_radius = in.readInt();
+        issue_type = in.readString();
+        assigned_date = in.readString();
+        patroller_remark = in.readString();
+        manager_remark = in.readString();
+        checkin_time = in.readString();
+        checkout_time = in.readString();
+        checkin_remarks = in.readString();
+        checkout_remarks = in.readString();
+        status = in.readString();
+    }
+
+    public static final Creator<FRTResponseTaskDetailForFrtModel> CREATOR = new Creator<FRTResponseTaskDetailForFrtModel>() {
+        @Override
+        public FRTResponseTaskDetailForFrtModel createFromParcel(Parcel in) {
+            return new FRTResponseTaskDetailForFrtModel(in);
+        }
+
+        @Override
+        public FRTResponseTaskDetailForFrtModel[] newArray(int size) {
+            return new FRTResponseTaskDetailForFrtModel[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(task_tracking_id);
+        dest.writeInt(issue_id);
+        dest.writeInt(user_id);
+        dest.writeInt(checkin_radius);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(issue_type);
+        dest.writeString(assigned_date);
+        dest.writeString(patroller_remark);
+        dest.writeString(manager_remark);
+        dest.writeString(checkin_time);
+        dest.writeString(checkout_time);
+        dest.writeString(checkin_remarks);
+        dest.writeString(checkout_remarks);
+        dest.writeString(status);
+    }
+
+    @Override
+    public int compareTo(@NonNull FRTResponseTaskDetailForFrtModel o) {
+        return getAssigned_date().compareTo(getAssigned_date());
+    }
+}

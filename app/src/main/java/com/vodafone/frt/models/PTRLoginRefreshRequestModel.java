@@ -1,0 +1,25 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 13/12/17
+ */
+
+public class PTRLoginRefreshRequestModel {
+    private String refresh_token, grant_type;
+
+    public String getRefresh_token() {
+        return refresh_token;
+    }
+
+    public void setRefresh_token(String refresh_token) {
+        this.refresh_token = refresh_token;
+    }
+
+    public String getGrant_type() {
+        return grant_type;
+    }
+
+    public void setGrant_type() {
+        this.grant_type = "refresh_token";
+    }
+}

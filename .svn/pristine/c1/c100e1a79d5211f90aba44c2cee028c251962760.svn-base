@@ -1,0 +1,129 @@
+package com.vodafone.frt.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+/**
+ * Created by vishal on 9/12/17
+ */
+
+public class FRTResponseRouteCommonModel implements Parcelable, Comparable<FRTResponseRouteCommonModel> {
+    private int routeId, routeRefId, routeAssignmentId;
+    private String route,
+            planned_start_time,
+            planned_end_time, actual_start_time, actual_end_time;
+
+    public String getActual_start_time() {
+        return actual_start_time;
+    }
+
+    public void setActual_start_time(String actual_start_time) {
+        this.actual_start_time = actual_start_time;
+    }
+
+    public String getActual_end_time() {
+        return actual_end_time;
+    }
+
+    public void setActual_end_time(String actual_end_time) {
+        this.actual_end_time = actual_end_time;
+    }
+
+    public int getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(int routeId) {
+        this.routeId = routeId;
+    }
+
+    public int getRouteRefId() {
+        return routeRefId;
+    }
+
+    public void setRouteRefId(int routeRefId) {
+        this.routeRefId = routeRefId;
+    }
+
+    public int getRouteAssignmentId() {
+        return routeAssignmentId;
+    }
+
+    public void setRouteAssignmentId(int routeAssignmentId) {
+        this.routeAssignmentId = routeAssignmentId;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getPlanned_start_time() {
+        return planned_start_time;
+    }
+
+    public void setPlanned_start_time(String planned_start_time) {
+        this.planned_start_time = planned_start_time;
+    }
+
+    public String getPlanned_end_time() {
+        return planned_end_time;
+    }
+
+    public void setPlanned_end_time(String planned_end_time) {
+        this.planned_end_time = planned_end_time;
+    }
+
+    public FRTResponseRouteCommonModel() {
+    }
+
+    private FRTResponseRouteCommonModel(Parcel in) {
+        routeId = in.readInt();
+        routeRefId = in.readInt();
+        routeAssignmentId = in.readInt();
+        route = in.readString();
+        planned_start_time = in.readString();
+        planned_end_time = in.readString();
+    }
+
+    public static final Creator<FRTResponseRouteCommonModel> CREATOR = new Creator<FRTResponseRouteCommonModel>() {
+        @Override
+        public FRTResponseRouteCommonModel createFromParcel(Parcel in) {
+            return new FRTResponseRouteCommonModel(in);
+        }
+
+        @Override
+        public FRTResponseRouteCommonModel[] newArray(int size) {
+            return new FRTResponseRouteCommonModel[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(routeId);
+        parcel.writeInt(routeRefId);
+        parcel.writeInt(routeAssignmentId);
+        parcel.writeString(route);
+        parcel.writeString(planned_start_time);
+        parcel.writeString(planned_end_time);
+    }
+
+    @Override
+    public int compareTo(@NonNull FRTResponseRouteCommonModel frtResponseRouteCommonModel) {
+        if(getPlanned_start_time().compareTo(frtResponseRouteCommonModel.getPlanned_start_time()) == -1)
+            return 1;
+        if(getPlanned_start_time().compareTo(frtResponseRouteCommonModel.getPlanned_start_time()) == 1)
+            return -1;
+        else
+            return 0;
+    }
+}

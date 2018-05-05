@@ -1,0 +1,178 @@
+package com.vodafone.frt.apis;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.app.FRTApp;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.apache.http.NameValuePair;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * vishal on 21/3/17.
+ */
+public class FRTAsyncCommon<T> extends AsyncTask<String, String, String> {
+    private Context context;
+    private FetchDataCallBack fetchDataCallBack;
+    @SuppressWarnings("deprecation")
+    private final List<NameValuePair> params = new ArrayList<>();
+    private FRTUtility frtUtility;
+    private FRTApp frtApp;
+    private String type;
+    private T frtModel;
+
+    public void setFrtModel(T frtModel) {
+        this.frtModel = frtModel;
+    }
+
+    public void setFrtModelList(T frtModel) {
+        this.frtModel = frtModel;
+    }
+
+    private FRTAsyncCommon() {
+    }
+
+    public static FRTAsyncCommon getAsyncInstance() {
+        return new FRTAsyncCommon();
+    }
+
+    public void setContext(Context ctx) {
+        context = ctx;
+    }
+
+    public void setFetchDataCallBack(FetchDataCallBack fetchData) {
+        this.fetchDataCallBack = fetchData;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        try {
+            frtApp = (FRTApp) ((Activity) context).getApplication();
+            frtUtility = FRTUtility.getUtilityInstance();
+            frtUtility.setContext(context);
+//            if (frtApp.getCheckForDialog() != null && !frtApp.getCheckForDialog().equals("Yes")) {
+//                frtUtility.showDialog();
+//            }
+        } catch (Exception ex) {
+        }
+    }
+
+    @Override
+    protected String doInBackground(String... strings) {
+        String url = strings[0];
+        String tempResponse;
+        String res = null;
+        if (strings[1].equals("login") /*|| strings[1].equals("sos")*/ || strings[1].equals("loginrefresh")|| strings[1].equals("getissuetype") || strings[1].equals("snaptoroadgoogle")) {
+            try {
+                HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                urlConnection.setRequestMethod("POST");
+                //noinspection IfCanBeSwitch
+                if (strings[1].equals("login")) {
+                    urlConnection.setRequestProperty("Accept", "application/json");
+                } /*else if (strings[1].equals("sos")) {
+                    FRTSharePrefUtil frtSharePrefUtil = FRTSharePrefUtil.getInstance(context);
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+                    urlConnection.setRequestProperty("Authorization", "bearer" + " " + frtSharePrefUtil.getString(context.getString(R.string.token_key)));
+                }*/ else if (strings[1].equals("loginrefresh")) {
+                    urlConnection.setRequestProperty("Content-Type", "application/www-x-form-urlencoded");
+                } else if (strings[1].equals("getissuetype")) {
+                    FRTSharePrefUtil frtSharePrefUtil = FRTSharePrefUtil.getInstance(context);
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+                    urlConnection.setRequestProperty("Authorization", "bearer" + " " + frtSharePrefUtil.getString(context.getString(R.string.token_key)));
+                }
+                urlConnection.connect();
+                //noinspection IfCanBeSwitch
+                if (strings[1].equals("login") || strings[1].equals("loginrefresh")) {
+                    type = frtUtility.prepareData(strings[1], frtModel, params, null, null).toString();
+                    OutputStream os = urlConnection.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(frtUtility.getQuery(params));
+                    writer.flush();
+                    writer.close();
+                    os.close();
+                } else if (strings[1].equals("snaptoroadgoogle")) {
+                    OutputStream os = urlConnection.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(strings[2].split("\\?")[1]);
+                    Log.d("QUERYGOOGLEROAD", strings[2].split("\\?")[1]);
+                    writer.flush();
+                    writer.close();
+                    os.close();
+                } else {
+                    type = strings[1];
+                }
+                InputStream inputStream = urlConnection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader, 8192);
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((tempResponse = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(tempResponse).append("\n");
+                }
+                res = stringBuilder.toString();
+                Log.d("RESPONSE", stringBuilder.toString());
+                inputStream.close();
+            } catch (IOException e) {
+            }
+        } else {
+            try {
+                if (strings[1].equals("saveroutebulk")) {
+                    frtUtility = FRTUtility.getUtilityInstance();
+                    frtUtility.setContext(context);
+                    type = strings[1];
+                    res = frtUtility.prepareData(type, null, null, frtModel, url).toString();
+                    Log.d("RESPONSE", res);
+                } else if(strings[1].equals("saverouteofflineaction")){
+                    frtUtility = FRTUtility.getUtilityInstance();
+                    frtUtility.setContext(context);
+                    type = strings[1];
+                    if(frtModel!=null)
+                    res = frtUtility.prepareData(type, null, null, frtModel, url).toString();
+                    Log.d("RESPONSE", res);
+                }else {
+                    frtUtility = FRTUtility.getUtilityInstance();
+                    frtUtility.setContext(context);
+                    type = strings[1];
+                    res = frtUtility.prepareData(type, frtModel, null, null, url).toString();
+                    Log.d("RESPONSE", res);
+                }
+            } catch (Exception ex) {
+            }
+        }
+        return res;
+    }
+
+    @Override
+    protected void onPostExecute(String resp) {
+        super.onPostExecute(resp);
+        try {
+//            if (frtApp.getCheckForDialog() != null && !frtApp.getCheckForDialog().equals("Yes")) {
+//                frtUtility.hideDialog();
+//            }
+        } catch (Exception ex) {
+        }
+        fetchDataCallBack.getAsyncData(resp, type);
+    }
+
+    public interface FetchDataCallBack {
+        void getAsyncData(String response, String type);
+    }
+}

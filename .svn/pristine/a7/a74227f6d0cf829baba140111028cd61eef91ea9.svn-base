@@ -1,0 +1,282 @@
+package com.vodafone.frt.activities;
+
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.adapters.FRTPauseReasonAdapter;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.app.FRTApp;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTButtonTrebuchetMS;
+import com.vodafone.frt.fonts.FRTEditTextTrebuchetMS;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTRequestPauseReasonModel;
+import com.vodafone.frt.models.FRTResponsePauseReasonModel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.utility.FRTBroadcasting;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by vishal
+ */
+public class FRTPauseReasonsActivity extends AppCompatActivity implements FRTCallBackInitViews, FRTCallBackForIdFind, FRTCallBackSetListeners
+        , FRTAsyncCommon.FetchDataCallBack, FRTBroadcasting.CallBackBroadcast, FRTPauseReasonAdapter.FRTCallbackListItemChecked {
+    private boolean flagSession = false, check = false, checknet = false;
+    private BroadcastReceiver broadcastReceiver;
+    private FRTPauseReasonsActivity frtPauseReasonsActivity = this;
+    FRTCallBackInitViews frtCallBackInitViews;
+    FRTCallBackForIdFind frtCallBackForIdFind;
+    FRTCallBackSetListeners frtCallBackSetListeners;
+    private FRTBroadcasting broadcasting;
+    private FRTConnectivityReceiver frtConnectivityReceiver;
+    private FRTEditTextTrebuchetMS othereditText;
+    private FRTButtonTrebuchetMS saveButton;
+    private FRTTextviewTrebuchetMS specifyTitleTextView;
+    FRTTextviewTrebuchetMS loader;
+    private List<FRTResponsePauseReasonModel> reasonsList;
+    private int selPos = -1;
+    private ListView listView;
+    private LinearLayout ivback;
+    private FRTUtility frtUtility;
+    FRTWEBAPI frtWEBAPI;
+    private FRTPauseReasonAdapter.FRTCallbackListItemChecked frtCallbackListItemChecked;
+    FRTApp frtApp;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_frtpause_reasons);
+        callBackSetUp();
+    }
+
+    private void callBackSetUp() {
+        frtCallBackInitViews = frtPauseReasonsActivity;
+        frtCallBackForIdFind = frtPauseReasonsActivity;
+        frtCallBackSetListeners = frtPauseReasonsActivity;
+        frtCallbackListItemChecked = frtPauseReasonsActivity;
+        frtWEBAPI = new FRTWEBAPI();
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+    private void setAdapter() {
+        FRTPauseReasonAdapter adapter = new FRTPauseReasonAdapter(frtPauseReasonsActivity);
+        adapter.notifyDataSetChanged();
+        adapter.setDataSet(reasonsList);
+        adapter.setItemCallBack(frtCallbackListItemChecked);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void initAllViews() {
+        listView = (ListView) findViewById(R.id.remarksListView);
+        othereditText = (FRTEditTextTrebuchetMS) findViewById(R.id.othereditText);
+        saveButton = (FRTButtonTrebuchetMS) findViewById(R.id.SaveButton);
+        specifyTitleTextView = (FRTTextviewTrebuchetMS) findViewById(R.id.specifyTitleTextView);
+        loader = (FRTTextviewTrebuchetMS) findViewById(R.id.loader);
+        ivback = (LinearLayout) findViewById(R.id.ivback);
+        frtApp = (FRTApp) frtPauseReasonsActivity.getApplication();
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(frtPauseReasonsActivity);
+        frtUtility.settingStatusBarColor(frtPauseReasonsActivity, R.color.colorPrimary);
+        frtConnectivityReceiver = new FRTConnectivityReceiver();
+        broadcasting = FRTBroadcasting.getBroadcastingInstance();
+        broadcasting.setContext(frtPauseReasonsActivity);
+        broadcasting.setCallbackBroadcast(frtPauseReasonsActivity);
+        getPauseReasons();
+    }
+
+    @Override
+    public View view(int id) {
+        return findViewById(id);
+    }
+
+    @Override
+    public void commonListeners() {
+        saveButton.setOnClickListener(onClickSave);
+        ivback.setOnClickListener(frtBackClick);
+    }
+
+    private View.OnClickListener frtBackClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+
+    private View.OnClickListener onClickSave = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (check) {
+                handleSaveReason();
+            } else if (othereditText.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(othereditText.getText().toString())) {
+                handleSaveReason();
+            } else {
+                frtUtility.setSnackBar(getString(R.string.pausereason), listView);
+            }
+        }
+    };
+
+    private void handleSaveReason() {
+        Intent intent = new Intent(frtPauseReasonsActivity, FRTRouteControllerTaskActivity.class);
+        intent.putExtra("reasonresp", "Resume");
+        if (!TextUtils.isEmpty(reasonsList.get(selPos).getDescription()) && selPos != reasonsList.size() - 1)
+            intent.putExtra("remark", reasonsList.get(selPos).getDescription());
+        else if (!TextUtils.isEmpty(othereditText.getText().toString()))
+            intent.putExtra("remark", othereditText.getText().toString());
+        else
+            intent.putExtra("remark", "none");
+        setResult(RESULT_OK, intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (frtConnectivityReceiver.isConnected(frtPauseReasonsActivity)) {
+            super.onBackPressed();
+            Intent intent = new Intent(frtPauseReasonsActivity, FRTRouteControllerTaskActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), findViewById(R.id.header));
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void getPauseReasons() {
+        FRTAsyncCommon<FRTRequestPauseReasonModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setUpLoginModel());
+        frtAsyncCommon.setContext(frtPauseReasonsActivity);
+        frtAsyncCommon.execute(frtWEBAPI.getWEBAPI(FRTAPIType.PAUSE_REASON_DETAIL), "getreasondetail");
+        frtAsyncCommon.setFetchDataCallBack(frtPauseReasonsActivity);
+    }
+
+    private FRTRequestPauseReasonModel setUpLoginModel() {
+        FRTRequestPauseReasonModel cqRequestPauseReasonModel = new FRTRequestPauseReasonModel();
+        cqRequestPauseReasonModel.setReasonType(getString(R.string.reason_pause));
+        return cqRequestPauseReasonModel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null) {
+            JSONObject jsonObject;
+            JSONArray jsonArray;
+            try {
+                jsonObject = new JSONObject(response);
+                if (jsonObject.optString(getString(R.string.status_key)).equalsIgnoreCase("OK")) {
+                    jsonArray = jsonObject.optJSONArray("results");
+                    reasonsList = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject1 = jsonArray.optJSONObject(i);
+                        FRTResponsePauseReasonModel model = new FRTResponsePauseReasonModel();
+                        model.setReason_id(jsonObject1.optString(getString(R.string.reason_id)));
+                        model.setDescription(jsonObject1.optString(getString(R.string.description)));
+                        model.setReason_type(jsonObject1.optString(getString(R.string.reason_type)));
+                        reasonsList.add(model);
+                    }
+                    FRTResponsePauseReasonModel model = new FRTResponsePauseReasonModel();
+                    model.setReason_id("0");
+                    model.setDescription("Others");
+                    reasonsList.add(model);
+                    setAdapter();
+                } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+                    frtUtility.goToLogin(getString(R.string.req_denied));
+                } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                    frtUtility.goToLogin(getString(R.string.session_exp));
+                } else {
+                    frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), listView);
+                }
+                loader.setVisibility(View.GONE);
+            } catch (Exception e) {
+                //   e.printStackTrace();
+            }
+        } else {
+            frtUtility.setSnackBar("Did not get any response from server", listView);
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        // TODO Auto-generated method stub
+        super.onUserInteraction();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flagSession = true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        broadcastReceiver = broadcasting.getBroadcasting();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void getBroadcast(boolean isBroadcasting) {
+        if (isBroadcasting) {
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivback);
+            frtUtility.dialogHide();
+            checknet = true;
+        } else {
+            if (checknet)
+                getPauseReasons();
+            checknet = false;
+        }
+    }
+
+    @Override
+    public void onSelect(boolean flag, int position) {
+        selPos = position;
+        if (position != reasonsList.size() - 1) {
+            othereditText.setVisibility(View.GONE);
+            specifyTitleTextView.setVisibility(View.GONE);
+            frtApp.setReasonId(String.valueOf(reasonsList.get(position).getReason_id()));
+            check = true;
+        } else {
+            othereditText.setVisibility(View.VISIBLE);
+            specifyTitleTextView.setVisibility(View.VISIBLE);
+            frtApp.setReasonId(String.valueOf("0"));
+            check = false;
+
+        }
+    }
+}

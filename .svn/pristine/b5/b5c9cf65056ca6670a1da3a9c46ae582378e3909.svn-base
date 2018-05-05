@@ -1,0 +1,392 @@
+package com.vodafone.frt.activities;
+
+import android.annotation.SuppressLint;
+import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.adapters.FRTAttendanceAdapter;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTGETSelfCheckInRequestModel;
+import com.vodafone.frt.models.FRTResponseAttendanceModel;
+import com.vodafone.frt.models.FRTResponseSelfCheckInModel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.CheckInDialogFragment;
+import com.vodafone.frt.utility.FRTBroadcasting;
+import com.vodafone.frt.utility.FRTUtility;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+public class FRTMyCheckInActivity extends AppCompatActivity  implements FRTCallBackInitViews, FRTCallBackForIdFind, FRTCallBackSetListeners,
+        FRTAsyncCommon.FetchDataCallBack, FRTBroadcasting.CallBackBroadcast, FRTAttendanceAdapter.SelectionViewAttendanceListener,CheckInDialogFragment.EditDialogListener {
+    private boolean checknet = false;
+    private BroadcastReceiver broadcastReceiver;
+    private FRTAttendanceAdapter adapter;
+    private FRTBroadcasting broadcasting;
+    private final FRTMyCheckInActivity frtMyCheckInActivity = this;
+    private FRTCallBackForIdFind frtCallBackForIdFind;
+    private FRTConnectivityReceiver frtConnectivityReceiver;
+    private FRTUtility frtUtility;
+    private int mYear, mMonth, mDay;
+    private ImageView ivserchattend;
+    private LinearLayout ivbackCheckIn;
+    private ListView attendanceListView;
+    private List<FRTResponseAttendanceModel> modelList;
+
+    private FRTTextviewTrebuchetMS norecord;
+    private FRTTextviewTrebuchetMS loader;
+    private FRTWEBAPI frtwebapi;
+    private ImageView addCheckInImg;
+    private FRTSharePrefUtil frtSharePrefUtil;
+    private FRTConnectivityReceiver frtCnnectivityReceiver;
+    private ArrayList<FRTResponseSelfCheckInModel> arryListModel;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_frtmy_check_in);
+
+        callBackSetUp();
+    }
+
+
+    private void callBackSetUp() {
+        FRTCallBackInitViews frtCallBackInitViews = frtMyCheckInActivity;
+        frtCallBackForIdFind = frtMyCheckInActivity;
+        FRTCallBackSetListeners frtCallBackSetListeners = frtMyCheckInActivity;
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void initAllViews() {
+        frtCnnectivityReceiver = new FRTConnectivityReceiver();
+        ivbackCheckIn = (LinearLayout) frtCallBackForIdFind.view(R.id.ivbackCheckIn);
+        addCheckInImg =(ImageView)frtCallBackForIdFind.view(R.id.addCheckInImg);
+        norecord = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.norecord);
+        loader = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.loader);
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(frtMyCheckInActivity);
+        frtUtility.settingStatusBarColor(frtMyCheckInActivity, R.color.colorPrimary);
+        frtConnectivityReceiver = new FRTConnectivityReceiver();
+        broadcasting = FRTBroadcasting.getBroadcastingInstance();
+        broadcasting.setContext(frtMyCheckInActivity);
+        broadcasting.setCallbackBroadcast(frtMyCheckInActivity);
+        adapter = new FRTAttendanceAdapter(frtMyCheckInActivity);
+        frtwebapi = new FRTWEBAPI();
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(frtMyCheckInActivity);
+       // staartdateheader.setText(Html.fromHtml(getString(R.string.startdate)));
+        //enddateheader.setText(Html.fromHtml(getString(R.string.enddate)));
+       initdata();
+        getSelfCheckInRequest();
+
+    }
+
+
+    private void initdata() {
+        Calendar c = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
+        String end = df1.format(c.getTime());
+        Date date = new Date();
+        c.setTime(date);
+        c.add(Calendar.DATE, -7);
+        String start = df1.format(c.getTime());
+    }
+
+    @Override
+    public void commonListeners() {
+        ivbackCheckIn.setOnClickListener(frtBackClick);
+        addCheckInImg.setOnClickListener(imageAddFormCLick);
+
+    }
+
+    private final View.OnClickListener frtBackClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+
+
+
+
+    private final View.OnClickListener imageAddFormCLick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+           // customDialog();
+            DialogFragment newFragment = CheckInDialogFragment.newInstance();
+            newFragment.show(getFragmentManager(), "dialog");
+
+
+        }
+    };
+
+    @Override
+    public View view(int id) {
+         return findViewById(id);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        broadcastReceiver = broadcasting.getBroadcasting();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void getBroadcast(boolean isBroadcasting) {
+        if (isBroadcasting) {
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivbackCheckIn);
+            frtUtility.hideDialog();
+            checknet = true;
+        } else {
+            if (checknet)
+              //  getAttendance();
+            checknet = false;
+        }
+    }
+
+
+    @Override
+    public void onClickItem(int position) {
+
+
+    }
+
+
+
+    private void getSelfCheckInRequest(){
+        if (frtCnnectivityReceiver.isConnected(getApplicationContext())) {
+            final FRTAsyncCommon<FRTGETSelfCheckInRequestModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+            frtAsyncCommon.setContext(frtMyCheckInActivity);
+            frtAsyncCommon.setFrtModel(setUpCheckInModel());
+
+            frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.GETSELF_CHECKIN_REQUEST), "getCheckInRequest");
+            frtAsyncCommon.setFetchDataCallBack(frtMyCheckInActivity);
+
+        }else {
+           // frtUtility.setSnackBar(getString(R.string.nointernet), endButton);
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivbackCheckIn);
+           // Toast.makeText(frtMyCheckInActivity, "You are not connected to internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    private FRTGETSelfCheckInRequestModel setUpCheckInModel() {
+        FRTGETSelfCheckInRequestModel cqRequestPauseReasonModel = new FRTGETSelfCheckInRequestModel();
+        //todo:set petrollerId
+        if (!TextUtils.isEmpty(frtSharePrefUtil.getString(getString(R.string.userkey))))
+            cqRequestPauseReasonModel.setUserid("userId");
+
+        return cqRequestPauseReasonModel;
+    }
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null){
+
+            arryListModel = new ArrayList<>();
+        }
+
+    }
+
+
+
+  /*  private void customDialog(){
+        // inflate alert dialog xml
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View dialogView = li.inflate(R.layout.dialogbox_checkin, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("SelfCheckIn Dialog");
+        // set custom dialog icon
+       // alertDialogBuilder.setIcon(R.drawable.ic_launcher);
+        // set custom_dialog.xml to alertdialog builder
+        alertDialogBuilder.setView(dialogView);
+        final EditText userInput = (EditText) dialogView
+                .findViewById(R.id.et_routeName);
+           staartdate = (FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.staartdate);
+           staartdate.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   final Calendar c = Calendar.getInstance();
+                   mYear = c.get(Calendar.YEAR);
+                   mMonth = c.get(Calendar.MONTH);
+                   mDay = c.get(Calendar.DAY_OF_MONTH);
+                   // Launch Date Picker Dialog
+                   DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                       @Override
+                       public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                           String fromdate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                           try {
+                               staartdate.setText(frtUtility.formatDate(fromdate));
+                           } catch (Exception ex) {
+                           }
+                       }
+                   }, mYear, mMonth, mDay);
+                   //datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                   datePickerDialog.show();
+               }
+           });
+        enddate =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.enddate);
+        enddate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String enddates = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        try {
+                            enddate.setText(frtUtility.formatDate(enddates));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+               // datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                datePickerDialog.show();
+            }
+        });
+
+        starttime =(FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.starttime);
+        starttime.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                starttime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        endtime =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.endtime);
+        endtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                endtime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                // get user input and set it to etOutput
+                                // edit text
+                              //  etOutput.setText(userInput.getText());
+
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }*/
+
+    @Override
+    public void updateResult(String route, String startDate, String endDate, String startTime, String endTime, String remarks) {
+
+        // getting data from dialogBox in activity
+        //norecord.setText(route+ startDate+endDate + startTime+ endTime + remarks);
+    }
+
+
+
+
+
+
+
+
+    }

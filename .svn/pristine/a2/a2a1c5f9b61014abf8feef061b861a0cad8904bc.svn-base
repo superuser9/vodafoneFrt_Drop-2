@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/vishal/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/okio-1.6.0_1b533b489aac7841d1f33ab7472fb6a5a6c6e3da.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-v4/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-26.0.0-alpha1_def76df8ab9f5c5c5a4204c00cb67a37afe71c79.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-fragment/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="18d31838aa4fcc768a8a0516e22cc13b94655d89">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-26.0.0-alpha1_8d865a8f198654dbac04765e9bc24be767c6653e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2e92aa0163544a804a0b34f169ca61801770839a">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-26.0.0-alpha1_5827199c77192e614c3c05e0e2dfb602ab2e9f2a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-compat/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8df0e365e40beb151bc42dee20817721a6cab7b0">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-26.0.0-alpha1_bcaad00122e5547685eaaf11f16f68677f6c155e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/crashlytics/2.8.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c5f97ff33d838393c21cd3ef28c65a43c422ae5d">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.crashlytics.sdk.android-crashlytics-2.8.0_eed80e0d4b3d5b6e0adacf9be06a4e464e7b13a5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/transition/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="cddcd0fb93bc70e27325f2f715b2710332004ebb">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-transition-26.0.0-alpha1_113b02d5fbecdd78e9acb4ed194abd1ba94f3ed1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="364364bf77b4a71afc5930fc3ae57b3f0eea637c">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-11.0.4_0c63f0a676985b0d3885c454f70243e334b9591e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2430e711762a749feb00b3d64858ca4768251b9d">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-tasks-11.0.4_0830c4fea8fbb4572204abef5b291f3254603db7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0_7cfdd31013a2fd8e1ef37e654b257f14043b59f2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fcd01fd11233459f546c437ec927e9b61bf7caf1">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-26.0.0-alpha1_03822719305b12e27a911305966c00d9bd96a60d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6a022bf00ccd0948a8180c505e8e458bbddd43a6">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-design-26.0.0-alpha1_0e0dc377ecb7d28814f16870e02e8d2d6f36dfc6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="47471eb19df288158b00b8d9cfa41bce7373f5cc">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-26.0.0-alpha1_1084df92af35629d4aa26eb2961eab2feae4d21c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/crashlytics-core/2.5.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="05ed069a339f56b2f9f52bd986dfcb1cb508a2fa">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.crashlytics.sdk.android-crashlytics-core-2.5.0_65ce9839b6e9d7ca8bc7b8f92a7a066d9d7fe4bb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="11262f887015dc774ff36eb66698308df0a376d1">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.intuit.sdp-sdp-android-1.0.4_0668b9ec3ac4ea48d88322b23f72508beb4df222.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e176fd06c2ad5b50a2f5cb4de6000a83a7cb48f5">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-26.0.0-alpha1_3fecde13584ae6d88803c5e8d6fd3dec7bb5ed2c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/answers/1.4.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="13430a12bb2eb82b397f10f61fe1f6989279c6bd">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.crashlytics.sdk.android-answers-1.4.1_b7655e524a62f82417e7af594e4c154435ff688e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="41f47bbcd281fdb1e42e220220ab3bfa1da591e0">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-location-11.0.4_190bd78c3b1424e7f369ee9a9cabb608d3ad7426.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="952944218ecedea1554a513dec0c14d570642843">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-26.0.0-alpha1_2f5791936fa765118da8ce3b0af56fda2a2b920a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/beta/1.2.7/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5a743d0934e90e7f26d75a2463142c4b884b2981">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.crashlytics.sdk.android-beta-1.2.7_7444e553de8a5040aef924f065a5aae482db4711.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9935891f23923f39d002087085d9696568a9f657">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-26.0.0-alpha1_be12e1d384ca6b762bf5bb1122774654c80703aa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/Desktop/Sdk/Sdk/extras/android/m2repository/com/android/support/support-annotations/26.0.0-alpha1/support-annotations-26.0.0-alpha1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="023ee503b631f69511e335a061ea008f8da60f40">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/support-annotations-26.0.0-alpha1_f6e3741a1133dcfa37e85eb6bfd915680aaaeb41.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="70ffe00aaf049893f59d1dad57bd82992faa38ef">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-base-11.0.4_65365916a830173eabc71cea18eba28b6b03cf44.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="88246166d5afb106f532f6e6deae683c66b42c89">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-26.0.0-alpha1_ca3f3fcf8def403ccaa398696d99c7c075b50026.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/26.0.0-alpha1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c4f45092eee6cdf1a5dbd597b2b6819be652ce2e">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-26.0.0-alpha1_ee1b936633e9f58060560e88f7bd8da1c83178aa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fcae52a60bc07924d370b4d376116cd8f8581f54">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-maps-11.0.4_236babe65a7ba82bb21fedef38713ebff2f6c754.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/io.fabric.sdk.android/fabric/1.4.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d5ee4b7829f6ec48400e678cc969176f455cb14c">
+        <dex dex="/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/pre-dexed/debug/io.fabric.sdk.android-fabric-1.4.1_f8121e6cd8ecd0ba5d729a71714fde95f2d5079f.jar" />
+    </item>
+
+</items>

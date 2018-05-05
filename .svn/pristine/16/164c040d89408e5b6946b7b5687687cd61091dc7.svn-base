@@ -1,0 +1,131 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by qss on 12/1/18
+ */
+
+public class PTRResponsePtrollerLocationModel {
+    private String patroller_user_name, patroller_full_name, network_provider, is_inside_buffer, mobile_time, server_time;
+    private int tracking_id, route_assignment_id, patroller_id, driving_speed, battery_percentage, deviation_from_planned;
+    private double latitude, longitude, dist_from_last_loc;
+
+    public String getPatroller_user_name() {
+        return patroller_user_name;
+    }
+
+    public void setPatroller_user_name(String patroller_user_name) {
+        this.patroller_user_name = patroller_user_name;
+    }
+
+    public String getPatroller_full_name() {
+        return patroller_full_name;
+    }
+
+    public void setPatroller_full_name(String patroller_full_name) {
+        this.patroller_full_name = patroller_full_name;
+    }
+
+    public String getNetwork_provider() {
+        return network_provider;
+    }
+
+    public void setNetwork_provider(String network_provider) {
+        this.network_provider = network_provider;
+    }
+
+    public String getIs_inside_buffer() {
+        return is_inside_buffer;
+    }
+
+    public void setIs_inside_buffer(String is_inside_buffer) {
+        this.is_inside_buffer = is_inside_buffer;
+    }
+
+    public String getMobile_time() {
+        return mobile_time;
+    }
+
+    public void setMobile_time(String mobile_time) {
+        this.mobile_time = mobile_time;
+    }
+
+    public String getServer_time() {
+        return server_time;
+    }
+
+    public void setServer_time(String server_time) {
+        this.server_time = server_time;
+    }
+
+    public int getTracking_id() {
+        return tracking_id;
+    }
+
+    public void setTracking_id(int tracking_id) {
+        this.tracking_id = tracking_id;
+    }
+
+    public int getRoute_assignment_id() {
+        return route_assignment_id;
+    }
+
+    public void setRoute_assignment_id(int route_assignment_id) {
+        this.route_assignment_id = route_assignment_id;
+    }
+
+    public int getPatroller_id() {
+        return patroller_id;
+    }
+
+    public void setPatroller_id(int patroller_id) {
+        this.patroller_id = patroller_id;
+    }
+
+    public int getDriving_speed() {
+        return driving_speed;
+    }
+
+    public void setDriving_speed(int driving_speed) {
+        this.driving_speed = driving_speed;
+    }
+
+    public int getBattery_percentage() {
+        return battery_percentage;
+    }
+
+    public void setBattery_percentage(int battery_percentage) {
+        this.battery_percentage = battery_percentage;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getDist_from_last_loc() {
+        return dist_from_last_loc;
+    }
+
+    public void setDist_from_last_loc(double dist_from_last_loc) {
+        this.dist_from_last_loc = dist_from_last_loc;
+    }
+
+    public int getDeviation_from_planned() {
+        return deviation_from_planned;
+    }
+
+    public void setDeviation_from_planned(int deviation_from_planned) {
+        this.deviation_from_planned = deviation_from_planned;
+    }
+}

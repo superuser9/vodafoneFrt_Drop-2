@@ -1,0 +1,38 @@
+package com.vodafone.frt.models;
+
+import java.util.StringTokenizer;
+
+/**
+ * Created by Ajay Tiwari on 2/28/2018.
+ */
+
+public class PTRFeedbackModel {
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    private int userid;
+
+    public String getFeedbackText() {
+        return feedbackText;
+    }
+
+    public void setFeedbackText(String feedbackText) {
+        this.feedbackText = feedbackText;
+    }
+
+    public String getMobileTime() {
+        return mobileTime;
+    }
+
+    public void setMobileTime(String mobileTime) {
+        this.mobileTime = mobileTime;
+    }
+
+    private String feedbackText;
+    private String mobileTime;
+}

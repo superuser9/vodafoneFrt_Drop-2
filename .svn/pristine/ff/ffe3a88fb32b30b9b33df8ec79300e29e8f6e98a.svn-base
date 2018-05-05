@@ -1,0 +1,396 @@
+package com.vodafone.frt.fragments;
+
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.activities.MGRAttendanceActivity;
+import com.vodafone.frt.activities.PTRNavigationScreenActivity;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.CommonSaveLeaveDetailModel;
+import com.vodafone.frt.models.PTRLoginRefreshRequestModel;
+import com.vodafone.frt.models.PTRSaveSelfCheckInModel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.AESEncriptDecript;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Created by vishal on 6/3/18.
+ */
+public class ApplyLeaveDialogFragment extends DialogFragment implements  FRTAsyncCommon.FetchDataCallBack {
+
+
+    private EditText et_leaveReason;
+    private Button submitBtn;
+    private FRTTextviewTrebuchetMS staartdate;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private FRTTextviewTrebuchetMS enddate;
+    //private FRTTextviewTrebuchetMS starttime;
+   // private FRTTextviewTrebuchetMS endtime;
+   // private Date startinTime;
+   // private Date endoutTime;
+    private FRTUtility frtUtility;
+    private FRTConnectivityReceiver frtCnnectivityReceiver;
+    private ProgressDialog progressDialog;
+    private ApplyLeaveDialogFragment applyLeaveDialogFragment = this;
+    private FRTWEBAPI frtwebapi;
+    private FRTSharePrefUtil frtSharePrefUtil;
+
+    public static ApplyLeaveDialogFragment newInstance(){
+        return new ApplyLeaveDialogFragment();
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtwebapi = new FRTWEBAPI();
+        frtCnnectivityReceiver = new FRTConnectivityReceiver();
+        //checkInDialogFragment= this;
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(getActivity());
+        frtCnnectivityReceiver = new FRTConnectivityReceiver();
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View dialogView = inflater.inflate(R.layout.dialogbox_apply_leave,container,false);
+
+        et_leaveReason = (EditText)dialogView.findViewById(R.id.et_leaveReason);
+        submitBtn =(Button)dialogView.findViewById(R.id.submitBtn);
+        submitBtn.setEnabled(true);
+        staartdate = (FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.staartdate);
+        staartdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                       // String fromdate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        String fromdate = (month + 1)  + "/" + dayOfMonth + "/" + year;
+                        try {
+                            staartdate.setText((fromdate));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+                datePickerDialog.show();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        enddate =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.enddate);
+        enddate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        //String enddates = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        String enddates =  (month + 1) + "/" + dayOfMonth+ "/" + year;
+                        try {
+                            enddate.setText((enddates));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+                datePickerDialog.show();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+        Button cancelBtn = (Button)dialogView.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+               // String statTime = starttime.getText().toString();
+               // String endTimeNew = endtime.getText().toString();
+
+              /*  SimpleDateFormat sdf = new SimpleDateFormat("kk:mm");
+                try {
+                startinTime = sdf.parse(statTime);
+                   endoutTime = sdf.parse(endTimeNew);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }*/
+
+                 String startDate = staartdate.getText().toString();
+                String endDate = enddate.getText().toString();
+
+                   if (startDate.length()<=0) {
+                    Toast.makeText(getActivity(), R.string.enterStartDate, Toast.LENGTH_SHORT).show();
+                } else if (endDate.length()<=0) {
+                  // staartdate.setError("Please enter End Date");
+                    Toast.makeText(getActivity(), R.string.enterEndDate, Toast.LENGTH_SHORT).show();
+                }
+                   else if (et_leaveReason.getText().toString().length() <= 0) {
+                    //et_remarks.setError("Please enter remarks");
+                    Toast.makeText(getActivity(), R.string.leaveRemarksNotBlank, Toast.LENGTH_SHORT).show();
+                }
+                else if (frtUtility.dateValidation(startDate,endDate,"mm/dd/yyyy")){
+                    Toast.makeText(getActivity(), R.string.endDateNotLess, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                      // Toast.makeText(getActivity(), "Coming Soon...", Toast.LENGTH_SHORT).show();
+                       submitBtn.setEnabled(false);
+                       toSaveLeaveDetail();
+                   }
+
+            }
+        });
+
+
+        return dialogView;
+    }
+
+    private void toSaveLeaveDetail() {
+
+        if (frtCnnectivityReceiver.isConnected(getActivity())) {
+        progressDialog = new ProgressDialog(getActivity());
+        FRTAsyncCommon<CommonSaveLeaveDetailModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setSaveLeaveDetailModel());
+        frtAsyncCommon.setContext(getActivity());
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.SAVE_LEAVE_DETAIL), "SaveLeaveDetail");
+        frtAsyncCommon.setFetchDataCallBack(applyLeaveDialogFragment);
+        progressDialog.setMessage(getString(R.string.pleaseWait));
+        progressDialog.show();
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), submitBtn);
+        }
+    }
+
+    private CommonSaveLeaveDetailModel setSaveLeaveDetailModel() {
+
+        CommonSaveLeaveDetailModel commonSaveLeaveDetailModel = new CommonSaveLeaveDetailModel();
+        try {
+            commonSaveLeaveDetailModel.setUserId(Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                    Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT))));
+            commonSaveLeaveDetailModel.setRoleId(Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                    Base64.decode(frtSharePrefUtil.getString(getString(R.string.role_id)).getBytes("UTF-16LE"), Base64.DEFAULT))));
+            commonSaveLeaveDetailModel.setFromDate(staartdate.getText().toString());
+            commonSaveLeaveDetailModel.setToDate(enddate.getText().toString());
+            commonSaveLeaveDetailModel.setReason(et_leaveReason.getText().toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commonSaveLeaveDetailModel;
+    }
+
+
+    public void showHourPickerStartTime() {
+        final Calendar myCalender = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
+        final int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+
+        TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute ) {
+                if (view.isShown()) {
+                    String am_pm = "";
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    myCalender.set(Calendar.MINUTE, minute);
+
+                    if (myCalender.getTimeInMillis() >= c.getTimeInMillis()) {
+
+                        try {
+                            String curTime=  String.format("%02d:%02d", hourOfDay, minute);
+                            //starttime.setText(curTime);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), R.string.startTimeshouldGreater, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        //timePickerDialog.setTitle("Choose hour:");
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
+
+
+    public void showHourPickerEndTime() {
+        final Calendar myCalender = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
+        final int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+
+        TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if (view.isShown()) {
+                    String am_pm = "";
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    myCalender.set(Calendar.MINUTE, minute);
+                    if (myCalender.getTimeInMillis() >= c.getTimeInMillis()) {
+
+                        try {
+                            String curTime=  String.format("%02d:%02d", hourOfDay, minute);
+                           //endtime.setText(curTime);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getActivity(),R.string.endtimeGreaterCurrentTime, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        //timePickerDialog.setTitle("Choose hour:");
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
+
+
+
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null) {
+            if (type.equals("loginrefresh")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    frtSharePrefUtil.setString(getString(R.string.token_key), jsonObject.optString(getString(R.string.token_key)));
+                    frtSharePrefUtil.setString(getString(R.string.tokentype_key), jsonObject.optString(getString(R.string.tokentype_key)));
+                    frtSharePrefUtil.setString(getString(R.string.tokenexpiretime_key), String.valueOf(jsonObject.optInt(getString(R.string.tokenexpiretime_key), 0)));
+                    frtSharePrefUtil.setString(getString(R.string.refresh_token_key), jsonObject.optString(getString(R.string.refresh_token_key)));
+                    frtSharePrefUtil.setString(getString(R.string.globalsettings_key), jsonObject.optString(getString(R.string.globalsettings_key)));
+                    frtSharePrefUtil.setString("currenttime", frtUtility.getCurrentTime());
+
+                } catch (JSONException ignored) {
+                }
+            }else if (type.equals("SaveLeaveDetail")) {
+            JSONObject jsonObject = null;
+            try {
+                progressDialog.dismiss();
+                dismiss();
+                jsonObject = new JSONObject(response);
+                if (jsonObject.optString("status").equals("OK")) {
+                    Toast.makeText(getActivity(), getString(R.string.leaveApplySuccessfully), Toast.LENGTH_SHORT).show();
+                    Log.d(this.getClass().getName(), "RESPONSE_SUCCESS" + response);
+                    Intent intent = new Intent(getActivity() , MGRAttendanceActivity.class);
+                    startActivity(intent);
+
+
+                } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+
+                    frtUtility.goToLogin(getString(R.string.req_denied));
+                } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                    /*frtUtility.goToLogin(getString(R.string.session_exp));*/
+                    getRefereshTokenData();
+                } else if (jsonObject.optString("status").equalsIgnoreCase("UNKNOWN_ERROR")) {
+                    // frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), findViewById(R.id.header));
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                } else if (jsonObject.optString("status").equalsIgnoreCase("ERROR")) {
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getActivity(), jsonObject.optString("error_message").toString(), Toast.LENGTH_SHORT).show();
+                // frtUtility.setSnackBar(jsonObject.optString("error_message"), findViewById(R.id.header));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("TAG", "EXCEPTION===" + e.getMessage());
+            }
+        }
+    }
+        else {
+//            Toast.makeText(getActivity(), getString(R.string.servernotResponding), Toast.LENGTH_SHORT).show();
+            frtUtility.setSnackBar(getString(R.string.servernotResponding), submitBtn);
+        }
+    }
+
+    private void getRefereshTokenData() {
+        if (frtCnnectivityReceiver.isConnected(getActivity())) {
+            @SuppressWarnings("unchecked") FRTAsyncCommon<PTRLoginRefreshRequestModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+            frtAsyncCommon.setContext(getActivity());
+            frtAsyncCommon.setFrtModel(setUpLoginRefreshRequestModel());
+            frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.LOGIN), "loginrefresh");
+            frtAsyncCommon.setFetchDataCallBack(applyLeaveDialogFragment);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), submitBtn);
+        }
+    }
+
+    private PTRLoginRefreshRequestModel setUpLoginRefreshRequestModel() {
+        PTRLoginRefreshRequestModel cqRequestModelLogin = new PTRLoginRefreshRequestModel();
+        cqRequestModelLogin.setRefresh_token(frtSharePrefUtil.getString(getString(R.string.refresh_token_key)));
+        cqRequestModelLogin.setGrant_type();
+        return cqRequestModelLogin;
+    }
+    }
+

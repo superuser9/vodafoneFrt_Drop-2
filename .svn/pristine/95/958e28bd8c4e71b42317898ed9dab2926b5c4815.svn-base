@@ -1,0 +1,811 @@
+package com.vodafone.frt.activities;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.vodafone.frt.R;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.app.FRTApp;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.constants.FRTConstants;
+import com.vodafone.frt.db.FRTLocationDb;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTEditTextTrebuchetMS;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTCheckInOutDetailsModel;
+import com.vodafone.frt.models.PTRRequestSaveIssuesRaisedModel;
+import com.vodafone.frt.models.PTRRequestSaveRouteLocationmodel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.services.FRTLocationTrackingService;
+import com.vodafone.frt.utility.AESEncriptDecript;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/19/2018.
+ */
+
+public class FRTRouteControlerTaskActivityFRT extends FRTRouteControlerTaskBaseActivityFRT implements FRTCallBackInitViews, FRTCallBackSetListeners,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+    private String base64Image;
+    private String mCurrentPhotoPath;
+    private Point mSize;
+    private Bitmap thumbnail1, bitmapSetView;
+    private int imageViewID;
+    List<String> frtListImagesBase64 = new ArrayList<>();
+    private FRTRouteControlerTaskActivityFRT frtRouteControlerTaskActivityFRT = this;
+    private double latitude,longitude;
+    private String checkinReason;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        appPermissions();
+    }
+
+
+
+    /**
+     * This method is used for authorising necessary permissions for initializing google map android
+     */
+    @SuppressLint("InlinedApi")
+    private void appPermissions() {
+        frtConstants = new FRTConstants();
+        if (ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(frtRouteControlerTaskActivityFRT, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.CAMERA}, frtConstants.LOCATION_PERMISSION);
+        } /*else if () {
+            ActivityCompat.requestPermissions(frtRouteControllerTaskActivity, new String[]{Manifest.permission.CAMERA}, frtConstants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }*/ else {
+            initializeScreen();
+        }
+    }
+
+    private void initializeScreen() {
+        callBackSetUp();
+    }
+
+
+    private void callBackSetUp() {
+        frtCallBackInitViews = frtRouteControlerTaskActivityFRT;
+        frtCallBackSetListeners = frtRouteControlerTaskActivityFRT;
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+    private synchronized void buildGoogleApiClient() {
+        try {
+            googleApiClient = new GoogleApiClient.Builder(frtRouteControlerTaskActivityFRT)
+                    .addConnectionCallbacks(frtRouteControlerTaskActivityFRT)
+                    .addOnConnectionFailedListener(frtRouteControlerTaskActivityFRT)
+                    .addApi(LocationServices.API)
+                    //.addApi(Awareness.API)
+                    .build();
+            googleApiClient.connect();
+        } catch (SecurityException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        try {
+            locationRequest = new LocationRequest();
+            locationRequest.setInterval(60000);
+            locationRequest.setFastestInterval(60000);
+            locationRequest.setSmallestDisplacement(20);
+            locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            if (ContextCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, frtRouteControlerTaskActivityFRT);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        try {
+            locationCurrent = location;
+             latitude = location.getLatitude();
+             longitude = location.getLongitude();
+//            Log.d("SPEED:", "" + location.getSpeed());
+            userCurrentLatLon = new LatLng(latitude, longitude);
+
+            if ((intent.hasExtra("case") && intent.getStringExtra("case").equals("PatrollerLocation"))) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (frtApp.getLatLong() != null) {
+                                marker = googleMap.addMarker(new MarkerOptions().position(frtApp.getLatLong())
+                                        .icon(BitmapDescriptorFactory.defaultMarker()));
+                            }
+                            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(frtApp.getLatLong(), 20);
+                            googleMap.animateCamera(cu);
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }, 3000);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void commonListeners() {
+
+    }
+
+    @Override
+    public void initAllViews() {
+
+
+     //   frtRequestSaveRouteLocationmodelDb = new PTRRequestSaveRouteLocationmodel();
+        frtCnnectivityReceiver = new FRTConnectivityReceiver();
+        frtConstants = new FRTConstants();
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(frtRouteControlerTaskActivityFRT);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        frtUtility.checkGps(frtRouteControlerTaskActivityFRT);
+        frtUtility.settingStatusBarColor(frtRouteControlerTaskActivityFRT, R.color.colorPrimary);
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(frtRouteControlerTaskActivityFRT);
+        frtWEBAPI = new FRTWEBAPI();
+        handler = new Handler();
+        frtLocationDb = new FRTLocationDb(frtRouteControlerTaskActivityFRT);
+        frtApp = (FRTApp) getApplication();
+        frtApp.setCtx(frtRouteControlerTaskActivityFRT);
+        intent = getIntent();
+        mSensorService = new FRTLocationTrackingService();
+        initUi();
+        setUpMap();
+    }
+
+
+
+    @SuppressLint("SetTextI18n")
+    private void initUi() {
+        if ((intent.hasExtra("case") && intent.getStringExtra("case").equals("PatrollerLocation"))) {
+            relbottom.setVisibility(View.GONE);
+//            selfie.setVisibility(View.GONE);
+           // showPatrollerCurrentLocationOnMap();
+        }
+        try {
+            if (intent.hasExtra("keyparcel"))
+                frtResponseRouteCommonModel = intent.getParcelableExtra("keyparcel");
+            if (!TextUtils.isEmpty(frtResponseRouteCommonModel.getIssue_type()))
+                routetitle.setText(frtResponseRouteCommonModel.getIssue_type());
+            else
+                routetitle.setText("");
+            if (!TextUtils.isEmpty(frtResponseRouteCommonModel.getCheckin_time()))
+                starttime.setText(frtResponseRouteCommonModel.getCheckin_time());
+            else
+                starttime.setText("");
+            if (!TextUtils.isEmpty(frtResponseRouteCommonModel.getCheckout_time()))
+                endtime.setText(frtResponseRouteCommonModel.getCheckout_time());
+            else
+                endtime.setText("");
+            FRTLocationTrackingService frtLocationTrackingService = new FRTLocationTrackingService();
+
+              /*  speedDb1.setText("Speed:" +frtRequestSaveRouteLocationmodelList.getDrivingSpeed());
+                distanceText.setText("distance:" +frtRequestSaveRouteLocationmodelList.getDistFromLastLoc());
+                time.setText("time:" +frtResponsePtrollerLocationModel.getMobile_time());
+                speedDbLocation.setText("Servtime:" +frtResponsePtrollerLocationModel.getServer_time());*/
+
+
+        } catch (Exception ex) {
+        }
+        if (intent.hasExtra("case")) {
+            frtSharePrefUtil.setString("case", intent.getStringExtra("case"));
+            if (intent.getStringExtra("case").equals("Inprogress") && (TextUtils.isEmpty(frtSharePrefUtil.getString("keytracktoend"))
+                    || !frtSharePrefUtil.getString("keytracktoend").equals("true"))) {
+                startButton.setVisibility(View.GONE);
+                endButton.setVisibility(View.VISIBLE);
+                //selfie.setVisibility(View.VISIBLE);
+                pauseresumeButton.setVisibility(View.VISIBLE);
+                llactualend.setVisibility(View.GONE);
+               // upload_docs.setVisibility(View.VISIBLE);
+               // raise_issue.setVisibility(View.VISIBLE);
+               // selfie.setVisibility(View.VISIBLE);
+                if (!frtSharePrefUtil.getString(getString(R.string.reasonname)).equals("Pause")) {
+                    frtSharePrefUtil.setString(getString(R.string.reasonname), "Inprogress");
+                    scheduleLocationUpload();
+                   // scheduleLocationSync();
+                }
+                if (frtApp.getActualStartTime() != null && !frtApp.getActualStartTime().equals("null"))
+                    actualstarttime.setText(frtApp.getActualStartTime());
+                else
+                    actualstarttime.setText("");
+                if (frtSharePrefUtil.getString("keypauseresume").equals("RESUME")) {
+                    endButton.setEnabled(false);
+                    endButton.setAlpha(0.5f);
+                    pauseresumeButton.setText("RESUME");
+                } else if (frtSharePrefUtil.getString("keypauseresume").equals("PAUSE"))
+                    pauseresumeButton.setText("PAUSE");
+            } else if (intent.getStringExtra("case").equals("Assigned")) {
+               // selfie.setVisibility(View.GONE);
+                startButton.setVisibility(View.VISIBLE);
+                endButton.setVisibility(View.GONE);
+               // upload_docs.setVisibility(View.GONE);
+               // raise_issue.setVisibility(View.GONE);
+                pauseresumeButton.setVisibility(View.GONE);
+                llactualstart.setVisibility(View.GONE);
+                llactualend.setVisibility(View.GONE);
+//                selfie.setVisibility(View.GONE);
+            } else {
+                startButton.setVisibility(View.GONE);
+                endButton.setVisibility(View.GONE);
+               // upload_docs.setVisibility(View.GONE);
+                //raise_issue.setVisibility(View.GONE);
+
+                pauseresumeButton.setVisibility(View.GONE);
+                if (frtApp.getActualStartTime() != null && !frtApp.getActualStartTime().equals("null"))
+                    actualstarttime.setText(frtApp.getActualStartTime());
+                else
+                    actualstarttime.setText("");
+                if (frtApp.getActualEndTime() != null && !frtApp.getActualEndTime().equals("null"))
+                    actualendtime.setText(frtApp.getActualEndTime());
+                else
+                    actualendtime.setText("");
+            }
+            if (intent.getStringExtra("case").equals("Completed") || intent.getStringExtra("case").equals("Pending") || frtLocationDb.offlineRouteEnded()) {
+                frtUtility.setSnackBar(getString(R.string.routecompleted), endButton);
+                startButton.setVisibility(View.GONE);
+               // selfie.setVisibility(View.VISIBLE);
+                pauseresumeButton.setVisibility(View.GONE);
+                endButton.setVisibility(View.GONE);
+               // selfie.setVisibility(View.GONE);
+               // upload_docs.setVisibility(View.GONE);
+               // raise_issue.setVisibility(View.GONE);
+            }
+        }
+        if (intent.hasExtra("routeassignedId")) {
+            if (intent.hasExtra("routetitle"))
+                routetitle.setText(intent.getStringExtra("routetitle"));
+            //getPlannedRouteData();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                   // getActualRouteData();
+                }
+            }, 5000);
+            relbottom.setVisibility(View.GONE);
+            //selfie.setVisibility(View.GONE);
+            //upload_docs.setVisibility(View.GONE);
+            //raise_issue.setVisibility(View.GONE);
+        }
+        if ((intent.hasExtra("case") && intent.getStringExtra("case").equals("PlannedTask")) && intent.hasExtra("routeId") && intent.hasExtra("routeRefId")) {
+            if (intent.hasExtra("routetitle"))
+                routetitle.setText(intent.getStringExtra("routetitle"));
+           // getPlannedRouteData();
+            relbottom.setVisibility(View.GONE);
+           // selfie.setVisibility(View.GONE);
+           // upload_docs.setVisibility(View.GONE);
+           // raise_issue.setVisibility(View.GONE);
+        }
+    }
+
+    private GoogleMap.InfoWindowAdapter onMapSetInfoWindow = new GoogleMap.InfoWindowAdapter() {
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return prepareInfoView(marker);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return prepareInfoView(marker);
+        }
+
+        private View prepareInfoView(Marker marker){
+            LinearLayout infoView = null;
+            infoView = new LinearLayout(frtRouteControlerTaskActivityFRT);
+            LinearLayout.LayoutParams infoViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            infoView.setOrientation(LinearLayout.HORIZONTAL);
+            infoView.setLayoutParams(infoViewParams);
+            LinearLayout subInfoView = new LinearLayout(frtRouteControlerTaskActivityFRT);
+            LinearLayout.LayoutParams subInfoViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            subInfoView.setOrientation(LinearLayout.VERTICAL);
+            subInfoView.setLayoutParams(subInfoViewParams);
+
+            return infoView;
+        }
+    };
+
+
+    private final GoogleMap.OnMarkerClickListener onMarkerClick = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            double radius = 0;
+            marker = marker;
+            String title = "";
+
+            LatLng clickedMarkerPosition = marker.getPosition();
+            return false;
+        }
+    };
+
+
+
+    private final OnMapReadyCallback onMapReadyCallback = new OnMapReadyCallback() {
+        @Override
+        public void onMapReady(GoogleMap gm) {
+            googleMap = gm;
+            buildGoogleApiClient();
+            googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            googleMap.setInfoWindowAdapter(onMapSetInfoWindow);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            frtUtility.setGoogleMap(googleMap);
+            googleMap.setOnMarkerClickListener(onMarkerClick);
+            if (ActivityCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(frtRouteControlerTaskActivityFRT, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
+        }
+    };
+
+
+
+    private void setUpMap() {
+        supportMapFragment = new SupportMapFragment();
+        frtApp.setIsOneTime(false);
+        if (frameLayout != null) {
+            getSupportFragmentManager().beginTransaction().add(frameLayout.getId(), supportMapFragment).commit();
+            supportMapFragment.getMapAsync(onMapReadyCallback);
+        }
+
+        if ((intent.hasExtra("case") && !intent.getStringExtra("case").equals("PatrollerLocation"))) {
+            handleTaskOnMap(true);
+        }
+    }
+
+
+    private void handleTaskOnMap(boolean b) {
+        long wait;
+        if (b)
+            wait = frtConstants.KEY_SPLASH_TIME;
+        else
+            wait = 100;
+        handler.postDelayed(new Runnable() {
+            Runnable runnable = this;
+
+            @Override
+            public void run() {
+                if (intent.hasExtra("case") && handler != null) {
+                    handleTaskTypesOnMap(runnable);
+                }
+            }
+        }, wait);
+    }
+
+    private void handleTaskTypesOnMap(Runnable runnable) {
+        if (intent.getStringExtra("case").equals("Completed") || intent.getStringExtra("case").equals("Pending")) {
+           // getPlannedRouteData();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //getActualRouteData();
+                }
+            }, 11000);
+        } else if (intent.getStringExtra("case").equals("Inprogress")) {
+
+          //  getActualRouteData();
+            if (!flagIsPlannedOnce) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                       // getPlannedRouteData();
+
+
+                    }
+                }, 8000);
+                flagIsPlannedOnce = true;
+            }
+            handler.postDelayed(runnable, 10000);
+            Log.d("inner", "checkruninner");
+        } else {
+           // getPlannedRouteData();
+        }
+        Log.d("outer", "checkrunouter");
+    }
+
+
+
+    @SuppressWarnings("deprecation")
+    private void scheduleLocationUpload() {
+        try {
+            svcintent = new Intent(frtRouteControlerTaskActivityFRT, mSensorService.getClass());
+            startService(svcintent);
+        } catch (Exception ignored) {
+        }
+    }
+
+
+    private final View.OnClickListener onClickNo = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            dialog.hide();
+            //selfie.setVisibility(View.VISIBLE);
+            startButton.setVisibility(View.GONE);
+            pauseresumeButton.setVisibility(View.VISIBLE);
+            pauseresumeButton.setText(getString(R.string.checkin_dialog));
+        }
+    };
+
+   /* private final View.OnClickListener onClickyes = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (!isEnd) {
+                dialog.dismiss();
+                bitmapSetView = null;
+              //  selfie.setVisibility(View.VISIBLE);
+                startButton.setVisibility(View.GONE);
+                pauseresumeButton.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(frtRouteControlerTaskActivityFRT, PTRPauseReasonsActivity.class);
+                startActivityForResult(intent, frtConstants.PAUSE_CODE);
+                overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+            } else {
+                dialog.dismiss();
+                showCamerDialog(null);
+            }
+        }
+    };*/
+
+    private void showPauseRouteDialog() {
+        isEnd = false;
+        dialog = new Dialog(frtRouteControlerTaskActivityFRT);
+        dialog = frtUtility.dialogBasicStructure(dialog, R.layout.dialog_checkin_out_frt);
+        FRTTextviewTrebuchetMS tvno = dialog.findViewById(R.id.no);
+        FRTTextviewTrebuchetMS tvyes = dialog.findViewById(R.id.yes);
+        final FRTEditTextTrebuchetMS  checkInFrtReason = dialog.findViewById(R.id.checkInFrtReason);
+        tvno.setOnClickListener(onClickNo);
+        tvyes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkInFrtReason.getText().toString().length() >0){
+                    checkinReason = checkInFrtReason.getText().toString();
+                    dialog.dismiss();
+                    showCamerDialog(null);
+                }else {
+                    frtUtility.setSnackBar(getString(R.string.enterRemarks), findViewById(R.id.header));
+                }
+            }
+        });
+        dialog.show();
+    }
+
+
+
+
+
+
+
+    public void startCamera(final String imageType) {
+        long cameraFirstLoadTime;
+        if (!flagCamera) {
+            cameraFirstLoadTime = frtConstants.KEY_CAEMRA_OPEN_TIME;
+            flagCamera = true;
+        } else
+            cameraFirstLoadTime = 0;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cameraIntent(imageType);
+            }
+        }, cameraFirstLoadTime);
+    }
+
+    public void cameraIntent(String imageType) {
+        Intent intent;
+        String manufaturer = android.os.Build.MANUFACTURER;
+        if (imageType.equals(getString(R.string.raise_issue))) {
+            if (Build.VERSION.SDK_INT >= 20) {
+                intent = intentForSamsung(manufaturer, Build.VERSION.SDK_INT);
+            } else {
+                intent = intentForSamsung(manufaturer, Build.VERSION.SDK_INT);
+            }
+            dispatchTakePictureIntent(intent);
+            startActivityForResult(intent, frtConstants.REQUEST_CAMERA_SAVE_ROUTE_ISSUE);
+        }
+    }
+
+    private Intent intentForSamsung(String manufaturer, int sdkInt) {
+        if (manufaturer.equals("samsung"))
+            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        else {
+            if (sdkInt >= 20)
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
+            else
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return intent;
+    }
+
+    private void dispatchTakePictureIntent(Intent takePictureIntent) {
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+            } catch (IOException ex) {
+            }
+            if (photoFile != null) {
+                Uri photoURI;
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    photoURI = Uri.fromFile(photoFile);
+                } else {
+                    photoURI = FileProvider.getUriForFile(frtRouteControlerTaskActivityFRT,
+                            "com.example.android.fileprovider",
+                            photoFile);
+                }
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            }
+        }
+    }
+
+    public File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return image;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == frtConstants.REQUEST_CAMERA_SAVE_ROUTE_ISSUE) {
+                onCaptureImageResult(data, getString(R.string.raise_issue));
+            }
+        }
+    }
+
+    private void onCaptureImageResult(Intent data, String imagemode) {
+        Display display = getWindowManager().getDefaultDisplay();
+        mSize = new Point();
+        display.getSize(mSize);
+        Bitmap bitmap = frtUtility.decodeSampledBitmapFromPath(mCurrentPhotoPath, mSize.x, mSize.y);
+        try {
+            bitmapSetView = frtUtility.setCameraPicOrientation(mCurrentPhotoPath);
+            bitmap = frtUtility.getResizedBitmap(bitmap, 800);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (imagemode.equals(getString(R.string.raise_issue)))
+            showCamerDialog(bitmapSetView);
+    }
+
+    private void showCamerDialog(Bitmap thumbnail) {
+
+        final LatLng position = null;
+        final BitmapDescriptor bitmapDescriptor = null;
+        Dialog dialog = new Dialog(frtRouteControlerTaskActivityFRT);
+        dialog = frtUtility.dialogBasicStructure(dialog, R.layout.dialog_camera);
+        final ImageView iv_capture1 = dialog.findViewById(R.id.iv_capture1);
+        final FRTTextviewTrebuchetMS titlesaverouteaction = dialog.findViewById(R.id.titlesaverouteaction);
+        titlesaverouteaction.setText(getString(R.string.raise_issue));
+
+        if (thumbnail == null) {
+            frtListImagesBase64.clear();
+            iv_capture1.setImageResource(R.mipmap.ic_add);
+        } else if (thumbnail != null) {
+            base64Image = frtUtility.saveImageAsBase64(thumbnail);
+            frtListImagesBase64.clear();
+            frtListImagesBase64.add(base64Image);
+        }
+        switch (imageViewID) {
+            case R.id.iv_capture1:
+                if (thumbnail != null) {
+                    iv_capture1.setImageBitmap(thumbnail);
+                    thumbnail1 = thumbnail;
+                    iv_capture1.setImageBitmap(thumbnail1);
+                }
+                break;
+
+        }
+        final Dialog finalDialog = dialog;
+        iv_capture1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageViewID = view.getId();
+                frtListImagesBase64.clear();
+                startCamera(getString(R.string.raise_issue));
+                finalDialog.hide();
+            }
+        });
+
+        FRTTextviewTrebuchetMS tvno = dialog.findViewById(R.id.cancel);
+        final FRTTextviewTrebuchetMS tvyes = dialog.findViewById(R.id.ok);
+        tvyes.setEnabled(true);
+        //tvno.setOnClickListener(onClickNo);
+        //tvyes.setOnClickListener(onClickyes);
+        tvno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FRTRouteControlerTaskActivityFRT.this.base64Image = null;
+                bitmapSetView = null;
+                thumbnail1 = null;
+                imageViewID = -1;
+                finalDialog.hide();
+                frtListImagesBase64.clear();
+            }
+        });
+        final Dialog finalDialog1 = dialog;
+        tvyes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (frtListImagesBase64.size() > 0) {
+                    tvyes.setEnabled(false);
+                    thumbnail1 = null;
+                    frtUtility.dialogPresent();
+                    saveCheckInOutTaskDetailsForFRT();
+                    finalDialog.hide();
+                    finalDialog1.hide();
+                } else {
+                    frtUtility.setSnackBar(getString(R.string.imagerequired), findViewById(R.id.header));
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void saveCheckInOutTaskDetailsForFRT() {
+        if (frtCnnectivityReceiver.isConnected(frtRouteControlerTaskActivityFRT)){
+            final ProgressDialog progressDialog = new ProgressDialog(frtRouteControlerTaskActivityFRT);
+            frtUtility.show(progressDialog);
+            final FRTAsyncCommon<FRTCheckInOutDetailsModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+            frtAsyncCommon.setContext(frtRouteControlerTaskActivityFRT);
+            frtAsyncCommon.setFrtModel(setUpSaveTaskTrackingModel());
+            frtAsyncCommon.execute(frtWEBAPI.getWEBAPI(FRTAPIType.SAVE_TASK_TRACKING_FRT), "SaveTaskTracking");
+            frtAsyncCommon.setFetchDataCallBack(new FRTAsyncCommon.FetchDataCallBack() {
+                @Override
+                public void getAsyncData(String response, String type) {
+                    progressDialog.dismiss();
+                    if (response != null){
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+
+                        if (jsonObject.optString("status").equals("OK")){
+                            Log.d(this.getClass().getName(),"RESPONSE_SUCCESS" + response);
+                        }
+                        else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+                            frtUtility.goToLogin(getString(R.string.req_denied));
+                        } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                            frtUtility.goToLogin(getString(R.string.session_exp));
+                        }
+                        else if (jsonObject.optString("status").equalsIgnoreCase("UNKNOWN_ERROR")){
+                            frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), findViewById(R.id.header));
+                        }
+                        else
+                            frtUtility.setSnackBar(jsonObject.optString("error_message"), findViewById(R.id.header));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("TAG","EXCEPTION===" + e.getMessage());
+                        }
+                    }
+                    else {
+                        frtUtility.setSnackBar(getString(R.string.servernotResponding), findViewById(R.id.header));
+                    }
+                }
+            });
+
+        }
+    }
+
+    private FRTCheckInOutDetailsModel setUpSaveTaskTrackingModel() {
+        FRTCheckInOutDetailsModel frtCheckInOutDetailsModel = new FRTCheckInOutDetailsModel();
+        try {
+        frtCheckInOutDetailsModel.setUserId(Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA, Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT))));
+        frtCheckInOutDetailsModel.setTaskTrackingId(Integer.parseInt(frtSharePrefUtil.getString("tasktrackingid")));
+        frtCheckInOutDetailsModel.setIssueId(Integer.parseInt(frtSharePrefUtil.getString("issueId")));
+        frtCheckInOutDetailsModel.setAction("CheckIn");
+        frtCheckInOutDetailsModel.setLatitude(String.valueOf(latitude));
+        frtCheckInOutDetailsModel.setLongitude(String.valueOf(longitude));
+        frtCheckInOutDetailsModel.setDateTime(frtUtility.getDateAndTime(false));
+        frtCheckInOutDetailsModel.setRemark(checkinReason);
+        frtCheckInOutDetailsModel.setImageData(frtListImagesBase64);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return frtCheckInOutDetailsModel;
+    }
+
+
+}

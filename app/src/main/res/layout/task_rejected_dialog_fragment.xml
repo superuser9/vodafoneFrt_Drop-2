@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#ffff"
+    android:paddingTop="-25dp"
+    android:clickable="true"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp">
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+
+        android:textStyle="bold"
+
+        android:gravity="center"
+        android:text="@string/managerRemarks"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        tools:ignore="RtlHardcoded" />
+
+    <View
+        android:layout_marginRight="-10dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>
+
+
+
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:textSize="14sp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/enablededittext"
+            android:textColor="@android:color/black"
+            android:id="@+id/remarksTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/remarks">
+        </EditText>
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>
+
+    <LinearLayout
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/cancel"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+        <Button
+
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/submit"
+            android:id="@+id/submitBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

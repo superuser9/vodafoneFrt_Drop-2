@@ -1,0 +1,273 @@
+package com.vodafone.frt.activities;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.constants.FRTConstants;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTButtonTrebuchetMS;
+import com.vodafone.frt.fonts.FRTEditTextTrebuchetMS;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTRequestModelLogin;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Created by vishal
+ */
+public class FRTLoginActivity extends AppCompatActivity implements FRTCallBackInitViews, FRTCallBackForIdFind, FRTCallBackSetListeners,
+        FRTAsyncCommon.FetchDataCallBack {
+    private FRTButtonTrebuchetMS loginButton;
+    private final FRTLoginActivity frtLoginActivity = this;
+    private FRTConstants frtConstants;
+    private FRTUtility frtUtility;
+    private FRTConnectivityReceiver frtConnectivityReceiver;
+    private FRTCallBackForIdFind frtCallBackForIdFind;
+    private FRTEditTextTrebuchetMS userEdit, passEdit;
+    @SuppressWarnings("deprecation")
+    private FRTSharePrefUtil frtSharePrefUtil;
+    Intent intent;
+    private String uname;
+    private String upass;
+    private FRTWEBAPI frtWEBAPI;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //noinspection ConstantConditions
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_frtlogin);
+        callBackSetUp();
+    }
+
+    private void callBackSetUp() {
+        FRTCallBackInitViews frtCallBackInitViews = frtLoginActivity;
+        frtCallBackForIdFind = frtLoginActivity;
+        FRTCallBackSetListeners frtCallBackSetListeners = frtLoginActivity;
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void initAllViews() {
+        loginButton = (FRTButtonTrebuchetMS) frtCallBackForIdFind.view(R.id.LoginButton);
+        userEdit = (FRTEditTextTrebuchetMS) frtCallBackForIdFind.view(R.id.AccountEditText);
+        passEdit = (FRTEditTextTrebuchetMS) frtCallBackForIdFind.view(R.id.PasswordEditText);
+        FRTTextviewTrebuchetMS versionTextView = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.versionTextViwe);
+        frtConnectivityReceiver = new FRTConnectivityReceiver();
+        frtConstants = new FRTConstants();
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(frtLoginActivity);
+        frtUtility.settingStatusBarColor(frtLoginActivity, R.color.colorPrimary);
+        frtUtility.hideSoftKeyboard(userEdit, frtLoginActivity);
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(frtLoginActivity);
+        frtWEBAPI = new FRTWEBAPI();
+        versionTextView.setText(frtUtility.getAppVersion());
+        intent = getIntent();
+        if (frtConnectivityReceiver.isConnected(frtLoginActivity)) {
+            if (frtSharePrefUtil.getBoolean(frtConstants.IS_LOGGED_IN)) {
+                validateUser(loginButton);
+            }
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), findViewById(R.id.LoginLayout));
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        frtUtility.hideSoftKeyboard(userEdit, frtLoginActivity);
+        passEdit.setText("");
+        userEdit.setText("");
+        passEdit.setCursorVisible(false);
+        if (intent.hasExtra("keyLogoutMesage") && !TextUtils.isEmpty(intent.getStringExtra("keyLogoutMesage")))
+            frtUtility.setSnackBar(intent.getStringExtra("keyLogoutMesage"), loginButton);
+    }
+
+    @Override
+    public View view(int id) {
+        return findViewById(id);
+    }
+
+    @Override
+    public void commonListeners() {
+        passEdit.setOnEditorActionListener(onFinishEditon);
+        userEdit.setOnEditorActionListener(onNextEditon);
+        loginButton.setOnClickListener(cqLoginClick);
+        userEdit.setOnClickListener(onClickuseredit);
+        passEdit.setOnClickListener(onClickpassedit);
+    }
+
+    private final View.OnClickListener onClickuseredit = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            userEdit.setFocusable(true);
+            userEdit.setFocusableInTouchMode(true);
+            frtUtility.showSoftKeyboard(userEdit, frtLoginActivity);
+        }
+    };
+    private final View.OnClickListener onClickpassedit = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            passEdit.setCursorVisible(true);
+            passEdit.setFocusable(true);
+            passEdit.setFocusableInTouchMode(true);
+            frtUtility.showSoftKeyboard(passEdit, frtLoginActivity);
+        }
+    };
+
+    private final TextView.OnEditorActionListener onFinishEditon = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (frtConnectivityReceiver.isConnected(frtLoginActivity)) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    frtUtility.hideSoftKeyboard(passEdit, frtLoginActivity);
+                    validateUser(v);
+                }
+            } else {
+                frtUtility.setSnackBar(getString(R.string.nointernet), v);
+            }
+            return true;
+        }
+    };
+    private final TextView.OnEditorActionListener onNextEditon = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                passEdit.setFocusable(true);
+                passEdit.setFocusableInTouchMode(true);
+                passEdit.setCursorVisible(true);
+                frtUtility.showSoftKeyboard(passEdit, frtLoginActivity);
+            }
+            return true;
+        }
+    };
+    private final View.OnClickListener cqLoginClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (frtConnectivityReceiver.isConnected(frtLoginActivity)) {
+                validateUser(view);
+            } else {
+                frtUtility.setSnackBar(getString(R.string.nointernet), view);
+            }
+        }
+    };
+
+    private void validateUser(View view) {
+        uname = userEdit.getText().toString().trim();
+        upass = passEdit.getText().toString().trim();
+        if (TextUtils.isEmpty(uname) && TextUtils.isEmpty(upass)) {
+            frtUtility.setSnackBar(getString(R.string.usernamepasserror), view);
+        } else if (TextUtils.isEmpty(uname)) {
+            frtUtility.setSnackBar(getString(R.string.usernameerror), view);
+        } else if (TextUtils.isEmpty(upass)) {
+            frtUtility.setSnackBar(getString(R.string.passworderror), view);
+        } else {
+            startNavigationActivity();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void startNavigationActivity() {
+        frtUtility.showDialog();
+        frtSharePrefUtil.setString(frtConstants.USERNAME_KEY, uname);
+        @SuppressWarnings("unchecked") FRTAsyncCommon<FRTRequestModelLogin> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setUpLoginModel());
+        frtAsyncCommon.setContext(frtLoginActivity);
+        frtAsyncCommon.execute(frtWEBAPI.getWEBAPI(FRTAPIType.LOGIN), "login");
+        frtAsyncCommon.setFetchDataCallBack(frtLoginActivity);
+    }
+
+    private FRTRequestModelLogin setUpLoginModel() {
+        FRTRequestModelLogin cqRequestModelLogin = new FRTRequestModelLogin();
+        cqRequestModelLogin.setUsername(frtUtility.getBase64FromString(uname));
+        cqRequestModelLogin.setPassword(frtUtility.getBase64FromString(upass));
+        cqRequestModelLogin.setGrant_type(getString(R.string.grant_type));
+        cqRequestModelLogin.setOsName(getString(R.string.osname));
+        cqRequestModelLogin.setOsVersion(frtUtility.getSdkBuildVersionNumber());
+        cqRequestModelLogin.setMacAddress(frtUtility.getMacAddress());
+        return cqRequestModelLogin;
+    }
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null) {
+            frtUtility.showDialog();
+            if (type.equals("login")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    frtSharePrefUtil.setString(getString(R.string.token_key), jsonObject.optString(getString(R.string.token_key)));
+                    frtSharePrefUtil.setString(getString(R.string.tokentype_key), jsonObject.optString(getString(R.string.tokentype_key)));
+                    frtSharePrefUtil.setString(getString(R.string.tokenexpiretime_key), String.valueOf(jsonObject.optInt(getString(R.string.tokenexpiretime_key), 0)));
+                    frtSharePrefUtil.setString(getString(R.string.refresh_token_key), jsonObject.optString(getString(R.string.refresh_token_key)));
+                    frtSharePrefUtil.setString(getString(R.string.globalsettings_key), jsonObject.optString(getString(R.string.globalsettings_key)));
+                    frtSharePrefUtil.setString("currenttime", frtUtility.getCurrentTime());
+                    JSONObject jsonObject1 = new JSONObject(jsonObject.optString(getString(R.string.globalsettings_key)));
+                    JSONArray jsonArray = jsonObject1.optJSONArray("globalSetting");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject2 = jsonArray.optJSONObject(i);
+                        if (i == 0)
+                            try {
+                                frtSharePrefUtil.setString(getString(R.string.tracktime), Long.valueOf(jsonObject2.optString("value")) * 1000 + "");
+                            } catch (Exception ignored) {
+                                Log.e(frtLoginActivity.getClass().getName(), ignored.toString());
+                            }
+                        if (i == 1)
+                            try {
+                                frtSharePrefUtil.setString(getString(R.string.Bufferlimit), Long.valueOf(jsonObject2.optString("value")) + "");
+                            } catch (Exception ignored) {
+                                Log.e(frtLoginActivity.getClass().getName(), ignored.toString());
+                            }
+                        if (i == 2)
+                            try {
+                                frtSharePrefUtil.setString(getString(R.string.uploaddocumentsize), Long.valueOf(jsonObject2.optString("value")) + "");
+                            } catch (Exception ignored) {
+                                Log.e(frtLoginActivity.getClass().getName(), ignored.toString());
+                            }
+                    }
+                    if (jsonObject.optString(getString(R.string.status_key)).equalsIgnoreCase(getString(R.string.ok))) {
+                        frtSharePrefUtil.setBoolean(frtConstants.IS_LOGGED_IN, true);
+                        Intent intent = new Intent(frtLoginActivity, FRTNavigationScreenActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+                        frtSharePrefUtil.setBoolean("isLogout", false);
+                    } else {
+                        frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), loginButton);
+                    }
+                    frtUtility.hideDialog();
+                } catch (JSONException ignored) {
+                    Log.e(frtLoginActivity.getClass().getName(), ignored.toString());
+                }
+            }
+        } else {
+            frtUtility.hideDialog();
+            frtUtility.setSnackBar(getString(R.string.userpasserror), loginButton);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        frtUtility.exitApp();
+    }
+
+}

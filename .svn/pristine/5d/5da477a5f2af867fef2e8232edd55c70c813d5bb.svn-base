@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center|left"
+    android:orientation="vertical"
+    android:paddingBottom="4dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="4dp">
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/sos_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tile"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="tile"
+        android:textColor="@color/darkgrey"
+        android:textSize="13sp" />
+</LinearLayout>

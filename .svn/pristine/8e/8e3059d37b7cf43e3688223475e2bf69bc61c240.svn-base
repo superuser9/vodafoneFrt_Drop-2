@@ -1,0 +1,8 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 13/12/17
+ */
+
+public class FRTRequestSOSModel {
+}

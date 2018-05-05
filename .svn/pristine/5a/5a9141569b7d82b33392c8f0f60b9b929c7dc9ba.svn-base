@@ -1,0 +1,322 @@
+[
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_routes_assigned.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_routes_assigned.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_attendance_list.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_attendance_list.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_menu_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/dialog_reason.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/dialog_reason.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_screen_simple_overlay_action_mode.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_screen_simple_overlay_action_mode.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtscheduled_route.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtscheduled_route.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_item_subheader.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_item_subheader.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_bar_title_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_layout_snackbar.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_layout_snackbar.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_custom_big.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtpause_reasons.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtpause_reasons.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_screen_content_include.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_screen_content_include.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtmy_task.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtmy_task.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_activity_chooser_view.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_popup_menu_item_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_popup_menu_item_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_route_controller_task.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_route_controller_task.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_bottom_navigation_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_bottom_navigation_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_layout_snackbar_include.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_layout_snackbar_include.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtattendence.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtattendence.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/select_dialog_singlechoice_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_bar_up_container.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_dialog_title_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_splash.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_list_menu_item_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_media_custom.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_media_custom.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_item_separator.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_item_separator.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_bar_view_list_nav_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/select_dialog_multichoice_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_routes.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_routes.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_item_header.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_item_header.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_reason_list.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_reason_list.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_popup_menu_header_item_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_popup_menu_header_item_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_radio.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_select_dialog_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_select_dialog_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/dialog_pause.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/dialog_pause.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_layout_tab_icon.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_action.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_action.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_button_bar_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_media.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtlogin.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtlogin.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtsos.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtsos.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_text_input_password_icon.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_text_input_password_icon.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/fragment_frtpending_tab.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/fragment_frtpending_tab.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_menu_item_action_area.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_menu_item_action_area.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_part_time.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view_list_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_activity_chooser_view_list_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_expanded_menu_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_expanded_menu_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_checkbox.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/select_dialog_item_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/select_dialog_item_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_mode_bar.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_mode_bar.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_action_tombstone.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_menu.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_menu.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_icon_group.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtplanned_task.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtplanned_task.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_navigation_menu_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_navigation_menu_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_lines_media.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_lines_media.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/fragment_frtclosed_tab.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/fragment_frtclosed_tab.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_screen_simple.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_screen_simple.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_sos.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_sos.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_bottom_sheet_dialog.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_bottom_sheet_dialog.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_screen_toolbar.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_title_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_alert_dialog_title_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/design_layout_tab_text.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/design/26.0.0-alpha1/res/layout/design_layout_tab_text.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/notification_template_part_chronometer.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/item_scheduled_route_list.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/item_scheduled_route_list.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtchat.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtchat.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_mode_close_item_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/endroute_dialog.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/endroute_dialog.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/activity_frtnavigation_screen.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/activity_frtnavigation_screen.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/sdp_example.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.4/res/layout/sdp_example.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/dp_example.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.4/res/layout/dp_example.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/support_simple_spinner_dropdown_item.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/fragment_frtin_progress_tab.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/fragment_frtin_progress_tab.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_search_view.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_search_view.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_search_dropdown_item_icons_2line.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_material.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.0-alpha1/res/layout/abc_alert_dialog_material.xml"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/layout/fragment_frtassigned_tab.xml",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/layout/fragment_frtassigned_tab.xml"
+    }
+]

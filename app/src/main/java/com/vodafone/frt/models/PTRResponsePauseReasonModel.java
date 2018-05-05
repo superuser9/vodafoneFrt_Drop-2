@@ -1,0 +1,33 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 13/12/17
+ */
+
+public class PTRResponsePauseReasonModel {
+    private String reason_id, description, reason_type;
+
+    public String getReason_id() {
+        return reason_id;
+    }
+
+    public void setReason_id(String reason_id) {
+        this.reason_id = reason_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getReason_type() {
+        return reason_type;
+    }
+
+    public void setReason_type(String reason_type) {
+        this.reason_type = reason_type;
+    }
+}

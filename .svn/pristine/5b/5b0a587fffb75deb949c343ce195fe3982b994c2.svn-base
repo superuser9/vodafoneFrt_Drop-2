@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:background="@drawable/routedrwl"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <!--<com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="25dp"
+            android:text="@string/Checkin"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />-->
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/Checkout_here"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/darkgrey" />
+       <!-- <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/yes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:text="@string/yes"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />-->
+
+
+        <com.vodafone.frt.fonts.FRTEditTextTrebuchetMS
+            android:id="@+id/tv_checkInComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+           android:maxLines="1"
+            android:maxLength="500"
+            android:inputType="text"
+            android:paddingLeft="@dimen/_5sdp"
+            android:hint="@string/comment"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/darkgrey" />
+
+            <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/yes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="@string/yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

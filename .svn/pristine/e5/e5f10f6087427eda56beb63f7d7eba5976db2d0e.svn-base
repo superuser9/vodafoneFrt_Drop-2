@@ -1,0 +1,9 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by Ashutosh Kumar on 13-Feb-18.
+ */
+
+public class FRTResponseSaveWeatherModel {
+
+}

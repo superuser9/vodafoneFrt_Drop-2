@@ -1,0 +1,152 @@
+
+package com.vodafone.frt.models;
+
+@SuppressWarnings("unused")
+public class FRTResponseScheduleRouteDetailModel {
+private String route_name,patroller_name,assignment_type,start_date,start_time,end_date,end_time,is_active,created_by_name,created_on,modified_by_name,modified_on;
+    private int scheduled_id,route_id,route_ref_id,patroller_id,working_days,day_of_month;
+
+    public String getRoute_name() {
+        return route_name;
+    }
+
+    public void setRoute_name(String route_name) {
+        this.route_name = route_name;
+    }
+
+    public String getPatroller_name() {
+        return patroller_name;
+    }
+
+    public void setPatroller_name(String patroller_name) {
+        this.patroller_name = patroller_name;
+    }
+
+    public String getAssignment_type() {
+        return assignment_type;
+    }
+
+    public void setAssignment_type(String assignment_type) {
+        this.assignment_type = assignment_type;
+    }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(String is_active) {
+        this.is_active = is_active;
+    }
+
+    public String getCreated_by_name() {
+        return created_by_name;
+    }
+
+    public void setCreated_by_name(String created_by_name) {
+        this.created_by_name = created_by_name;
+    }
+
+    public String getCreated_on() {
+        return created_on;
+    }
+
+    public void setCreated_on(String created_on) {
+        this.created_on = created_on;
+    }
+
+    public String getModified_by_name() {
+        return modified_by_name;
+    }
+
+    public void setModified_by_name(String modified_by_name) {
+        this.modified_by_name = modified_by_name;
+    }
+
+    public String getModified_on() {
+        return modified_on;
+    }
+
+    public void setModified_on(String modified_on) {
+        this.modified_on = modified_on;
+    }
+
+    public int getScheduled_id() {
+        return scheduled_id;
+    }
+
+    public void setScheduled_id(int scheduled_id) {
+        this.scheduled_id = scheduled_id;
+    }
+
+    public int getRoute_id() {
+        return route_id;
+    }
+
+    public void setRoute_id(int route_id) {
+        this.route_id = route_id;
+    }
+
+    public int getRoute_ref_id() {
+        return route_ref_id;
+    }
+
+    public void setRoute_ref_id(int route_ref_id) {
+        this.route_ref_id = route_ref_id;
+    }
+
+    public int getPatroller_id() {
+        return patroller_id;
+    }
+
+    public void setPatroller_id(int patroller_id) {
+        this.patroller_id = patroller_id;
+    }
+
+    public int getWorking_days() {
+        return working_days;
+    }
+
+    public void setWorking_days(int working_days) {
+        this.working_days = working_days;
+    }
+
+    public int getDay_of_month() {
+        return day_of_month;
+    }
+
+    public void setDay_of_month(int day_of_month) {
+        this.day_of_month = day_of_month;
+    }
+}

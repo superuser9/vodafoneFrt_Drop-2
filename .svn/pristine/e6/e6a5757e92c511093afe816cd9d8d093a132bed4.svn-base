@@ -1,0 +1,9 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by shivam on 19/12/17
+ */
+
+class FRTResponseAssignedRouteModel {
+
+}

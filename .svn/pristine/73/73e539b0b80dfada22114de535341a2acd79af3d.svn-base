@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/drawable-ldpi/splash.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/drawable-ldpi/splash.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/drawable-ldpi/ic_check.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/generated/res/pngs/debug/drawable-ldpi/ic_check.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/drawable-ldpi/ic_cancel.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/generated/res/pngs/debug/drawable-ldpi/ic_cancel.png"
+    }
+]

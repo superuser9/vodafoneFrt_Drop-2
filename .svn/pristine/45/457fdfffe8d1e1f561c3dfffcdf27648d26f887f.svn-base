@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        tools:context="com.vodafone.frt.activities.FRTLoginActivity">
+
+        <ImageView
+            android:id="@+id/ivtop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_135sdp"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="55dp"
+            android:background="@drawable/loginbg" />
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/applabel"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/ivtop"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/LoginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/applabel"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+
+            <!--<com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/LoginTextView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textColor="@android:color/black"
+                android:textSize="20dp" />-->
+
+            <!--<com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/usernameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="left|center"
+                android:text="@string/username"
+                android:textColor="@android:color/black"
+                android:textSize="13sp" />-->
+
+            <com.vodafone.frt.fonts.FRTEditTextTrebuchetMS
+                android:id="@+id/AccountEditText"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/enablededittext"
+                android:ems="10"
+                android:focusable="false"
+                android:gravity="left|center"
+                android:hint="@string/unamehint"
+                android:imeOptions="actionNext|flagNoExtractUi"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:paddingLeft="10dp"
+                android:textColorHint="@color/darkgrey"
+                android:textSize="14sp" />
+
+            <!--<com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/passwordTextView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/AccountEditText"
+                android:layout_marginTop="10dp"
+                android:gravity="left|center"
+                android:text="@string/password"
+                android:textColor="@android:color/black"
+                android:textSize="13sp" />-->
+
+            <RelativeLayout
+                android:id="@+id/passwordRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AccountEditText"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/enablededittext"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.vodafone.frt.fonts.FRTEditTextTrebuchetMS
+                    android:id="@+id/PasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/enablededittext"
+                    android:focusable="false"
+                    android:gravity="left|center"
+                    android:hint="@string/passhint"
+                    android:imeActionId="@+id/LoginLayout"
+                    android:imeOptions="actionDone|flagNoExtractUi"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="14sp"
+                    tools:ignore="InvalidImeActionId" />
+
+                <!--<ImageView
+                    android:id="@+id/passwordImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:src="@mipmap/eye" />-->
+            </RelativeLayout>
+
+            <com.vodafone.frt.fonts.FRTButtonTrebuchetMS
+                android:id="@+id/LoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/passwordRelativeLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/purplebackground"
+                android:text="@string/login"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <!--<com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/frgtpass"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_below="@+id/LoginLayout"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:text="@string/forgotpassword"
+            android:textColor="@color/colorred"
+            android:textSize="14sp" />-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:id="@+id/versionTextViwe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:padding="15dp"
+                android:text="Version 1.1.1 (Beta)"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/laptonLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/loginlogo" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</ScrollView>

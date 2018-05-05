@@ -1,0 +1,17 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by vishal on 20/12/17
+ */
+
+public class PTRRequestScheduleRouteDetailModel {
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+}

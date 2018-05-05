@@ -1,0 +1,82 @@
+[
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_back.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_back.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/assigned.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/assigned.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/closed.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/closed.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/pending.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/pending.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_myplannedtask.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_myplannedtask.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_logout.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_logout.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_send.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_send.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/inprogress.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/inprogress.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/eye.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/eye.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/actualstart.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/actualstart.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/actualpending.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/actualpending.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_sos.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_sos.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/plannedstart.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/plannedstart.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/plannedend.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/plannedend.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_chat.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_chat.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/loginlogo.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/loginlogo.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/actualend.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/actualend.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_launcher.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_attendance.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_attendance.png"
+    },
+    {
+        "merged": "/home/vishal/VODAFONE/android/VodafoneFRT/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_mytask.png",
+        "source": "/home/vishal/VODAFONE/android/VodafoneFRT/app/src/main/res/mipmap-mdpi/ic_mytask.png"
+    }
+]

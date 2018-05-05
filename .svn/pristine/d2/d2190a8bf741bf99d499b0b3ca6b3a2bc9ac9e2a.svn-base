@@ -1,0 +1,303 @@
+package com.vodafone.frt.fragments;
+
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.utility.FRTUtility;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Created by vishal on 6/3/18.
+ */
+public class ApplyLeaveDialogFragment extends DialogFragment implements  FRTAsyncCommon.FetchDataCallBack {
+
+
+    private EditText et_leaveReason;
+    private Button submitBtn;
+    private FRTTextviewTrebuchetMS staartdate;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private FRTTextviewTrebuchetMS enddate;
+    private FRTTextviewTrebuchetMS starttime;
+    private FRTTextviewTrebuchetMS endtime;
+    private Date startinTime;
+    private Date endoutTime;
+    private FRTUtility frtUtility;
+
+    public static ApplyLeaveDialogFragment newInstance(){
+        return new ApplyLeaveDialogFragment();
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        frtUtility = FRTUtility.getUtilityInstance();
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View dialogView = inflater.inflate(R.layout.dialogbox_apply_leave,container,false);
+
+        et_leaveReason = (EditText)dialogView.findViewById(R.id.et_leaveReason);
+        submitBtn =(Button)dialogView.findViewById(R.id.submitBtn);
+
+        staartdate = (FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.staartdate);
+        staartdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String fromdate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        try {
+                            staartdate.setText((fromdate));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+                datePickerDialog.show();
+            }
+        });
+        enddate =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.enddate);
+        enddate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String enddates = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        try {
+
+                            enddate.setText((enddates));
+                        } catch (Exception ex) {
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+                datePickerDialog.show();
+            }
+        });
+
+        starttime =(FRTTextviewTrebuchetMS) dialogView
+                .findViewById(R.id.starttime);
+        starttime.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+
+                showHourPickerStartTime();
+            }
+        });
+
+        endtime =(FRTTextviewTrebuchetMS)dialogView.findViewById(R.id.endtime);
+        endtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHourPickerEndTime();
+            }
+        });
+
+
+        Button cancelBtn = (Button)dialogView.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String statTime = starttime.getText().toString();
+                String endTimeNew = endtime.getText().toString();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+                try {
+                    startinTime = sdf.parse(statTime);
+                    endoutTime = sdf.parse(endTimeNew);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                 String startDate = staartdate.getText().toString();
+                String endDate = enddate.getText().toString();
+
+                   if (startDate.length()<=0) {
+                   // staartdate.setError("Please enter Start Date");
+                    Toast.makeText(getActivity(), "Please Enter Start Date", Toast.LENGTH_SHORT).show();
+                } else if (endDate.length()<=0) {
+                  // staartdate.setError("Please enter End Date");
+                    Toast.makeText(getActivity(), "Please Enter End Date", Toast.LENGTH_SHORT).show();
+                }
+
+
+                   else if (statTime.length()<=0) {
+                    Toast.makeText(getActivity(), "Please Enter Start Time", Toast.LENGTH_SHORT).show();
+                } else if (endTimeNew.length()<=0) {
+                    Toast.makeText(getActivity(), "Please Enter End Time", Toast.LENGTH_SHORT).show();
+                }else if (et_leaveReason.getText().toString().length() <= 0) {
+                    //et_remarks.setError("Please enter remarks");
+                    Toast.makeText(getActivity(), "Please enter Leave Reason", Toast.LENGTH_SHORT).show();
+                }
+                else if (frtUtility.dateValidation(startDate,endDate,"dd-mm-yyyy")){
+                    Toast.makeText(getActivity(), "End Date should not be less then Start Date", Toast.LENGTH_SHORT).show();
+                }
+                else if (frtUtility.isTimeDifference(startinTime ,endoutTime)){
+                    Toast.makeText(getActivity(), "End Time should not be less then Start Time", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                       Toast.makeText(getActivity(), "Coming Soon...", Toast.LENGTH_SHORT).show();
+                   }
+
+            }
+        });
+
+
+        return dialogView;
+    }
+
+
+
+
+
+    public void showHourPickerStartTime() {
+        final Calendar myCalender = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
+        final int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+
+        TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute ) {
+                if (view.isShown()) {
+                    String am_pm = "";
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    myCalender.set(Calendar.MINUTE, minute);
+
+                    if (myCalender.getTimeInMillis() >= c.getTimeInMillis()) {
+                        /*if (hourOfDay > 12) {
+                            hourOfDay = hourOfDay - 12;
+                        }
+                        if (myCalender.get(Calendar.AM_PM) == Calendar.AM)
+                            am_pm = "AM";
+                        else if (myCalender.get(Calendar.AM_PM) == Calendar.PM)
+                            am_pm = "PM";
+                       starttime.setText(hourOfDay + ":" + minute + " " + am_pm);*/
+
+                       // starttime.setText(hourOfDay + ":" + minute);
+
+                        try {
+                            String curTime=  String.format("%02d:%02d", hourOfDay, minute);
+                            starttime.setText(curTime);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Start time should be greater than current time ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        //timePickerDialog.setTitle("Choose hour:");
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
+
+
+    public void showHourPickerEndTime() {
+        final Calendar myCalender = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
+        final int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+
+        TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if (view.isShown()) {
+                    String am_pm = "";
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    myCalender.set(Calendar.MINUTE, minute);
+                    if (myCalender.getTimeInMillis() >= c.getTimeInMillis()) {
+                        /*if (hourOfDay > 12) {
+                            hourOfDay = hourOfDay - 12;
+                        }
+
+                        if (myCalender.get(Calendar.AM_PM) == Calendar.AM)
+                            am_pm = "AM";
+                        else if (myCalender.get(Calendar.AM_PM) == Calendar.PM)
+                            am_pm = "PM";
+*/
+
+                        try {
+                            String curTime=  String.format("%02d:%02d", hourOfDay, minute);
+                            endtime.setText(curTime);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                      //  endtime.setText(hourOfDay+":" + minute);
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "End time should be greater than current time ", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        //timePickerDialog.setTitle("Choose hour:");
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
+
+
+
+
+    @Override
+    public void getAsyncData(String response, String type) {
+
+    }
+}

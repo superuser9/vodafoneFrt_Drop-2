@@ -1,0 +1,142 @@
+package com.vodafone.frt.activities;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.vodafone.frt.R;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.app.FRTApp;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.constants.FRTConstants;
+import com.vodafone.frt.db.FRTLocationDb;
+import com.vodafone.frt.fonts.FRTButtonTrebuchetMS;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTResponseActualRouteModel;
+import com.vodafone.frt.models.FRTResponseGetHaltPointsModel;
+import com.vodafone.frt.models.FRTResponsePlannedRouteModel;
+import com.vodafone.frt.models.FRTResponsePtrollerLocationModel;
+import com.vodafone.frt.models.FRTResponseRouteCommonModel;
+import com.vodafone.frt.models.FRTResponseSaveRouteAction;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.services.FRTLocationTrackingService;
+import com.vodafone.frt.utility.FRTUtility;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by vishal on 12/12/17
+ */
+public class FRTRouteControllerTaskBaseActivity extends AppCompatActivity implements FRTCallBackForIdFind {
+    boolean check = false, isEnd = false, isTrack = false,
+            flagSession = false,
+            flagIsPlannedOnce = false,
+            flagCamera = false,
+            haltPointClicked = false,
+            isCheckIn = false, isSaved = false;
+    Dialog dialog;
+    private final FRTRouteControllerTaskBaseActivity frtRouteControllerTaskBaseActivity = this;
+    FRTConnectivityReceiver frtCnnectivityReceiver;
+    FRTCallBackInitViews frtCallBackInitViews;
+    FRTCallBackSetListeners frtCallBackSetListeners;
+    FrameLayout frameLayout;
+    FRTConstants frtConstants;
+    FRTUtility frtUtility;
+    FRTSharePrefUtil frtSharePrefUtil;
+    FRTWEBAPI frtWEBAPI;
+    FRTLocationDb frtLocationDb;
+    FRTResponsePtrollerLocationModel frtResponsePtrollerLocationModel;
+    FRTButtonTrebuchetMS startButton, pauseresumeButton, endButton;
+    FRTLocationTrackingService mSensorService;
+    FRTTextviewTrebuchetMS routetitle;
+    FRTTextviewTrebuchetMS starttime;
+    FRTTextviewTrebuchetMS endtime;
+    FRTTextviewTrebuchetMS actualstarttime;
+    FRTTextviewTrebuchetMS actualendtime;
+    FRTApp frtApp;
+    FRTResponseRouteCommonModel frtResponseRouteCommonModel;
+    GoogleMap googleMap;
+    GoogleApiClient googleApiClient;
+    Handler handler;
+    LinearLayout ivback;
+    Intent intent;
+    Intent svcintent;
+    int finalI = 0, trackId = 0;
+    LocationRequest locationRequest;
+    LocationManager locationManager;
+    Location locationCurrent;
+    List<FRTResponseSaveRouteAction> frtResponseSaveRouteActionList;
+    Marker marker;
+    ArrayList<FRTResponsePlannedRouteModel> frtResponsePlannedRouteModelList;
+    List<FRTResponseActualRouteModel> frtResponseActualRouteModelList;
+    final List<Marker> markerList = new ArrayList<>();
+    final List<Marker> markerList1 = new ArrayList<>();
+    //    List<Map<String, String>> frtListImagesBase64 = new ArrayList<>();
+    List<String> frtListImagesBase64 = new ArrayList<>();
+    LatLng userCurrentLatLon;
+    LinearLayout llactualstart, llactualend;
+    Point mSize;
+    RelativeLayout relbottom;
+    SupportMapFragment supportMapFragment;
+    String remark, base64Image, comment;
+    ImageView upload_docs, selfie;
+    int imageViewID,clickedHaltMarkerPosition;
+    Bitmap thumbnail1, thumbnail2, thumbnail3, thumbnail4;
+    List<FRTResponseGetHaltPointsModel> frtResponseGetHaltPointsModelArrayList;
+    List<LatLng>radiusList;
+    double minDistanceHaultPoint;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //noinspection ConstantConditions
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_route_controller_task);
+        callBackSetUpBase();
+    }
+
+    private void callBackSetUpBase() {
+        FRTCallBackForIdFind frtCallBackForIdFind = frtRouteControllerTaskBaseActivity;
+        frameLayout = (FrameLayout) frtCallBackForIdFind.view(R.id.fl);
+        ivback = (LinearLayout) frtCallBackForIdFind.view(R.id.ivback);
+        startButton = (FRTButtonTrebuchetMS) frtCallBackForIdFind.view(R.id.startButton);
+        pauseresumeButton = (FRTButtonTrebuchetMS) frtCallBackForIdFind.view(R.id.pauseresumeButton);
+        endButton = (FRTButtonTrebuchetMS) frtCallBackForIdFind.view(R.id.endButton);
+        routetitle = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.routetitle);
+        starttime = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.starttime);
+        endtime = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.endtime);
+        relbottom = (RelativeLayout) frtCallBackForIdFind.view(R.id.relbottom);
+        llactualstart = (LinearLayout) frtCallBackForIdFind.view(R.id.llactualstart);
+        llactualend = (LinearLayout) frtCallBackForIdFind.view(R.id.llactualend);
+        actualstarttime = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.actualstarttime);
+        actualendtime = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.actualendtime);
+        upload_docs = (ImageView) frtCallBackForIdFind.view(R.id.upload_docs);
+        selfie = (ImageView) frtCallBackForIdFind.view(R.id.selfie);
+    }
+
+    @Override
+    public View view(int id) {
+        return findViewById(id);
+    }
+}

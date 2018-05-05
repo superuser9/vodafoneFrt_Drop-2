@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <com.vodafone.frt.fonts.FRTRadioButtonTrebuchetMS
+        android:id="@+id/reasonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:textColor="@android:color/black"
+        android:textSize="13sp" />
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/reasonTextView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:textColor="@android:color/black"
+        android:textSize="13sp"
+        />
+</LinearLayout>

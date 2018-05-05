@@ -1,0 +1,36 @@
+package com.vodafone.frt.models;
+
+/**
+ * Created by Ajay Tiwari on 3/15/2018.
+ */
+
+public class MGRResponseFeedback {
+    private String user_name;
+    private String feedback_text;
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getFeedback_text() {
+        return feedback_text;
+    }
+
+    public void setFeedback_text(String feedback_text) {
+        this.feedback_text = feedback_text;
+    }
+
+    public String getCreated_on() {
+        return created_on;
+    }
+
+    public void setCreated_on(String created_on) {
+        this.created_on = created_on;
+    }
+
+    private String created_on;
+}

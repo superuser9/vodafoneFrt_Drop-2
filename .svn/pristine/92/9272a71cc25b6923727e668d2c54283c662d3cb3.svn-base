@@ -1,0 +1,13 @@
+package com.vodafone.frt.callbacks;
+
+import com.vodafone.frt.models.FRTResponseMyTaskModel;
+
+import java.util.List;
+
+/**
+ * Created by vishal on 19/12/17
+ */
+
+public interface FRTCallbackTaskList {
+    void onTaskData(List<FRTResponseMyTaskModel> frtResponseMyTaskModelList, int pendingCount);
+}

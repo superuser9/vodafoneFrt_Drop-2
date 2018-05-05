@@ -1,0 +1,164 @@
+package com.vodafone.frt.apis;
+
+import android.util.Log;
+
+import com.vodafone.frt.constants.FRTConstants;
+import com.vodafone.frt.enums.FRTAPIType;
+
+/**
+ * Created by vishal.
+ */
+public class FRTWEBAPI {
+
+    public final String getWEBAPI(FRTAPIType frtAPIType) {
+        String api = "";
+        FRTConstants frtConstants = new FRTConstants();
+        String separator = frtConstants.ROOT_URL.endsWith("/") ? "" : "/";
+        switch (frtAPIType) {
+            case LOGIN:
+                api = frtConstants.ROOT_URL + separator + "token";
+                break;
+            case GET_USER_DETAIL:
+                api = frtConstants.ROOT_URL + separator + "api/user/GetUserDetail";
+                break;
+            case PLANNED_ROUTE:
+                api = frtConstants.ROOT_URL + separator + "api/route/GetPlannedRoute";
+                break;
+            case ACTUAL_ROUTE:
+                api = frtConstants.ROOT_URL + separator + "api/route/GetActualRoute";
+                break;
+            case SAVE_ROUTE_ACTION:
+                api = frtConstants.ROOT_URL + separator + "api/route/SaveRouteAction";
+                break;
+            case PAUSE_REASON_DETAIL:
+                api = frtConstants.ROOT_URL + separator + "api/misc/GetReasonDetail";
+                break;
+            case FETCH_TASK_DETAIL:
+                api = frtConstants.ROOT_URL + separator + "api/route/GetAssignedRouteDetails";
+                break;
+            case ATTENDANCE:
+                api = frtConstants.ROOT_URL + separator + "api/attendance/GetPatrollerAttendance";
+                break;
+           // 37.	To get FRT Attendance
+                case FRT_ATTENDANCE:
+                api = frtConstants.ROOT_URL + separator + "api/attendance/GetFRTAttendance";
+                break;
+            case GET_SOS_DETAILS:
+                api = frtConstants.ROOT_URL + separator + "api/misc/GetSosDetail";
+                break;
+            case SAVE_ROUTE:
+                api = frtConstants.ROOT_URL + separator + "api/route/SaveRouteLocation";
+                break;
+            case SCHEDULED_ROUTE:
+                api = frtConstants.ROOT_URL + separator + "api/route/GetScheduledRouteDetails";
+                break;
+            case LOGOUT:
+                api = frtConstants.ROOT_URL + separator + "api/user/UserLogout";
+                break;
+            case SNAP_TO_ROAD:
+                api = "https://roads.googleapis.com/v1/snapToRoads?";
+                break;
+            case GETSUBORDINATEDETAILS:
+                api = frtConstants.ROOT_URL + separator + "api/user/GetSubordinateDetails";
+                break;
+            case GETCURRENTLOCATION:
+                api = frtConstants.ROOT_URL + separator + "api/route/GetUserCurrentLocation";
+                break;
+            case SAVE_ROUTE_BULK:
+                api = frtConstants.ROOT_URL + separator + "api/route/SaveRouteLocationBulk";
+                break;
+            case GET_HALT_POINTS:
+                api = frtConstants.ROOT_URL + separator +"api/route/GetHaltPoints";
+                break;
+            case SAVE_HALT_POINTS:
+                api = frtConstants.ROOT_URL + separator +"api/route/SaveHaltTracking";
+                break;
+            case UPLOAD_DOC:
+                api = frtConstants.ROOT_URL + separator +"api/route/UploadRouteTrackingDoc";
+                break;
+            case UPLOAD_ROUT_TRACKING_IMAGE:
+                api = frtConstants.ROOT_URL + separator +"api/route/UploadRouteTrackingImg";
+                break;
+            case SAVE_ROUTE_WEATHER:
+                api = frtConstants.ROOT_URL + separator +"api/route/SaveRouteWeatherLog";
+                break;
+            case GET_ISSUE_TYPE:
+                api = frtConstants.ROOT_URL + separator +"api/misc/GetIssueTypes";
+                break;
+            case SAVE_ROUTE_ISSUE_DETAIL:
+                api = frtConstants.ROOT_URL + separator +"api/route/SaveRouteIssueDetail";
+                break;
+            case GETSELF_CHECKIN_REQUEST:
+                api = frtConstants.ROOT_URL + separator+"api/route/GetSelfCheckInRequests";
+                break;
+            case SAVE_SELF_CHECKIN_ROUTE:
+                api = frtConstants.ROOT_URL + separator+"api/route/SaveSelfCheckInRoute";
+                break;
+            case SAVE_USER_FEEDBACK:
+                api = frtConstants.ROOT_URL + separator +"api/user/SaveUserFeedback";
+                break;
+            case GET_BROADCAST_DETAIL:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetBroadCastDetail";
+                break;
+            case GET_LOYALTY_STATUS:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetUserLoyaltyStatus";
+                break;
+            case VIEW_USER_FEEDBACK_MGR:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetUserFeedback";
+                break;
+                // FRT 27.	Get Assigned Task Details for FRT
+            case GET_ASSIGNED_TASK_DETAIL_FRT:
+                api = frtConstants.ROOT_URL + separator +"api/frt/GetAssignedTaskDetails";
+                break;
+
+            // 28.	To store/save check-in checkoutTask details for FRT
+
+            case SAVE_TASK_TRACKING_FRT:
+                api = frtConstants.ROOT_URL + separator +"api/frt/SaveTaskTracking";
+                break;
+
+            // 32.	To Save Leave Detail
+            case SAVE_LEAVE_DETAIL:
+                api = frtConstants.ROOT_URL + separator +"api/user/SaveLeaveDetail";
+                break;
+
+           // 33.	Get User Leave Detail
+            case GET_LEAVE_DETAIL_ATTENDANCE:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetLeaveDetail";
+                break;
+
+            // 	34.	To Update Leave Status
+            case UPDATE_LEAVE_DETAIL:
+                api = frtConstants.ROOT_URL + separator +"api/user/UpdateLeaveDetail";
+                break;
+
+            //35.	To Get Route Issue Details
+            case GET_ROUTE_ISSUE_DETAILS:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetRouteIssueDetail";
+                break;
+
+//            36.	To Assign/Reject  Route Issue
+            case ASSIGN_REJECT_ROUTE_ISSUE:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetRouteIssueDetail";
+                break;
+
+//            15.	GetSubordinateDetails
+            case GET_SUBORDINATE_DETAILS:
+                api = frtConstants.ROOT_URL + separator +"api/user/GetSubordinateDetails";
+
+                break;
+
+//            36.	To Assign/Reject  Route Issue
+            case UPDATE_ASSIGN_ROUTE_ISSUE_DETAILS:
+                api = frtConstants.ROOT_URL + separator +"api/user/UpdateRouteIssueDetail";
+                break;
+
+            case UPDATE_REJECTED_ISSUE_DETAIL:
+                api = frtConstants.ROOT_URL + separator +"api/user/UpdateRouteIssueDetail";
+                break;
+        }
+        Log.d("URLS:", api);
+        return api;
+    }
+}
+

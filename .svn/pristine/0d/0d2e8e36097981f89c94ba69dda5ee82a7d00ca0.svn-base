@@ -1,0 +1,591 @@
+package com.vodafone.frt.activities;
+
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.adapters.FRTFragPagerAdapter;
+import com.vodafone.frt.adapters.PTRFragPagerAdapter;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.app.FRTApp;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.constants.FRTConstants;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.fragments.FRTInProgressTab;
+import com.vodafone.frt.models.FRTResponseRouteCommonModelFRT;
+import com.vodafone.frt.models.PTRRequestModelLogout;
+import com.vodafone.frt.models.PTRRequestMyTaskModel;
+import com.vodafone.frt.models.PTRResponseMyTaskModel;
+import com.vodafone.frt.models.FRTResponseTaskDetailForFrtModel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.AESEncriptDecript;
+import com.vodafone.frt.utility.FRTBroadcasting;
+import com.vodafone.frt.utility.FRTUtility;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by vishal
+ */
+public class PTRMyTaskActivity extends AppCompatActivity implements FRTCallBackInitViews, FRTCallBackForIdFind, FRTCallBackSetListeners,
+        TabLayout.OnTabSelectedListener, FRTAsyncCommon.FetchDataCallBack, FRTBroadcasting.CallBackBroadcast {
+    private final PTRMyTaskActivity frtMyTaskActivity = this;
+    private List<FRTResponseRouteCommonModelFRT> frtResponseRouteCommonModelList;
+    private final int[] tabIcons = {
+            R.mipmap.pending,
+            R.mipmap.assigned,
+            R.mipmap.inprogress,
+            R.mipmap.closed
+    };
+    private boolean flagnet = false, inOncreate = false;
+    private BroadcastReceiver broadcastReceiver;
+    private FRTBroadcasting broadcasting;
+    private FRTCallBackForIdFind frtCallBackForIdFind;
+    private FRTConnectivityReceiver frtConnectivityReceiver;
+    private FRTTextviewTrebuchetMS loader;
+    private FRTUtility frtUtility;
+    private FRTConstants frtConstants;
+    private FRTSharePrefUtil frtSharePrefUtil;
+    private FRTWEBAPI frtwebapi;
+    private FRTApp frtApp;
+    private final View.OnClickListener frtBackClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+    private LinearLayout ivback;
+    private ArrayList<PTRResponseMyTaskModel> frtResponseMyTaskModelList;
+    private ArrayList<FRTResponseTaskDetailForFrtModel> frtResponseTaskDetailForFrtModelList;
+    private int assignedCount, pendingCount, inProgressCount, closedCount;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private String userIdEncrypt;
+    private String roleName;
+    private static int frtType =0;
+    private Intent i;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //noinspection ConstantConditions
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_frtmy_task);
+        callBackSetUp();
+
+
+    }
+
+    /**
+     * This method initialize the callback and objects
+     */
+    private void callBackSetUp() {
+        FRTCallBackInitViews frtCallBackInitViews = frtMyTaskActivity;
+        frtCallBackForIdFind = frtMyTaskActivity;
+        FRTCallBackSetListeners frtCallBackSetListeners = frtMyTaskActivity;
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+    @Override
+    public View view(int id) {
+        return findViewById(id);
+    }
+
+    @Override
+    public void initAllViews() {
+        ivback = (LinearLayout) frtCallBackForIdFind.view(R.id.ivback);
+        tabLayout = (TabLayout) frtCallBackForIdFind.view(R.id.tab_layout);
+        viewPager = (ViewPager) frtCallBackForIdFind.view(R.id.pager);
+        loader = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.loader);
+        frtConstants = new FRTConstants();
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(frtMyTaskActivity);
+        frtUtility.settingStatusBarColor(frtMyTaskActivity, R.color.colorPrimary);
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(frtMyTaskActivity);
+        frtConnectivityReceiver = new FRTConnectivityReceiver();
+        broadcasting = FRTBroadcasting.getBroadcastingInstance();
+        broadcasting.setContext(frtMyTaskActivity);
+        broadcasting.setCallbackBroadcast(frtMyTaskActivity);
+        frtwebapi = new FRTWEBAPI();
+        frtApp = (FRTApp) getApplication();
+        inOncreate = true;
+        try {
+            roleName =frtSharePrefUtil.getString(getString(R.string.role_name));
+            userIdEncrypt =  AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA, Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (roleName.equalsIgnoreCase("Patroller")) {
+            getPtrTaskDetail();
+            frtType =1;
+        }else {
+            getFrtTaskDetail();
+            frtType=2;
+            //Toast.makeText(frtMyTaskActivity, "Checking api", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    private void getFrtTaskDetail(){
+        @SuppressWarnings("unchecked") FRTAsyncCommon<PTRRequestMyTaskModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setUpTaskDetailModel());
+        frtAsyncCommon.setContext(frtMyTaskActivity);
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.GET_ASSIGNED_TASK_DETAIL_FRT), "gettaskdetailForFrt");
+        frtAsyncCommon.setFetchDataCallBack(frtMyTaskActivity);
+    }
+
+
+
+    @SuppressWarnings("deprecation")
+    private void getPtrTaskDetail() {
+        @SuppressWarnings("unchecked") FRTAsyncCommon<PTRRequestMyTaskModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setUpTaskDetailModel());
+        frtAsyncCommon.setContext(frtMyTaskActivity);
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.FETCH_TASK_DETAIL), "gettaskdetail");
+        frtAsyncCommon.setFetchDataCallBack(frtMyTaskActivity);
+    }
+
+    private PTRRequestMyTaskModel setUpTaskDetailModel() {
+        PTRRequestMyTaskModel cqRequestPauseReasonModel = new PTRRequestMyTaskModel();
+
+        if (!TextUtils.isEmpty(userIdEncrypt))
+            try {
+                cqRequestPauseReasonModel.setUserId(Integer.parseInt(userIdEncrypt));
+            }catch (Exception e){
+            e.printStackTrace();
+            }
+
+        return cqRequestPauseReasonModel;
+    }
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        if (response != null) {
+
+            if (type.equals("logout")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.optString(getString(R.string.status_key)).equals("OK")) {
+                        frtSharePrefUtil.setBoolean(frtConstants.IS_LOGGED_IN, false);
+                        frtUtility.clearPrerences();
+                        finish();
+                        startActivity(new Intent(frtMyTaskActivity, FRTLoginActivity.class));
+                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+                    }
+                    if (jsonObject.optString(getString(R.string.status_key)).equalsIgnoreCase(getString(R.string.req_denied))) {
+                        frtSharePrefUtil.setBoolean(frtConstants.IS_LOGGED_IN, false);
+                        frtUtility.clearPrerences();
+                        finish();
+                        startActivity(new Intent(frtMyTaskActivity, FRTLoginActivity.class));
+                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+                    }
+                } catch (JSONException ignored) {
+                }
+            } if (frtType ==2){
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray;
+                    if (jsonObject.optString(getString(R.string.status_key)).equalsIgnoreCase("OK")){
+                        jsonArray = jsonObject.optJSONArray("results");
+                        frtResponseTaskDetailForFrtModelList = new ArrayList<>();
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject jo = jsonArray.optJSONObject(i);
+                            FRTResponseTaskDetailForFrtModel frtResponseTaskDetailForFrtModel = new FRTResponseTaskDetailForFrtModel();
+                            frtResponseTaskDetailForFrtModel.setIssue_id(jo.optInt("issue_id"));
+                            frtResponseTaskDetailForFrtModel.setTask_tracking_id(jo.optInt("task_tracking_id"));
+                            frtResponseTaskDetailForFrtModel.setIssue_type(jo.optString("issue_type"));
+                            frtResponseTaskDetailForFrtModel.setUser_id(jo.optInt("user_id"));
+                            frtResponseTaskDetailForFrtModel.setLatitude(jo.optDouble("latitude"));
+                            frtResponseTaskDetailForFrtModel.setLongitude(jo.optDouble ("longitude"));
+                            frtResponseTaskDetailForFrtModel.setAssigned_date(jo.optString("assigned_date"));
+                            frtResponseTaskDetailForFrtModel.setPatroller_remark(jo.optString("patroller_remark"));
+                            frtResponseTaskDetailForFrtModel.setManager_remark(jo.optString("manager_remark"));
+                            frtResponseTaskDetailForFrtModel.setCheckin_time(jo.optString("checkin_time"));
+                            frtResponseTaskDetailForFrtModel.setCheckout_time(jo.optString("checkout_time"));
+                            frtResponseTaskDetailForFrtModel.setCheckin_remarks(jo.optString("checkin_remarks"));
+                            frtResponseTaskDetailForFrtModel.setCheckout_remarks(jo.optString("checkout_remarks"));
+                            frtResponseTaskDetailForFrtModel.setCheckin_radius(jo.optInt("checkin_radius"));
+                            frtResponseTaskDetailForFrtModel.setStatus(jo.optString("status"));
+                            frtResponseTaskDetailForFrtModelList.add(frtResponseTaskDetailForFrtModel);
+                           // frtResponseRouteCommonModelList.add(frtResponseTaskDetailForFrtModel);
+                        }
+                        setUpTabs();
+                    }else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+                        frtUtility.goToLogin(getString(R.string.req_denied));
+                        frtApp.setTabPosition(0);
+                        doLogout();
+                    } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                        frtUtility.goToLogin(getString(R.string.session_exp));
+                        frtApp.setTabPosition(0);
+                        doLogout();
+                    } else {
+                        frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), ivback);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            else {
+             //   frtType=0;
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray;
+                    if (jsonObject.optString(getString(R.string.status_key)).equalsIgnoreCase("OK")) {
+                        jsonArray = jsonObject.optJSONArray("results");
+                        frtResponseMyTaskModelList = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jo = jsonArray.optJSONObject(i);
+                            PTRResponseMyTaskModel frtResponseUserDetailModel = new PTRResponseMyTaskModel();
+                            frtResponseUserDetailModel.setActual_end_time(jo.optString("actual_end_time"));
+                            frtResponseUserDetailModel.setActual_start_time(jo.optString("actual_start_time"));
+                            frtResponseUserDetailModel.setCreated_by_name(jo.optString("created_by_name"));
+                            frtResponseUserDetailModel.setCreated_on(jo.optString("created_on"));
+                            frtResponseUserDetailModel.setModified_by_name(jo.optString("modified_by_name"));
+                            frtResponseUserDetailModel.setModified_on(jo.optString("modified_on"));
+                            frtResponseUserDetailModel.setPatroller_id(jo.optInt("patroller_id"));
+                            frtResponseUserDetailModel.setPatroller_name(jo.optString("patroller_name"));
+                            frtResponseUserDetailModel.setPlanned_end_time(jo.optString("planned_end_time"));
+                            frtResponseUserDetailModel.setPlanned_start_time(jo.optString("planned_start_time"));
+                            frtResponseUserDetailModel.setRoute_assigned_id(jo.optInt("route_assigned_id"));
+                            frtResponseUserDetailModel.setRoute_id(jo.optInt("route_id"));
+                            frtResponseUserDetailModel.setRoute_name(jo.optString("route_name"));
+                            frtResponseUserDetailModel.setRoute_ref_id(jo.optInt("route_ref_id"));
+                            frtResponseUserDetailModel.setScheduled_assigment_id(jo.optInt("scheduled_assigment_id"));
+                            frtResponseUserDetailModel.setStatus(jo.optString("status"));
+                            frtResponseUserDetailModel.setSelf_check_in(jo.optString("self_check_in"));
+                            frtResponseMyTaskModelList.add(frtResponseUserDetailModel);
+                        }
+                        setUpTabs();
+                    } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.req_denied))) {
+                        frtUtility.goToLogin(getString(R.string.req_denied));
+                        frtApp.setTabPosition(0);
+                        doLogout();
+                    } else if (jsonObject.optString(getString(R.string.status_key)).equals(getString(R.string.session_exp))) {
+                        frtUtility.goToLogin(getString(R.string.session_exp));
+                        frtApp.setTabPosition(0);
+                        doLogout();
+                    } else {
+                        frtUtility.setSnackBar(jsonObject.optString(getString(R.string.error_message_key)), ivback);
+                    }
+                } catch (Exception ignored) {
+                    ignored.printStackTrace();
+                    Log.d(this.getClass().getName(),"EXCEPTION==" + ignored.getMessage());
+                }
+            }
+            loader.setVisibility(View.GONE);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.userpasserror), ivback);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void doLogout() {
+        @SuppressWarnings("unchecked") FRTAsyncCommon<PTRRequestModelLogout> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+        frtAsyncCommon.setFrtModel(setUpLogoutModel());
+        frtAsyncCommon.setContext(frtMyTaskActivity);
+        frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.LOGOUT), "logout");
+        frtAsyncCommon.setFetchDataCallBack(frtMyTaskActivity);
+    }
+
+    private PTRRequestModelLogout setUpLogoutModel() {
+        PTRRequestModelLogout cqRequestModelLogout = new PTRRequestModelLogout();
+        try {
+
+            //cqRequestModelLogout.setUserId(Integer.parseInt(frtSharePrefUtil.getString(getString(R.string.userkey))));
+            cqRequestModelLogout.setUserId(Integer.parseInt(userIdEncrypt));
+        } catch (Exception ignored) {
+        }
+        return cqRequestModelLogout;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        frtType=0;
+    }
+
+    private void setUpTabs() {
+        if (frtType ==1) {
+            for (PTRResponseMyTaskModel frtResponseMyTaskModel :
+                    frtResponseMyTaskModelList) {
+                switch (frtResponseMyTaskModel.getStatus()) {
+                    case "Assigned":
+                        assignedCount++;
+                        break;
+                    case "Pending":
+                        pendingCount++;
+                        break;
+                    case "Inprogress":
+                        inProgressCount++;
+                        break;
+                    case "Paused":
+                        inProgressCount++;
+                        break;
+                    case "Resume":
+                        inProgressCount++;
+                        break;
+                    case "Completed":
+                        closedCount++;
+                        break;
+                }
+            }
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.assigned) + "[" + assignedCount + "]"));
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.inpg) + "[" + inProgressCount + "]"));
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.pending) + "[" + pendingCount + "]"));
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.complete) + "[" + closedCount + "]"));
+            setupTabIcons();
+            PTRFragPagerAdapter adapter = new PTRFragPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+            adapter.notifyDataSetChanged();
+            adapter.setTaskList(frtResponseMyTaskModelList);
+            adapter.setInProgressCount(inProgressCount);
+            viewPager.setAdapter(adapter);
+            if (frtApp.getTabPosition() != -1)
+                selectPage(frtApp.getTabPosition());
+        }
+        else if (frtType ==2){
+            for (FRTResponseTaskDetailForFrtModel frtResponseTaskDetailForFrtModel :
+                    frtResponseTaskDetailForFrtModelList) {
+                switch (frtResponseTaskDetailForFrtModel.getStatus()) {
+                    case "Assigned":
+                        assignedCount++;
+                        break;
+                  /*  case "Pending":
+                        pendingCount++;
+                        break;*/
+                    case "InProgress":
+                        inProgressCount++;
+                        break;
+                    case "Paused":
+                        inProgressCount++;
+                        break;
+                    case "Resume":
+                        inProgressCount++;
+                        break;
+                    case "Completed":
+                        closedCount++;
+                        break;
+                }
+            }
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.assigned) + "[" + assignedCount + "]"));
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.inpg) + "[" + inProgressCount + "]"));
+           // tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.pending) + "[" + pendingCount + "]"));
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.complete) + "[" + closedCount + "]"));
+            setupTabIconsFRT();
+            FRTFragPagerAdapter adapter = new FRTFragPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+            adapter.notifyDataSetChanged();
+            adapter.setTaskList(frtResponseTaskDetailForFrtModelList);
+            adapter.setInProgressCount(inProgressCount);
+            viewPager.setAdapter(adapter);
+            if (frtApp.getTabPosition() != -1)
+                selectPage(frtApp.getTabPosition());
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setupTabIconsFRT() {
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        //noinspection ConstantConditions
+       // tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+       // tabLayout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void setupTabIcons() {
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        //noinspection ConstantConditions
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+        //noinspection ConstantConditions,ConstantConditions
+        tabLayout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+    }
+
+    /**
+     * This method is used for setting the listener on views.
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public void commonListeners() {
+        ivback.setOnClickListener(frtBackClick);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(frtMyTaskActivity);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (frtConnectivityReceiver.isConnected(frtMyTaskActivity)) {
+            super.onBackPressed();
+            frtApp.setTabPosition(-1);
+            Intent intent = new Intent(frtMyTaskActivity, PTRNavigationScreenActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), findViewById(R.id.header));
+        }
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        if (frtConnectivityReceiver.isConnected(frtMyTaskActivity)) {
+            viewPager.setCurrentItem(tab.getPosition());
+            int tabIconColor = ContextCompat.getColor(frtMyTaskActivity, R.color.colorPrimary);
+            if (tab.getIcon() != null)
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivback);
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        int tabIconColor = ContextCompat.getColor(frtMyTaskActivity, android.R.color.white);
+        if (tab.getIcon() != null)
+            tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!inOncreate)
+            setUpView();
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+     /*   String s = frtSharePrefUtil.getString("CHECKIN_PERFORM");
+        if (s.equals("ASSIGNEDFRT")){
+            FRTResponseTaskDetailForFrtModel forFrtModel = new FRTResponseTaskDetailForFrtModel();
+         String inProgressStatus =    forFrtModel.getStatus();
+         if (inProgressStatus != null && !inProgressStatus.equals("InProgress")) {
+            // frtResponseRouteCommonModelList = new ArrayList<>();
+            // frtResponseMyTaskModelList.add();
+             frtSharePrefUtil.setString("tasktrackingid", forFrtModel.getTask_tracking_id() + "");
+             frtSharePrefUtil.setString("issueId", forFrtModel.getIssue_id() + "");
+             frtSharePrefUtil.setString("issueType", forFrtModel.getIssue_type());
+             frtSharePrefUtil.setString("checkInRemarks", forFrtModel.getCheckin_remarks());
+             frtSharePrefUtil.setString("checkinTime",forFrtModel.getCheckin_time());
+             frtSharePrefUtil.setString("userId", forFrtModel.getUser_id() + "");
+             frtSharePrefUtil.setString("checkin_radius",forFrtModel.getCheckin_radius()+"");
+             frtSharePrefUtil.setString("latitudeAssigned",forFrtModel.getLatitude() +"");
+             frtSharePrefUtil.setString("longitudeAssigned",forFrtModel.getLongitude()+"");
+             Intent intent = new Intent(frtMyTaskActivity, FRTRouteControlerTaskActivityFRT.class);
+             intent.putExtra("routetitle", forFrtModel.getIssue_type());
+             intent.putExtra("keyparcel", forFrtModel);
+             intent.putExtra("AssignedLat",forFrtModel.getLatitude());
+             intent.putExtra("case", "Inprogress");
+             startActivity(intent);
+             finish();
+         }
+        }*/
+    }
+
+    private void setUpView() {
+        assignedCount = 0;
+        pendingCount = 0;
+        inProgressCount = 0;
+        closedCount = 0;
+        flagnet = false;
+        tabLayout.removeAllTabs();
+        if (roleName.equalsIgnoreCase("Patroller")) {
+            getPtrTaskDetail();
+            frtType =1;
+        }else {
+            getFrtTaskDetail();
+            frtType=2;
+            //Toast.makeText(frtMyTaskActivity, "Checking api", Toast.LENGTH_SHORT).show();
+        }
+
+       // getPtrTaskDetail();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        inOncreate = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        broadcastReceiver = broadcasting.getBroadcasting();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void getBroadcast(boolean isBroadcasting) {
+        if (isBroadcasting) {
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivback);
+            frtUtility.dialogHide();
+            flagnet = true;
+        } else {
+            if (flagnet) {
+                setUpView();
+            }
+        }
+    }
+
+    private void selectPage(int pageIndex) {
+        tabLayout.setScrollPosition(pageIndex, 0f, true);
+        viewPager.setCurrentItem(pageIndex);
+    }
+}

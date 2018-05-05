@@ -1,0 +1,359 @@
+package com.vodafone.frt.activities;
+
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.vodafone.frt.R;
+import com.vodafone.frt.adapters.MGRAttendanceAdapter;
+import com.vodafone.frt.adapters.PTRAttendanceAdapter;
+import com.vodafone.frt.apis.FRTAsyncCommon;
+import com.vodafone.frt.apis.FRTWEBAPI;
+import com.vodafone.frt.callbacks.FRTCallBackForIdFind;
+import com.vodafone.frt.callbacks.FRTCallBackInitViews;
+import com.vodafone.frt.callbacks.FRTCallBackSetListeners;
+import com.vodafone.frt.enums.FRTAPIType;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.fragments.ApplyLeaveDialogFragment;
+import com.vodafone.frt.models.MGRAttendanceMainModel;
+import com.vodafone.frt.models.MGRRequestAttendanceModel;
+import com.vodafone.frt.models.MGRResponseAttendanceModel;
+import com.vodafone.frt.models.PTRMainSelfCheckModel;
+import com.vodafone.frt.models.PTRRequestAttendanceModel;
+import com.vodafone.frt.models.PTRResponseAttendanceModel;
+import com.vodafone.frt.network.FRTConnectivityReceiver;
+import com.vodafone.frt.preferences.FRTSharePrefUtil;
+import com.vodafone.frt.utility.AESEncriptDecript;
+import com.vodafone.frt.utility.FRTBroadcasting;
+import com.vodafone.frt.utility.FRTUtility;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+public class MGRAttendanceActivity extends AppCompatActivity implements FRTCallBackInitViews, FRTCallBackForIdFind,
+        FRTCallBackSetListeners, FRTAsyncCommon.FetchDataCallBack, FRTBroadcasting.CallBackBroadcast,MGRAttendanceAdapter.SelectionViewAttendanceListener {
+
+    private boolean checknet = false;
+    private BroadcastReceiver broadcastReceiver;
+
+    private FRTCallBackForIdFind frtCallBackForIdFind;
+    private FRTBroadcasting broadcasting;
+    private FRTConnectivityReceiver frtConnectivityReceiver;
+    private FRTUtility frtUtility;
+    private int mYear, mMonth, mDay;
+    private LinearLayout ivback;
+    private ListView attendanceListView;
+    private List<MGRResponseAttendanceModel> modelList;
+    private FRTTextviewTrebuchetMS norecord;
+    private FRTTextviewTrebuchetMS loader;
+    private FRTWEBAPI frtwebapi;
+    private FRTSharePrefUtil frtSharePrefUtil;
+    private ImageView addApplyLeaveImg;
+    private int userIdEncripted;
+    private MGRAttendanceActivity mgrAttendanceActivity = this;
+    private MGRAttendanceAdapter adapter;
+    private int roleId;
+    private ProgressDialog progressDialog;
+    private FRTConnectivityReceiver frtCnnectivityReceiver;
+    private String roleName;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_mgrattendance);
+        callBackSetUp();
+    }
+
+
+    /**
+     * This method initialize the callback and objects
+     */
+    private void callBackSetUp() {
+        FRTCallBackInitViews frtCallBackInitViews = mgrAttendanceActivity;
+        frtCallBackForIdFind = mgrAttendanceActivity;
+        FRTCallBackSetListeners frtCallBackSetListeners = mgrAttendanceActivity;
+        frtCallBackInitViews.initAllViews();
+        frtCallBackSetListeners.commonListeners();
+    }
+
+    @Override
+    public void commonListeners() {
+        ivback.setOnClickListener(frtBackClick);
+       // staartdate.setOnClickListener(frtStartCLick);
+       // enddate.setOnClickListener(frtEndCLick);
+       // ivserchattend.setOnClickListener(frtSearchCLick);
+        addApplyLeaveImg.setOnClickListener(frtApplyLeaveClick);
+    }
+
+
+    private final View.OnClickListener frtApplyLeaveClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            DialogFragment newFragment = ApplyLeaveDialogFragment.newInstance();
+            newFragment.show(getFragmentManager(), "dialog");
+        }
+    };
+
+
+
+   /* private final View.OnClickListener frtStartCLick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            // Launch Date Picker Dialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mgrAttendanceActivity, onFromDateSet, mYear, mMonth, mDay);
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
+        }
+    };
+    private final DatePickerDialog.OnDateSetListener onFromDateSet = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+            String fromdate = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            try {
+                staartdate.setText(frtUtility.formatDate(fromdate));
+            } catch (Exception ex) {
+            }
+        }
+    };
+    private final View.OnClickListener frtEndCLick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            // Launch Date Picker Dialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mgrAttendanceActivity, onEndDateSet, mYear, mMonth, mDay);
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
+        }
+    };
+    private final DatePickerDialog.OnDateSetListener onEndDateSet = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+            String enddates = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            try {
+                enddate.setText(frtUtility.formatDate(enddates));
+            } catch (Exception ex) {
+            }
+        }
+    };*/
+    private final View.OnClickListener frtBackClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        if (frtConnectivityReceiver.isConnected(mgrAttendanceActivity)) {
+            super.onBackPressed();
+            Intent intent = new Intent(mgrAttendanceActivity, PTRNavigationScreenActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_right);
+        } else {
+            frtUtility.setSnackBar(getString(R.string.nointernet), findViewById(R.id.header));
+        }
+    }
+
+    @Override
+    public void initAllViews() {
+        frtCnnectivityReceiver = new FRTConnectivityReceiver();
+        addApplyLeaveImg = (ImageView) frtCallBackForIdFind.view(R.id.addApplyLeaveImg);
+        ivback = (LinearLayout) frtCallBackForIdFind.view(R.id.ivback);
+        attendanceListView = (ListView) frtCallBackForIdFind.view(R.id.frtaddressListView);
+       // staartdate = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.staartdate);
+       // enddate = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.enddate);
+        norecord = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.norecord);
+      //  ivserchattend = (ImageView) frtCallBackForIdFind.view(R.id.ivserchattend);
+        loader = (FRTTextviewTrebuchetMS) frtCallBackForIdFind.view(R.id.loader);
+        frtUtility = FRTUtility.getUtilityInstance();
+        frtUtility.setContext(mgrAttendanceActivity);
+        frtUtility.settingStatusBarColor(mgrAttendanceActivity, R.color.colorPrimary);
+        frtConnectivityReceiver = new FRTConnectivityReceiver();
+        broadcasting = FRTBroadcasting.getBroadcastingInstance();
+        broadcasting.setContext(mgrAttendanceActivity);
+        broadcasting.setCallbackBroadcast(mgrAttendanceActivity);
+        adapter = new MGRAttendanceAdapter(mgrAttendanceActivity);
+        frtwebapi = new FRTWEBAPI();
+        frtSharePrefUtil = FRTSharePrefUtil.getInstance(mgrAttendanceActivity);
+        try {
+            roleName =frtSharePrefUtil.getString(getString(R.string.role_name));
+          //  String managerName = frtSharePrefUtil.getRole_name().equals("Manager").
+            roleId = Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                    Base64.decode(frtSharePrefUtil.getString(getString(R.string.role_id)).getBytes("UTF-16LE"), Base64.DEFAULT)));
+            userIdEncripted = Integer.parseInt(AESEncriptDecript.decrypt(AESEncriptDecript.KEY_SHA,
+                    Base64.decode(frtSharePrefUtil.getString(getString(R.string.userkey)).getBytes("UTF-16LE"), Base64.DEFAULT)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (roleName.equalsIgnoreCase("Manager")){
+            addApplyLeaveImg.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMgrAttendance();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Intent previewMessage = new Intent(MGRAttendanceActivity.this, MGRAttendanceActivity.class);
+        startActivity(previewMessage);
+        this.finish();
+    }
+
+
+    private void setAdapter(List<MGRResponseAttendanceModel> responseAttendanceModels) {
+        adapter.setDataSet(responseAttendanceModels);
+        adapter.setSelectionListener(mgrAttendanceActivity);
+        adapter.notifyDataSetChanged();
+        attendanceListView.setAdapter(adapter);
+    }
+
+    @Override
+    public View view(int id) {
+        return findViewById(id);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        broadcastReceiver = broadcasting.getBroadcasting();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void getBroadcast(boolean isBroadcasting) {
+
+        if (isBroadcasting) {
+            frtUtility.setSnackBar(getString(R.string.nointernet), ivback);
+            frtUtility.dialogHide();
+            checknet = true;
+        } else {
+            if (checknet)
+              //  getAttendance();
+            checknet = false;
+        }
+    }
+
+    private void getMgrAttendance() {
+        try {
+            if (frtCnnectivityReceiver.isConnected(getApplicationContext())) {
+                progressDialog = new ProgressDialog(mgrAttendanceActivity);
+                FRTAsyncCommon<MGRRequestAttendanceModel> frtAsyncCommon = FRTAsyncCommon.getAsyncInstance();
+                frtAsyncCommon.setFrtModel(setUpAttendanceModel());
+                frtAsyncCommon.setContext(mgrAttendanceActivity);
+                frtAsyncCommon.execute(frtwebapi.getWEBAPI(FRTAPIType.GET_LEAVE_DETAIL_ATTENDANCE), "GetLeaveDetail");
+                frtAsyncCommon.setFetchDataCallBack(mgrAttendanceActivity);
+            progressDialog.setMessage(getString(R.string.pleaseWait));
+            progressDialog.show();
+
+            } else {
+                frtUtility.setSnackBar(getString(R.string.max31days), attendanceListView);
+           }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private MGRRequestAttendanceModel setUpAttendanceModel() {
+        MGRRequestAttendanceModel mgrRequestAttendanceModel = new MGRRequestAttendanceModel();
+        mgrRequestAttendanceModel.setUserId(userIdEncripted);
+        mgrRequestAttendanceModel.setRoleId(roleId);
+        mgrRequestAttendanceModel.setSubordinateId(0);
+        return mgrRequestAttendanceModel;
+    }
+
+    @Override
+    public void getAsyncData(String response, String type) {
+        modelList = new ArrayList<>();
+        progressDialog.dismiss();
+
+        if (response != null) {
+            try {
+
+                Log.d(this.getClass().getName(), "RESPONSE_ATTENDANCE===" + response);
+                MGRAttendanceMainModel mgrAttendanceMainModel = new Gson().fromJson(response, MGRAttendanceMainModel.class);
+                if (mgrAttendanceMainModel.getResults().size() > 0) {
+                    norecord.setVisibility(View.GONE);
+                    attendanceListView.setVisibility(View.VISIBLE);
+                    setAdapter(mgrAttendanceMainModel.getResults());
+
+                } else if (mgrAttendanceMainModel.getStatus().equals(getString(R.string.req_denied))) {
+                    frtUtility.goToLogin(getString(R.string.req_denied));
+                } else if (mgrAttendanceMainModel.getStatus().equals(getString(R.string.session_exp))) {
+                    frtUtility.goToLogin(getString(R.string.session_exp));
+                } else if (mgrAttendanceMainModel.getStatus().equals("ZERO_RESULTS")) {
+                    norecord.setText(mgrAttendanceMainModel.getError_message());
+                    norecord.setVisibility(View.VISIBLE);
+                    attendanceListView.setVisibility(View.GONE);
+                } else {
+                    norecord.setText(getString(R.string.nopetrollercheckIn));
+                    norecord.setVisibility(View.VISIBLE);
+                    attendanceListView.setVisibility(View.GONE);
+                }
+                loader.setVisibility(View.GONE);
+
+
+            } catch (IllegalStateException | JsonSyntaxException exception) {
+                exception.printStackTrace();
+            }
+        }
+        else{
+           // pDialog.dismiss();
+            // progressDialog.dismiss();
+            frtUtility.setSnackBar(getString(R.string.notgetting_responseFromServer), attendanceListView);
+        }
+    }
+
+
+
+
+
+    @Override
+    public void onClickItem(int position) {
+
+    }
+}

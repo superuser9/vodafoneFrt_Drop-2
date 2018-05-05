@@ -1,0 +1,185 @@
+package com.vodafone.frt.adapters;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.vodafone.frt.R;
+import com.vodafone.frt.fragments.AcceptLeaveStatusFragment;
+import com.vodafone.frt.fragments.RejectedLeaveStatusFragment;
+import com.vodafone.frt.fragments.RejectedTaskIssueFragment;
+import com.vodafone.frt.models.MGRRequestAttendanceModel;
+import com.vodafone.frt.models.MGRResponseAttendanceModel;
+import com.vodafone.frt.models.PTRResponseAttendanceModel;
+
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/20/2018.
+ */
+
+public class MGRAttendanceAdapter extends BaseAdapter {
+
+
+    private final Context context;
+    private SelectionViewAttendanceListener listener;
+    private List<MGRResponseAttendanceModel> dataSet;
+
+    public MGRAttendanceAdapter(Context context){
+        this.context=context;
+    }
+
+
+    public void setSelectionListener(SelectionViewAttendanceListener listener) {
+        this.listener = listener;
+    }
+
+    public void setDataSet(List<MGRResponseAttendanceModel> dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public int getCount() {
+        return dataSet.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder holder;
+        MGRResponseAttendanceModel atendance = dataSet.get(position);
+        if (convertView== null){
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.item_mgr_attendance_list, parent, false);
+            holder.attendance_date = convertView.findViewById(R.id.attendance_date);
+            holder.userNameTextView = convertView.findViewById(R.id.userNameTextView);
+            holder.fromDateTextView = convertView.findViewById(R.id.fromDateTextView);
+            holder.toDateTextView = convertView.findViewById(R.id.toDateTextView);
+            holder.leaveReasonTextView = convertView.findViewById(R.id.leaveReasonTextView);
+            holder.managerRemarksTextView = convertView.findViewById(R.id.managerRemarksTextView);
+            holder.approveOnTextView = convertView.findViewById(R.id.approveOnTextView);
+         holder.leaveStatusTextView = convertView.findViewById(R.id.leaveStatusTextView);
+            holder.img_rejectLeave = convertView.findViewById(R.id.img_rejectLeave);
+            holder.img_acceptLeave = convertView.findViewById(R.id.img_acceptLeave);
+            convertView.setTag(holder);
+
+
+
+            holder.img_acceptLeave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int leaveId  = dataSet.get(position).getLeave_id();
+
+                    //if (issue_id_list.size() >0) {
+                    DialogFragment newFragment = AcceptLeaveStatusFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("LEAVE_ID", leaveId);
+                    newFragment.setArguments(bundle);
+                    newFragment.show(((Activity) context).getFragmentManager(), "dialog");
+                 /*   int leaveId  = dataSet.get(position).getLeave_id();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("\tAre you sure you want to Approve this Leave ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                   // finish();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("Confirm?");
+                    alert.show();*/
+                }
+            });
+
+            holder.img_rejectLeave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //int getPosition = (Integer) v.getTag();
+                    //if (getPosition)
+                   // if (dataSet.size()>0){
+                   int leaveId  = dataSet.get(position).getLeave_id();
+
+                    //if (issue_id_list.size() >0) {
+                    DialogFragment newFragment = RejectedLeaveStatusFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                   bundle.putInt("LEAVE_ID", leaveId);
+                    newFragment.setArguments(bundle);
+                    newFragment.show(((Activity) context).getFragmentManager(), "dialog");
+
+
+                }
+            });
+
+
+        }else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        if (atendance.getUser_name() != null && !atendance.getUser_name().equals("null")){
+            holder.userNameTextView.setText(atendance.getUser_name());
+        }
+
+        if (atendance.getCreated_on() != null && !atendance.getCreated_on().equals("null")){
+            holder.attendance_date.setText(atendance.getCreated_on());
+        }
+        if (atendance.getManager_remark() != null && !atendance.getManager_remark().equals("null")){
+            holder.managerRemarksTextView.setText(atendance.getManager_remark());
+        }
+        if (atendance.getFrom_date() != null && !atendance.getFrom_date().equals("null")){
+            holder.fromDateTextView.setText(atendance.getFrom_date());
+        }
+        if (atendance.getTo_date() != null && !atendance.getTo_date().equals("null")){
+            holder.toDateTextView.setText(atendance.getTo_date());
+        }
+        if (atendance.getLeave_reason() != null && !atendance.getLeave_reason().equals("null")){
+            holder.leaveReasonTextView.setText(atendance.getLeave_reason());
+        }
+        if (atendance.getLeave_status() != null && !atendance.getLeave_status().equals("null")){
+            holder.leaveStatusTextView.setText(atendance.getLeave_status());
+        }
+
+        //if (atendance.g)
+        return convertView;
+    }
+
+
+
+    private class ViewHolder {
+        TextView attendance_date, userNameTextView, fromDateTextView, toDateTextView,leaveReasonTextView,leaveStatusTextView,
+                managerRemarksTextView,approveOnTextView;
+        ImageView img_rejectLeave,img_acceptLeave;
+    }
+
+    public interface SelectionViewAttendanceListener {
+        void onClickItem(int position);
+    }
+}

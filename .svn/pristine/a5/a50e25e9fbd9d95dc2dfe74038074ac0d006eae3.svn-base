@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+h1{ font-size:22px; color:blue;}
+h2{ font-size:18px; color:#333;}
+h4{ font-size:16px;}
+img{ margin:0 auto; text-align:center;}
+li a{ text-decoration:none;  color:#blue; font-weight:400;}
+</style>
+</head>
+<body>
+<div align="center"><img src="1.png" alt="" height="100px" /></div>
+<h1 style="text-align: center;"><strong><em>Vodafone Smart Patroller </em></strong></h1>
+<h2 style="text-align: center;"><strong>Android Mobile Application</strong></h2>
+<h2 style="text-align: center;"><strong>User Manual</strong></h2>
+<h4 style="text-align: center;">Version 1.1</h4>
+<p>&nbsp;</p>
+<p>Contents</p>
+<ol>
+<li><a href="#_Toc508991633"> Introduction. 3</a></li>
+<li><a href="#_Toc508991634"> Application Installation. 4</a></li>
+<li><a href="#_Toc508991635"> Launch the Application. 6</a></li>
+<li><a href="#_Toc508991636"> Logging in to Application. 7</a></li>
+<li><a href="#_Toc508991637"> Dashboard/Home for Patroller. 8</a></li>
+<li><a href="#_Toc508991638"> My Task. 9</a></li>
+<li><a href="#_Toc508991639"> Planned Task. 10</a></li>
+<li><a href="#_Toc508991640"> SOS (Save Our Soul). 11</a></li>
+<li><a href="#_Toc508991641"> Attendance. 12</a></li>
+<li><a href="#_Toc508991642"> Start Route. 13</a></li>
+<li><a href="#_Toc508991643"> Pause Route. 17</a></li>
+<li><a href="#_Toc508991644"> Resume Route. 21</a></li>
+<li><a href="#_Toc508991645"> Selfie Upload. 22</a></li>
+<li><a href="#_Toc508991646"> Upload Document while Patrolling. 23</a></li>
+<li><a href="#_Toc508991647"> Halt Point Check-In. 25</a></li>
+<li><a href="#_Toc508991648"> Halt Point Check-Out 28</a></li>
+<li><a href="#_Toc508991649"> Raise Issue. 30</a></li>
+<li><a href="#_Toc508991650"> End Route. 32</a></li>
+<li><a href="#_Toc508991651"> View Planned Path vs Actual Path. 33</a></li>
+<li><a href="#_Toc508991652"> Create Self Checkin Route. 34</a></li>
+</ol>
+<p>&nbsp;</p>
+<h4><a name="_Toc508991633"></a>1. Introduction</h4>
+<p><strong>&nbsp;</strong></p>
+<p>The <strong>Vodafone Smart Patroller</strong> is a real-time tracking application where Patroller will have to visit a particular route as assigned by his/her reporting manager. The patroller can scan, tags the placed on locations and inform to manager for issues/incidents and the Monitoring Center gets informed in real-time about incidents and events.</p>
+<p>Goal of this project as below:</p>
+<ul>
+<li>Create route and assign the created route to patroller by manager.</li>
+<li>Send incident/issue on real time by Patroller through mobile app.</li>
+<li>Gets informed in real-time about incidents and events.</li>
+<li>View Patroller Attendance report.</li>
+<li>In real time Manager can monitor the Patroller&rsquo;s driving speed, Mobile battery percentage, Current/last known location.</li>
+<li>To check the deviation between the assigned planned path and actual followed path.</li>
+</ul>
+<p>&nbsp;</p>
+<h4><a name="_Toc508991634"></a>2. Application Installation</h4>
+<p>Follow below steps to install the Vodafone Smart Patroller android application.</p>
+<ol>
+<li>Clicks on provided APK file to install Vodafone Smart Patroller application.</li>
+<li>It will ask to allow installation fromUnknown source (If installation is blocked).</li>
+<li>It will ask to allow installation fromUnknown source (If installation is blocked).</li>
+</ol>
+<p>&nbsp; &nbsp; Allow Permission to install app from Unknown source.</p>
+<div align="center"><img src="2.png" alt="" height="500px" /></div>
+<ol start="4">
+<li>Clicks on Install button.</li>
+<li>It will take a movement to install the application</li>
+</ol>
+<div align="center"><img src="3.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991635"></a>3. Launch the Application</h4>
+<p>Clicks on Vodafone Smart Patroller application icon on application menu to start the application.</p>
+<div align="center"><img src="4.png" alt="" height="500px" /></div>
+<p>&nbsp;</p>
+<h4><a name="_Toc508991636"></a>4. Logging in to Application</h4>
+<ol>
+<li>Click on Vodafone Smart Patroller icon on application menu.</li>
+<li>On Clicking the Vodafone Smart Patroller icon, the application starts and display the Login page which contains the following option</li>
+</ol>
+<ul>
+<li>Username</li>
+<li>Password</li>
+<li>Login button</li>
+</ul>
+<div align="center"><img src="5.png" alt="" height="500px" /></div>
+<ol start="3">
+<li>Enter valid Username and Password and click on the Login button.</li>
+<li>On clicking the Login button, the application validates the information.</li>
+<li>If the information is valid the login is successful and Dashboard is displayed.</li>
+</ol>
+<h4><a name="_Toc508991637"></a>5. Dashboard/Home for Patroller.</h4>
+<p>The dashboard contains the following icons. Each of these icon is a link to the respective section:</p>
+<div align="center"><img src="6.png" alt="" height="500px" /></div>
+<ol>
+<li><strong>My Task</strong>: - My task will have a list of assign route for today&rsquo;s date.</li>
+<li><strong>Planned Task</strong>: - It contains a list of all schedule future routes.</li>
+<li><strong>SOS </strong>:- Emergency contact numbers.</li>
+<li><strong>Attendance</strong>: - Show the route wise attendance report.</li>
+<li><strong>Self Check</strong>-<strong>in</strong> :- Patroller can create the Route for himself.</li>
+<li><strong>Others :- </strong>To view the Help desk, Loyalty points, Support, Bulletin Board and Feedback option.</li>
+<li><strong>Logout</strong>: - Logging out from the app</li>
+</ol>
+<h4><a name="_Toc508991638"></a>6. My Task</h4>
+<p>Clicks on My Task option, it will have four tabs as mentioned in below screen.</p>
+<div align="center"><img src="7.png" alt="" height="500px" /></div>
+<ol>
+<li><strong>Assigned</strong>: - Assigned task will display the list of all Assigned task for todays.</li>
+<li><strong>Inprogress</strong>: - It will display the route which is currently is intransit.</li>
+<li><strong>Pending </strong>:- Display the list of all routes which is not Completed on scheduled date.</li>
+<li><strong>Completed</strong>: - Display the list of all completed routes.</li>
+</ol>
+<h4><a name="_Toc508991639"></a>7. Planned Task</h4>
+<p>Clicks on Planned Task option to view all scheduled plan routes for future date as mentioned in below screen.</p>
+<div align="center"><img src="8.png" alt="" height="500px" /></div>
+<p>&nbsp;</p>
+<h4><a name="_Toc508991640"></a>8. SOS (Save Our Soul)</h4>
+<p>SOS will have a list of emergency contacts. Clicks on any number to make a call.</p>
+<div align="center"><img src="9.png" alt="" height="500px" /></div>
+<p>&nbsp;</p>
+<h4><a name="_Toc508991641"></a>9. Attendance</h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clicks on Attendance option to view the attendance based on the followed assigned route.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User also can apply the date filter to view the attendance for specific date range.</p>
+<p>&nbsp;</p>
+<div align="center"><img src="10.png" alt="" height="500px" /></div>
+<h4>10. &nbsp;<a name="_Toc508991642"></a>Start Route</h4>
+<p>Follow below steps to start assigned route</p>
+<ol>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>User will have on Assigned Tab where today&rsquo;s route plan will be visible.</li>
+<div align="center"><img src="11.png" alt="" height="500px" /></div>
+<li>Clicks on Globe icon to view the planned path.</li>
+</ol>
+</ol>
+<p>Note : If will ask to allow to share your device location if device location is Turn OFF.<br />Please Turn ON your device location to start the route</p>
+<ol>
+<div align="center"><img src="12.png" alt="" height="500px" /></div>
+<li>User can view the planned path on clicking Globe icon, planned path will display as below.</li>
+<div align="center"><img src="13.png" alt="" height="500px" /></div>
+<div align="center"><img src="14.png" alt="" height="500px" /></div>
+<li>
+<ol>
+<li>Clicks on Start button (as mentioned in above snapshot) to Start the route.</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Once you click on Start button, it will ask to capture the image.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clicks on<strong> + (Plus) </strong>icon &agrave; Camera will Turn ON &agrave; Capture the Image &agrave; Clicks on OK.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; Clicks on Submit button</li>
+<div align="center"><img src="15.png" alt="" height="500px" /></div>
+<div align="center"><img src="16.png" alt="" height="500px" /></div>
+<li>Once route is started, it will be moved in Inprogress tab from assigned tab.</li>
+</ol>
+
+<h4><a name="_Toc508991643"></a>11. Pause Route</h4>
+<p>Follow below steps to Pause the Route</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+<li>Clicks on Pause button, it will ask confirmation to pause the route. Clicks OK on it.</li>
+<div align="center"><img src="17.png" alt="" height="500px" /></div>
+<div align="center"><img src="18.png" alt="" height="500px" /></div>
+<li>Select a Pause Reason and clicks on Save button.
+<div align="center"><img src="19.png" alt="" height="500px" /></div>
+<div align="center"><img src="20.png" alt="" height="500px" /></div>
+<p>After Clicking on Save button it will Prompt to upload image.</p>
+<p>Navigation:</p>
+Select a Pause Reason &agrave; Clicks on Save &agrave; Upload image option will get open (clicks on + icon) &agrave; capture the Image &agrave; Clicks on OK.&agrave; Clicks on Submit button.</li>
+<div align="center"><img src="21.png" alt="" height="500px" /></div>
+<div align="center"><img src="22.png" alt="" height="500px" /></div>
+<li>After Pause action, Pause button will be change to Resume and End button will visible &nbsp;in disable mode.</li>
+<div align="center"><img src="23.png" alt="" height="500px" /></div>
+<div align="center"><img src="24.png" alt="" height="500px" /></div>
+</ol>
+<h4><a name="_Toc508991644"></a>12. Resume Route</h4>
+<p>Follow below steps to Resume the Route</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+<li>Clicks on Resume Button to continue routing.</li>
+<li>Resume button will be changed to Pause and End option will be in enabled mode.</li>
+</ol>
+<div align="center"><img src="25.png" alt="" height="500px" /></div>
+<div align="center"><img src="26.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991645"></a>13. Selfie Upload</h4>
+<p>Follow below steps to Upload the Selfie while patrolling.</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+<li>Clicks on Selfie icon.</li>
+<li>Capture the Image and Clicks YES.</li>
+</ol>
+<div align="center"><img src="27.png" alt="" height="500px" /></div>
+<div align="center"><img src="28.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991646"></a>14. Upload Document while Patrolling</h4>
+<p>Patroller has an option to upload document while patrolling.&nbsp; Uploading document option would be available for <strong>inprogress</strong> route only.</p>
+<p>Follow below steps to Upload Document :</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+<li>Clicks on + Icon (it is visible on top right corner).</li>
+<li>Select a file which you want to upload, Mention the comment and clicks on OK.</li>
+</ol>
+<div align="center"><img src="29.png" alt="" height="500px" /></div>
+<div align="center"><img src="30.png" alt="" height="500px" /></div>
+<div align="center"><img src="31.png" alt="" height="500px" /></div>
+<div align="center"><img src="32.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991647"></a>15. Halt Point Check-In</h4>
+<p>Halt Point would be visible on planned route. Patroller can check-in on that halt point followed by below steps:</p>
+<ol>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+</ol>
+<p>Clicks on Halt Point. (If Patroller&rsquo;s current location is in defined buffer limit of Halt point then only patroller can able to checkin on halt point otherwise it will prompt the message &ldquo;You are not in buffer limit to checkin this halt point) Clicks on YES &agrave; Upload image option will get open (clicks on + icon) &agrave; capture the Image &agrave; Clicks on OK.&agrave; Clicks on Submit button.</p>
+<div align="center"><img src="33.png" alt="" height="500px" /></div>
+<div align="center"><img src="34.png" alt="" height="500px" /></div>
+<div align="center"><img src="35.png" alt="" height="500px" /></div>
+<div align="center"><img src="36.png" alt="" height="500px" /></div>
+<p>Halt point color would be changed to yellow where Patroller has checked-In</p>
+<div align="center"><img src="37.png" alt="" height="500px" /></div>
+<p>Note:</p>
+<ol>
+<li>CheckIn will allow only in defined buffer limit.</li>
+<li>Patroller cannot checkin another Halt point if any halt point is already checkedIn.</li>
+</ol>
+<h4><a name="_Toc508991648"></a>16. Halt Point Check-Out</h4>
+<p>Checked-In Halt Point would be visible in Yellow color. Patroller can check-out on that halt point followed by below steps:</p>
+<p>Clicks on Halt point which is already Checked-In &agrave; Clicks on YES &agrave; Capture the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; checkout image &agrave; Submit the checkout image</p>
+<div align="center"><img src="38.png" alt="" height="500px" /></div>
+<div align="center"><img src="39.png" alt="" height="500px" /></div>
+<div align="center"><img src="40.png" alt="" height="500px" /></div>
+<div align="center"><img src="41.png" alt="" height="500px" /></div>
+<p>&nbsp;Halt point color would be changed to Green if patroller has successfully checked-Out.</p>
+<h4><a name="_Toc508991649"></a>17. Raise Issue</h4>
+<p>Patroller has an option to raise the issue while patrolling followed by below steps:</p>
+<p><strong>Note</strong> : Raise issue option will only application for Inprogress route.</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route.</li>
+<li>Clicks on Raise Issue option (it is visible on top right corner).</li>
+<div align="center"><img src="42.png" alt="" height="500px" /></div>
+<div align="center"><img src="43.png" alt="" height="500px" /></div>
+<li>Select the reason for issue and mention the issue remarks and clicks on Save button.</li>
+<li>Capture the Image and Submit.</li>
+</ol>
+<div align="center"><img src="44.png" alt="" height="500px" /></div>
+<div align="center"><img src="45.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991650"></a>18. End Route</h4>
+<p>Follow below steps to End the Route</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Inprogress.</li>
+<li>Clicks on Globe icon to view the inprogress route</li>
+<li>Clicks on End Button to stop routing. Confirmation message will prompt to stop the routing. Clicks OK on it.</li>
+<li>Capture the image and submit the same.</li>
+<li>Once route is End, it will be moved in Completed tab from Inprogress tab.</li>
+</ol>
+<div align="center"><img src="46.png" alt="" height="500px" /></div>
+<div align="center"><img src="47.png" alt="" height="500px" /></div>
+<h4>19. View Planned Path vs Actual Path</h4>
+<p>Follow below steps to view the Planned vs actual route which is followed while routing.</p>
+<ol>
+<li>Clicks on My Task section.</li>
+<li>Tab to Completed.</li>
+<li>Clicks on Globe icon, Planned route will be shown in blue color and Green color indicates the actual route. S points indicate the start point while E indicates the End point.</li>
+</ol>
+<div align="center"><img src="48.png" alt="" height="500px" /></div>
+<h4><a name="_Toc508991652"></a>20. Create Self Check-in Route</h4>
+<p>Follow below steps to create the Self checkin Route.</p>
+<ol>
+<li>Clicks on Self Check-in option.</li>
+<li>Fill the mandatory details and clicks on Submit button.</li>
+<div align="center"><img src="49.png" alt="" height="500px" /></div>
+<div align="center"><img src="50.png" alt="" height="500px" /></div>
+<li>Once Patroller Submit the Self Check-in route, Request goes to respective manager for approval.
+<p>Self checkin route have following status.</p>
+<ul>
+<li>Pending &ndash;If No action is taken by reporting manager</li>
+<li>Approval- If it is approved by Manager</li>
+<li>Rejected &ndash;If request has been rejected by Manager</li>
+</ul>
+Once Self Check-in route is approved, same will be visible in Assigned task where patroller can start the route.</li>
+</ol>
+<div align="center"><img src="51.png" alt="" height="500px" /></div>
+<div align="center"><img src="52.png" alt="" height="500px" /></div>
+</body>
+</html>

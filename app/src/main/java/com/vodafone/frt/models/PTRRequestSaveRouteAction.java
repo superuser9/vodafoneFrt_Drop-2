@@ -1,0 +1,79 @@
+package com.vodafone.frt.models;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by vishal on 13/12/17
+ */
+public class PTRRequestSaveRouteAction {
+    private int assignedRouteId;
+    private String action, latitude, longitude, mobileTime, reasonId, remark;
+    private List<String> base64encodedstringList = new ArrayList<>();
+
+    public List<String> getBase64encodedstringList() {
+        return base64encodedstringList;
+    }
+
+    public void setBase64encodedstringList(List<String> base64encodedstringList) {
+        this.base64encodedstringList = base64encodedstringList;
+    }
+    public int getAssignedRouteId() {
+        return assignedRouteId;
+    }
+
+    public void setAssignedRouteId(int assignedRouteId) {
+        this.assignedRouteId = assignedRouteId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getMobileTime() {
+        return mobileTime;
+    }
+
+    public void setMobileTime(String mobileTime) {
+        this.mobileTime = mobileTime;
+    }
+
+    public String getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(String reasonId) {
+        this.reasonId = reasonId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+
+}

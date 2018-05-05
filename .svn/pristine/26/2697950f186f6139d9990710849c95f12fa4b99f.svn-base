@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#ffff"
+    android:paddingTop="-25dp"
+    android:clickable="false"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp">
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+
+        android:textStyle="bold"
+
+        android:gravity="center"
+        android:text="@string/assign_issue"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        tools:ignore="RtlHardcoded" />
+
+    <View
+        android:layout_marginRight="-10dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+       <!-- <TextView
+            android:background="@drawable/enablededittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSearch"
+            android:text="Select FRT"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />-->
+        <Spinner
+            android:layout_marginBottom="5dp"
+            android:id="@+id/simpleSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+       <!-- <EditText
+            android:background="@drawable/enablededittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextSearch"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />-->
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>
+
+
+<!--    <ListView
+
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewSearch"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText" />-->
+
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_9sdp"
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:weightSum="2">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/staartdateheader"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/assignedDate"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+       <!-- <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/enddateheader"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/end_date"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/staartdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center"
+
+            android:background="@drawable/enablededittext"
+            android:hint="@string/dd_mmm_yyyy"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+     <!--   <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/enddate"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:hint="@string/end_date"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />-->
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/v2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tag"
+        android:background="@android:color/black" />
+
+
+
+
+    <!--<LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:weightSum="2">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/start_time"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/end_time"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="2dp"
+        android:weightSum="2">
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/starttime"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:hint="@string/start_time"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/endtime"
+            android:layout_width="0dp"
+
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:hint="@string/end_time"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>-->
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+       <!-- <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:gravity="center"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/remark"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp" />-->
+        <EditText
+            android:textSize="14sp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/enablededittext"
+            android:textColor="@android:color/black"
+            android:id="@+id/remarksTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/remarks">
+        </EditText>
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@android:color/black"></View>
+
+    <LinearLayout
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/cancel"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+        <Button
+
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/submit"
+            android:id="@+id/submitBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/enablededittext"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

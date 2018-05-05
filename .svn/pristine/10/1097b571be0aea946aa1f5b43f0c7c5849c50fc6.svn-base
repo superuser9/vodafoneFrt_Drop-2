@@ -1,0 +1,128 @@
+package com.vodafone.frt.models;
+
+import android.support.annotation.NonNull;
+
+/**
+ * Created by vishal on 9/12/17
+ */
+
+public class FRTResponseAttendanceModel implements Comparable<FRTResponseAttendanceModel> {
+
+    //Dummy Data start
+    private String RouteId;
+
+    public int getRoute__id() {
+        return route__id;
+    }
+
+    public void setRoute__id(int route__id) {
+        this.route__id = route__id;
+    }
+
+    public int getRoute_ref_id() {
+        return route_ref_id;
+    }
+
+    public void setRoute_ref_id(int route_ref_id) {
+        this.route_ref_id = route_ref_id;
+    }
+
+
+    //Dummy Data end
+
+    private int route_assigned_id, route__id, route_ref_id;
+    private String patroller_name;
+    private String attendance_date;
+    private String route_name;
+    private String planned_start_time;
+    private String planned_end_time;
+    private String actual_start_time;
+    private String actual_end_time;
+    private String planned_time_diff;
+    private String time_taken;
+
+    public int getRoute_assigned_id() {
+        return route_assigned_id;
+    }
+
+    public void setRoute_assigned_id(int route_assigned_id) {
+        this.route_assigned_id = route_assigned_id;
+    }
+
+    public String getPatroller_name() {
+        return patroller_name;
+    }
+
+    public void setPatroller_name(String patroller_name) {
+        this.patroller_name = patroller_name;
+    }
+
+    public String getAttendance_date() {
+        return attendance_date;
+    }
+
+    public void setAttendance_date(String attendance_date) {
+        this.attendance_date = attendance_date;
+    }
+
+    public String getRoute_name() {
+        return route_name;
+    }
+
+    public void setRoute_name(String route_name) {
+        this.route_name = route_name;
+    }
+
+    public String getPlanned_start_time() {
+        return planned_start_time;
+    }
+
+    public void setPlanned_start_time(String planned_start_time) {
+        this.planned_start_time = planned_start_time;
+    }
+
+    public String getPlanned_end_time() {
+        return planned_end_time;
+    }
+
+    public void setPlanned_end_time(String planned_end_time) {
+        this.planned_end_time = planned_end_time;
+    }
+
+    public String getActual_start_time() {
+        return actual_start_time;
+    }
+
+    public void setActual_start_time(String actual_start_time) {
+        this.actual_start_time = actual_start_time;
+    }
+
+    public String getActual_end_time() {
+        return actual_end_time;
+    }
+
+    public void setActual_end_time(String actual_end_time) {
+        this.actual_end_time = actual_end_time;
+    }
+
+    public String getPlanned_time_diff() {
+        return planned_time_diff;
+    }
+
+    public void setPlanned_time_diff(String planned_time_diff) {
+        this.planned_time_diff = planned_time_diff;
+    }
+
+    public String getTime_taken() {
+        return time_taken;
+    }
+
+    public void setTime_taken(String time_taken) {
+        this.time_taken = time_taken;
+    }
+
+    @Override
+    public int compareTo(@NonNull FRTResponseAttendanceModel o) {
+        return getAttendance_date().compareTo(o.getAttendance_date());
+    }
+}

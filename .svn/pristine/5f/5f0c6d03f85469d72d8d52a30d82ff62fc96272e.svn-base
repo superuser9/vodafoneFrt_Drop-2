@@ -1,0 +1,156 @@
+package com.vodafone.frt.adapters;
+
+import android.content.Context;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.activities.MGRTaskAssignActivity;
+import com.vodafone.frt.models.MGRResponseRouteIssueDetailsModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/29/2018.
+ */
+
+public class MGRTaskAssignAdapter extends BaseAdapter {
+
+    DataTransferInterface dtInterface;
+   SparseBooleanArray mCheckStates;
+    private Context mContext;
+    int checkCounter = 0;
+    public ArrayList<Integer> issueId_list = new ArrayList<>();
+
+    private List<MGRResponseRouteIssueDetailsModel> modelList;
+    public MGRTaskAssignAdapter(Context context, List<MGRResponseRouteIssueDetailsModel> models,DataTransferInterface dtInterface){
+        mContext = context;
+        modelList = models;
+        this.dtInterface = dtInterface;
+        checkCounter = 0;
+        mCheckStates = new SparseBooleanArray(models.size());
+    }
+
+    @Override
+    public int getCount() {
+        return modelList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return modelList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final ViewHolder holder;
+        MGRResponseRouteIssueDetailsModel responseRouteIssueDetailsModel = modelList.get(position);
+        if (convertView == null){
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.mgr_task_assign_adapter, parent, false);
+            holder.patrollerNameTextView = convertView.findViewById(R.id.patrollerNameTextView);
+            holder.issueTextView = convertView.findViewById(R.id.issueTextView);
+            holder.patrolleRemarksTextView = convertView.findViewById(R.id.patrolleRemarksTextView);
+            holder.managerRemarksTextView = convertView.findViewById(R.id.managerRemarksTextView);
+            holder.checkBoxTask = convertView.findViewById(R.id.checkBoxTask);
+            holder.checkBoxTask.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int getPosition = (Integer) buttonView.getTag();
+                    int issueIDCheckbox  = modelList.get(position).getIssue_id();
+                    modelList.get(getPosition).setSelected(buttonView.isChecked());
+                    if (holder.checkBoxTask.isChecked() && checkCounter >3){
+                        holder.checkBoxTask.setChecked(false);
+                        Toast.makeText(mContext, "you can select max 3!! ", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        MGRResponseRouteIssueDetailsModel p = modelList.get(position);
+                        p.setSelected(holder.checkBoxTask.isChecked());
+                        if (holder.checkBoxTask.isChecked()){
+
+                            if (mContext instanceof MGRTaskAssignActivity){
+                                issueId_list.add(modelList.get(position).getIssue_id());
+                                ((DataTransferInterface) mContext).setValues(issueId_list);
+                                Log.d(this.getClass().getName(),"ADD_LIST" + issueId_list);
+
+                            }
+                            checkCounter++;
+                        }
+                        else {
+
+                           // for (int i=0;i<issueId_list.size();i++) {
+                               // if (issueId_list.get(i) == getPosition) {
+                                   issueId_list.remove(issueId_list.indexOf(issueIDCheckbox));
+                                    ((DataTransferInterface) mContext).setValues(issueId_list);
+                                    Log.d(this.getClass().getName(),"REMOVE_LIST" + issueId_list);
+                               //}
+                              //  holder.checkBoxTask.setChecked(modelList.get(position).isSelected());
+                          // }
+
+                           // checkCounter--;
+                        }
+                        checkCounter--;
+
+                    }
+
+                }
+            });
+
+            convertView.setTag(holder);
+            convertView.setTag(R.id.checkBoxTask, holder.checkBoxTask);
+        }else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.checkBoxTask.setTag(position);
+        holder.checkBoxTask.setChecked(modelList.get(position).isSelected());
+        holder.issueTextView.setText(responseRouteIssueDetailsModel.getIssue_desc());
+        holder.patrollerNameTextView.setText(responseRouteIssueDetailsModel.getPatroller_user_name());
+        holder.patrolleRemarksTextView.setText(responseRouteIssueDetailsModel.getPatroller_remark());
+        holder.managerRemarksTextView.setText(responseRouteIssueDetailsModel.getManager_remark());
+
+
+        return convertView;
+    }
+
+    public boolean isChecked(int position) {
+        return mCheckStates.get(position, false);
+    }
+
+    public void setChecked(int position, boolean isChecked) {
+        mCheckStates.put(position, isChecked);
+
+    }
+
+    public void toggle(int position) {
+        setChecked(position, !isChecked(position));
+
+    }
+
+    private class ViewHolder {
+        CheckBox checkBoxTask;
+        TextView issueTextView, patrollerNameTextView, patrolleRemarksTextView, managerRemarksTextView;
+        ImageView img_map;
+    }
+
+    public interface DataTransferInterface {
+        public void setValues(ArrayList<Integer> issueId_list);
+    }
+
+}

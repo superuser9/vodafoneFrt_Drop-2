@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_cqhome_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ivback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:src="@mipmap/ic_back"
+                android:tint="@android:color/white"
+                tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded" />
+
+            <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ivback"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="@string/back"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                tools:ignore="ObsoleteLayoutParam,RtlHardcoded" />
+        </LinearLayout>
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:id="@+id/routetitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/ivback"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_45sdp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            tools:ignore="RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/upload_docs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/raise_issue"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/upload_docs"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="55dp"
+            android:src="@mipmap/raise_issue"
+            android:tint="@android:color/white"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reltop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header">
+
+        <FrameLayout
+            android:id="@+id/fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/relbottom" />
+
+        <ImageView
+            android:id="@+id/imglogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:src="@drawable/maplogo"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/imgsattelite"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/imglogo"
+            android:src="@mipmap/satellite"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/imghybrid"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignTop="@+id/imgnormal"
+            android:layout_gravity="right"
+            android:layout_toEndOf="@+id/imgsattelite"
+            android:layout_toRightOf="@+id/imgsattelite"
+            android:src="@mipmap/hybrid"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/imgnormal"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/imghybrid"
+            android:src="@mipmap/normal"
+
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/imgtraffic"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/imgnormal"
+            android:src="@mipmap/traffic"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/selfie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/relbottom"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/selfieicon"
+            android:tint="@color/colorPrimary"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/relbottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white">
+
+            <LinearLayout
+                android:id="@+id/llspeedList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="visible"
+                android:paddingTop="3dp"
+                android:weightSum="3">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/speedDbLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+              <!--  <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/distanceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />-->
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/speedDb1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_below="@+id/llspeedList"
+                android:id="@+id/llstart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:weightSum="2">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/startdatetime" />
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/starttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llstart"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:weightSum="2">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enddatetime" />
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/endtime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llactualstart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llend"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:weightSum="2">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/actualstartdatetime" />
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/actualstarttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llactualend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llactualstart"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:weightSum="2">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/actualenddatetime" />
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/actualendtime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llactualend"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="12dp"
+                android:weightSum="2">
+
+                <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                    android:id="@+id/completedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/completed"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <com.vodafone.frt.fonts.FRTButtonTrebuchetMS
+                    android:id="@+id/startButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/purplebackground"
+                    android:text="@string/start"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.vodafone.frt.fonts.FRTButtonTrebuchetMS
+                        android:id="@+id/pauseresumeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/purplebackground"
+                        android:text="@string/pause"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone"
+                        tools:ignore="RtlHardcoded" />
+
+
+                    <com.vodafone.frt.fonts.FRTButtonTrebuchetMS
+                        android:id="@+id/endButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/orangelayout"
+                        android:text="@string/end"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone"
+                        tools:ignore="RtlHardcoded" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

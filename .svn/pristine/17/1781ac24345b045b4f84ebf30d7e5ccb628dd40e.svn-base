@@ -1,0 +1,116 @@
+package com.vodafone.frt.adapters;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.fonts.FRTTextviewTrebuchetMS;
+import com.vodafone.frt.models.FRTResponseRouteCommonModelFRT;
+import com.vodafone.frt.models.FRTResponseTaskDetailForFrtModel;
+
+import java.util.List;
+
+/**
+ * Created by Ajay Tiwari on 3/16/2018.
+ */
+
+public class FRTRouteAdapterAssignedFRT extends BaseAdapter {
+
+    private  Context context;
+    private SelectionViewAttendanceListener listener;
+    private List<FRTResponseRouteCommonModelFRT> dataSet;
+
+    public FRTRouteAdapterAssignedFRT(Context context){
+        context =context;
+    }
+
+    public void setSelectionListener(SelectionViewAttendanceListener listener) {
+        this.listener = listener;
+    }
+
+
+    public void setDataSet(List<FRTResponseRouteCommonModelFRT> dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public int getCount() {
+        return dataSet.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        try {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.item_routes_assigned, parent, false);
+                holder.assignment_date = convertView.findViewById(R.id.assignment_date);
+                holder.tvroute = convertView.findViewById(R.id.route_name);
+                holder.plannedtiming = convertView.findViewById(R.id.duration);
+                holder.actualtiming = convertView.findViewById(R.id.timing);
+                holder.img_map = convertView.findViewById(R.id.img_map);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+
+            if (!dataSet.get(position).getAssigned_date().equalsIgnoreCase("null") && !TextUtils.isEmpty(dataSet.get(position).getAssigned_date()))
+                holder.assignment_date.setText(dataSet.get(position).getAssigned_date().split(" ")[0]);
+            else
+                holder.assignment_date.setText("");
+            String plannedStart = !dataSet.get(position).getAssigned_date().equalsIgnoreCase("null") && !TextUtils.isEmpty(dataSet.get(position).getAssigned_date()) ? (dataSet.get(position).getAssigned_date().split(" ")[1] + " "
+                    + dataSet.get(position).getAssigned_date().split(" ")[2]) : "";
+            String plannedEnd = !dataSet.get(position).getAssigned_date().equalsIgnoreCase("null") && !TextUtils.isEmpty(dataSet.get(position).getAssigned_date()) ? dataSet.get(position).getAssigned_date().split(" ")[1]
+                    + " " + dataSet.get(position).getAssigned_date().split(" ")[2] : "";
+            if (!plannedStart.equals("") || !plannedEnd.equals(""))
+                holder.plannedtiming.setText(plannedStart + " To "
+                        + plannedEnd);
+            else
+                holder.plannedtiming.setText("");
+            String actualStart = !dataSet.get(position).getCheckout_time().equalsIgnoreCase("null") && !TextUtils.isEmpty(dataSet.get(position).getCheckout_time()) ? (dataSet.get(position).getCheckout_time().split(" ")[1] + " "
+                    + dataSet.get(position).getCheckout_time().split(" ")[2]) : "";
+            String actualEnd = !dataSet.get(position).getCheckout_time().equalsIgnoreCase("null") && !TextUtils.isEmpty(dataSet.get(position).getCheckout_time()) ? (dataSet.get(position).getCheckout_time().split(" ")[1] + " "
+                    + dataSet.get(position).getCheckout_time().split(" ")[2]) : "";
+
+            holder.img_map.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClickItem(position);
+                }
+            });
+
+        } catch (Exception e){
+
+        }
+
+            return convertView;
+        }
+
+    private class ViewHolder {
+        FRTTextviewTrebuchetMS tvroute, plannedtiming, actualtiming, assignment_date;
+        ImageView img_map;
+    }
+
+    public interface SelectionViewAttendanceListener {
+        void onClickItem(int position);
+    }
+}

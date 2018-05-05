@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="com.vodafone.frt.activities.PTRNavigationScreenActivity"
+    tools:ignore="Overdraw">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorred"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ivback"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:src="@mipmap/ic_launcher"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:ignore="RtlHardcoded" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:fillViewport="true"
+        android:gravity="center">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="15dp"
+            tools:ignore="ScrollViewSize">
+
+            <LinearLayout
+                android:id="@+id/both_ll"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:ignore="DisableBaselineAlignment">
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:id="@+id/MyTaskButton"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_mytasks"
+                    android:paddingBottom="18dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/myTsakTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/mytask"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/AttendanceButton"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/ic_attendance"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/AttendanceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/attendance"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/patroller_ll"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:ignore="DisableBaselineAlignment">
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:id="@+id/SelfCheckInButton"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_checkin"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/SelfCheckInTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center|left"
+                        android:text="@string/selfCheck_In"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:id="@+id/MyPlannedTaskButton"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_assignedtasks"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/MyPlannedTaskTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/plannedtasks"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/manager_ll"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:ignore="DisableBaselineAlignment">
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:id="@+id/taskAssignmentRL"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:background="@drawable/manage_task"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/taskAssignment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center|left"
+                        android:text="@string/taskAssign"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/TrackPattrollerButton"
+                    android:background="@drawable/ic_attendance"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry"
+                    >
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/TrackPattrollerTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/TrackPatroller"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:ignore="DisableBaselineAlignment">
+
+                <RelativeLayout
+                    android:id="@+id/SosButton"
+                    android:background="@drawable/ic_sos"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry"
+                    >
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/SosTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/sos"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/LeaveManagementButton"
+                    android:background="@drawable/ic_leave_status"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/leaveStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:text="@string/leaveManagement"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:ignore="DisableBaselineAlignment">
+                <RelativeLayout
+                    android:id="@+id/othersButton"
+                    android:background="@drawable/ic_others"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/othersTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center|left"
+                        android:text="@string/others"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
+                <RelativeLayout
+
+                    android:background="@drawable/ic_logout"
+                    android:id="@+id/LogOutButton"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="18dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:paddingTop="5dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                        android:id="@+id/LogOutTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center|left"
+                        android:text="@string/logout"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- <LinearLayout
+                 android:layout_width="280dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginBottom="10dp"
+                 tools:ignore="DisableBaselineAlignment">
+                 <RelativeLayout
+                     android:id="@+id/othersButton"
+                     android:layout_marginRight="@dimen/_5sdp"
+                     android:layout_width="100dp"
+                     android:layout_height="120dp"
+                     android:layout_weight="1"
+                     android:paddingBottom="18dp"
+                     android:paddingRight="15dp"
+                     android:visibility="visible"
+                     android:background="@drawable/ic_others"
+                     android:paddingTop="5dp"
+                     tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                     <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                         android:id="@+id/othersTextView"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentBottom="true"
+                         android:layout_centerHorizontal="true"
+                         android:gravity="center|left"
+                         android:text="@string/others"
+                         android:textAllCaps="true"
+                         android:textColor="@android:color/black"
+                         android:textSize="13sp"
+                         tools:ignore="RtlHardcoded" />
+                 </RelativeLayout>
+             <RelativeLayout
+                 android:id="@+id/ChatButton"
+                 android:layout_width="100dp"
+                 android:layout_height="120dp"
+                 android:layout_weight="1"
+                 android:paddingBottom="15dp"
+                 android:paddingLeft="15dp"
+                 android:visibility="visible"
+                 android:layout_marginLeft="@dimen/_5sdp"
+                 android:background="@mipmap/ic_chat"
+                 android:paddingTop="5dp"
+                 tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                 <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+                     android:id="@+id/ChatTextView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentBottom="true"
+                     android:layout_centerInParent="true"
+                     android:gravity="center"
+                     android:text="@string/chat"
+                     android:textAllCaps="true"
+                     android:textColor="@android:color/black"
+                     android:textSize="13sp" />
+             </RelativeLayout>
+         </LinearLayout>-->
+        </LinearLayout>
+    </ScrollView>
+
+    <com.vodafone.frt.fonts.FRTTextviewTrebuchetMS
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/loaderttext"
+        android:textColor="@android:color/black"
+        android:visibility="gone" />
+</RelativeLayout>

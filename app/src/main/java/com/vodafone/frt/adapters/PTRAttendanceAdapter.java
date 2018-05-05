@@ -1,0 +1,115 @@
+package com.vodafone.frt.adapters;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.vodafone.frt.R;
+import com.vodafone.frt.models.PTRResponseAttendanceModel;
+
+import java.util.List;
+
+/**
+ * Created by vishal on 9/12/17
+ */
+
+public class PTRAttendanceAdapter extends BaseAdapter {
+    private final Context context;
+    private SelectionViewAttendanceListener listener;
+    private List<PTRResponseAttendanceModel> dataSet;
+
+    public PTRAttendanceAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void setSelectionListener(SelectionViewAttendanceListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public int getCount() {
+        return dataSet.size();
+    }
+
+    public void setDataSet(List<PTRResponseAttendanceModel> dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder holder;
+        PTRResponseAttendanceModel atendance = dataSet.get(position);
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.item_attendance_list, parent, false);
+            holder.attendance_date = convertView.findViewById(R.id.attendance_date);
+            holder.routeNameTextView = convertView.findViewById(R.id.routeNameTextView);
+            holder.plannedTimeTextView = convertView.findViewById(R.id.plannedTimeTextView);
+            holder.actualTimeTextView = convertView.findViewById(R.id.actualTimeTextView);
+            holder.img_map = convertView.findViewById(R.id.img_map);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.attendance_date.setText(!atendance.getAttendance_date().equalsIgnoreCase("null") && atendance.getAttendance_date() != null ? atendance.getAttendance_date() : "");
+        holder.routeNameTextView.setText(!atendance.getRoute_name().equalsIgnoreCase("null") && atendance.getRoute_name() != null ? atendance.getRoute_name() : "");
+        if ((atendance.getPlanned_start_time().equalsIgnoreCase("null") && atendance.getPlanned_start_time() == null)
+                || (atendance.getPlanned_end_time().equalsIgnoreCase("null") && atendance.getPlanned_end_time() == null)) {
+            holder.plannedTimeTextView.setText("");
+        } else {
+            holder.plannedTimeTextView.setText(atendance.getPlanned_start_time() + " To " + atendance.getPlanned_end_time());
+        }
+
+        if (!TextUtils.isEmpty(dataSet.get(position).getActual_start_time()) && !TextUtils.isEmpty(dataSet.get(position).getActual_end_time())) {
+            if (!atendance.getActual_start_time().equalsIgnoreCase("null") && !atendance.getActual_end_time().equalsIgnoreCase("null")) {
+                holder.actualTimeTextView.setText(atendance.getActual_start_time() + " To " + atendance.getActual_end_time());
+
+            } else if (!atendance.getActual_start_time().equalsIgnoreCase("null")) {
+                holder.actualTimeTextView.setText(atendance.getActual_start_time());
+
+            } else if (!atendance.getActual_end_time().equalsIgnoreCase("null")) {
+                holder.actualTimeTextView.setText(atendance.getActual_end_time());
+            } else {
+                holder.actualTimeTextView.setText("");
+            }
+        }
+        holder.img_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickItem(position);
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickItem(position);
+            }
+        });
+        return convertView;
+    }
+
+    private class ViewHolder {
+        TextView attendance_date, routeNameTextView, plannedTimeTextView, actualTimeTextView;
+        ImageView img_map;
+    }
+
+    public interface SelectionViewAttendanceListener {
+        void onClickItem(int position);
+    }
+}

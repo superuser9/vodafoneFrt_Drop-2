@@ -1,0 +1,163 @@
+package com.vodafone.frt.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * Created by vishal on 9/12/17
+ */
+
+public class PTRResponseRouteCommonModel implements Parcelable, Comparable<PTRResponseRouteCommonModel>{
+    private int routeId, routeRefId, routeAssignmentId;
+    private String route,
+            planned_start_time,
+            planned_end_time, actual_start_time, actual_end_time,self_check_in;
+
+    public String getActual_start_time() {
+        return actual_start_time;
+    }
+
+    public void setActual_start_time(String actual_start_time) {
+        this.actual_start_time = actual_start_time;
+    }
+
+    public String getActual_end_time() {
+        return actual_end_time;
+    }
+
+    public void setActual_end_time(String actual_end_time) {
+        this.actual_end_time = actual_end_time;
+    }
+
+    public String getSelf_check_in() {
+        return self_check_in;
+    }
+
+    public void setSelf_check_in(String self_check_in) {
+        this.self_check_in = self_check_in;
+    }
+
+    public int getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(int routeId) {
+        this.routeId = routeId;
+    }
+
+    public int getRouteRefId() {
+        return routeRefId;
+    }
+
+    public void setRouteRefId(int routeRefId) {
+        this.routeRefId = routeRefId;
+    }
+
+    public int getRouteAssignmentId() {
+        return routeAssignmentId;
+    }
+
+    public void setRouteAssignmentId(int routeAssignmentId) {
+        this.routeAssignmentId = routeAssignmentId;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getPlanned_start_time() {
+        return planned_start_time;
+    }
+
+    public void setPlanned_start_time(String planned_start_time) {
+        this.planned_start_time = planned_start_time;
+    }
+
+    public String getPlanned_end_time() {
+        return planned_end_time;
+    }
+
+    public void setPlanned_end_time(String planned_end_time) {
+        this.planned_end_time = planned_end_time;
+    }
+
+    public PTRResponseRouteCommonModel() {
+    }
+
+    private PTRResponseRouteCommonModel(Parcel in) {
+        routeId = in.readInt();
+        routeRefId = in.readInt();
+        routeAssignmentId = in.readInt();
+        route = in.readString();
+        planned_start_time = in.readString();
+        planned_end_time = in.readString();
+        self_check_in=in.readString();
+    }
+
+    public static final Creator<PTRResponseRouteCommonModel> CREATOR = new Creator<PTRResponseRouteCommonModel>() {
+        @Override
+        public PTRResponseRouteCommonModel createFromParcel(Parcel in) {
+            return new PTRResponseRouteCommonModel(in);
+        }
+
+        @Override
+        public PTRResponseRouteCommonModel[] newArray(int size) {
+            return new PTRResponseRouteCommonModel[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(routeId);
+        parcel.writeInt(routeRefId);
+        parcel.writeInt(routeAssignmentId);
+        parcel.writeString(route);
+        parcel.writeString(planned_start_time);
+        parcel.writeString(planned_end_time);
+        parcel.writeString(self_check_in);
+    }
+
+    @Override
+    public int compareTo(@NonNull PTRResponseRouteCommonModel frtResponseRouteCommonModel) {
+
+
+
+        SimpleDateFormat f = new SimpleDateFormat("dd-MMM-yyyy HH:MM");
+        try {
+            Date d1 = f.parse(getPlanned_start_time());
+            Date d2 = f.parse(frtResponseRouteCommonModel.getPlanned_start_time());
+            long milliseconds1 = d1.getTime();
+            long milliseconds2 = d2.getTime();
+            long value=milliseconds1-milliseconds2;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+        if(getPlanned_start_time().compareTo(frtResponseRouteCommonModel.getPlanned_start_time()) == -1)
+            return 1;
+        if(getPlanned_start_time().compareTo(frtResponseRouteCommonModel.getPlanned_start_time()) == 1)
+            return -1;
+        else
+            return 0;
+    }
+
+
+}
